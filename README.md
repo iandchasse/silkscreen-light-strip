@@ -73,9 +73,10 @@ Both are copies of their original projects, with only the parts the strip needs 
 | | 4.26″: [`enclosures/silkscreen-enclosure-claude`](enclosures/silkscreen-enclosure-claude) | 3.68″: [`enclosures/silkscreen-enclosure-codex-x3`](enclosures/silkscreen-enclosure-codex-x3) |
 |---|---|---|
 | Panel | Plain GDEY0426T82 instead of the FT01C | The x3's 3.68″ panel |
-| Changed parts | The front shell (tub) only | The front shell and the midplate |
+| Changed parts | The front shell (tub) only | The front shell, the midplate, the four rocker keys' cap height, and one lid latch arm |
 | Front shell | Stops for the thinner plain panel; a raised ceiling over the left border; hold-down pads between the pairs; a wider ribbon gap | Front raised 1.2 mm (still one flat face); a channel for the bar with the light path to the window; hold-down pads; a neck gap in the chin; wells around the rocker keys |
 | Midplate | Original | Notched through under the folded pair |
+| Keys and lid | Original | Rocker caps 0.155 mm taller, flush with the raised face; a 0.5 mm chamfer on the lid's latch arm under the folded pair |
 
 ## Using it
 

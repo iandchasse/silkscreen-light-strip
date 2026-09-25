@@ -2,7 +2,7 @@
 
 **Rev A is untested.** Before you order, get one LED and diode-test it ([ASSEMBLY.md step 1](ASSEMBLY.md#1-check-led-polarity-before-anything-else)). LCSC sells them for a few cents, and the test settles the one assumption a reversed strip can't recover from.
 
-One strip design fits both readers: the 4.26in panel in `enclosures/silkscreen-enclosure-claude`, and the 3.68in panel in `enclosures/silkscreen-enclosure-codex-x3`. Each case needs its light-strip front shell; the 3.68in case also needs its light-strip midplate ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case)). You can order and bench-test the strip before printing either.
+One strip design fits both readers: the 4.26in panel in `enclosures/silkscreen-enclosure-claude`, and the 3.68in panel in `enclosures/silkscreen-enclosure-codex-x3`. Each case needs its light-strip front shell; the 3.68in case also needs its light-strip midplate, rocker keys and lid ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case)). You can order and bench-test the strip before printing either.
 
 ## Files
 

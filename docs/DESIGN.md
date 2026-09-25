@@ -31,7 +31,7 @@ The strip replaces a bonded frontlight, so the main board decides almost everyth
 
 - Every frontlight part survives the trim: U10, L2, C9, R37, Q5/Q6, U12, R39/R41, R49/R50 and J3. The FPC slot is unchanged.
 - **The trim removes D3 and D8.** On that build nothing clamps the strip's nets, so handle the strip ESD-safe and plug it in with the board unpowered.
-- **The trim also cuts 3V3 to Q2/R81**, so the charger's enable stays low and the x3 board will not charge. This is a board issue, not a strip issue. One wire from a retained 3V3 point to Q2 pad 2 / R81 pad 2 fixes it.
+- **The trim also cuts 3V3 to Q2/R81**, so the charger's enable stays low and the x3 board will not charge. This is a board issue, not a strip issue. One wire from a retained 3V3 point to Q2 pad 2 / R81 pad 2 fixes it on a built board; the next silkscreen-pcb revision fixes it with one trace (see that repo's `NOTICE.md`).
 
 ## 2. Electrical
 
@@ -172,34 +172,43 @@ The layout is chosen so one strip serves both panels:
 
 ### 4.2 On the 4.26″ (silkscreen-enclosure-claude, light-strip front shell)
 
-**Placement.** The bar lies **on** the plain GDEY0426T82's left border ("above the screen"); its outer edge is flush with the glass edge (drawn 0.05 mm outside). The foot lies along the bottom border.
+**Placement.** The bar lies **on** the plain GDEY0426T82's left border ("above the screen"). Its outer edge is laid **0.1 mm inside** the glass edge (0 to 0.2 mm), never over it. The foot lies along the bottom border.
 
-**Z.** The case was drawn for the 1.98 mm FT01C panel.
+**Z.** The case was drawn for the 1.98 mm FT01C panel; this front shell holds the 0.926 mm plain panel instead. The FT01C no longer fits it.
 
-- The light-strip front shell adds **stops** that hold the plain panel's front at the design depth, so the midplate springs keep their designed travel.
-- With the panel front at Z ≈ 3.93, the stack is tape 0.05 + PI 0.225 + flex 0.11 + LED 0.8, putting the LED tops at about 5.11.
-- The front shell raises the skin's underside over the left border to about 5.3–5.4 (≈ 0.2 mm clearance) and removes the step in the pocket wall there. The light passes under that ceiling to the window edge.
-- Hold-down pads bear on the bar between the pairs, so the panel's left edge cannot lift toward the raised ceiling.
+- **Stops.** Three rails hang from the lip onto the panel's protective sheet and hold its front at **Z 4.00**. Every new face sits on a 0.2 mm print layer, so the model is what prints.
+- **Springs.** The midplate springs deflect 0.276 mm (0.176–0.376 over the panel's ± 0.1 mm), 6.5 N in all against 8.2 N with the FT01C.
+- **Ceiling.** The stack is tape 0.05 + PI 0.225 + flex 0.11 + LED 0.8, so the LED tops are at 5.185. The skin's underside over the left border rises to **5.40** (0.215 mm clearance) up to the window edge, so the light passes under it. That leaves 0.6 mm of skin, so print the tub dark or line the ceiling.
+- **Window edge.** The left window edge has a 0.2 mm bevel instead of 0.6, so there is no knife edge in front of the LEDs.
+- **Hold-down pads.** They bear on the bar's bare flex between the pairs, bottoms at 4.40 (0.015 mm clear). They are sized from the LEDs' **solder pads**, at least 0.6 mm clear nominally and 0.10 mm at the worst placement.
+- **Wall relief.** A 0.3 mm relief in the pocket's left wall, with a 43° roof, keeps the bar from ever being the panel's left stop.
+- **Insertion.** The stack goes in with the glass kept toward the right wall. With the bar 0.1 mm inside the glass edge it then clears the left wall by at least 0.275 mm over the whole stroke.
 
-**Hidden.** The LED faces sit 0.6 mm behind the window edge and 1.2 mm outside the active area. The coverlay is black.
+**Hidden.** At the 0.1 mm-inside placement the LED faces sit 0.45 mm behind the window edge and about 1.0 mm outside the active area. The coverlay is black.
 
-**Fold path.** The neck crosses the bare-glass ledge and wraps a U around the bottom glass edge (inside radius 0.66–0.9 mm, at least 6 × the thickness with single-layer copper). It then runs back under the glass, drops 90° through the board's FPC slot (y 141.2–142.5), and turns 90° onto the back to J3. The front shell's ribbon gap is widened for the neck; the chin has about 4.4 mm of room for the U.
+**Fold path.** The neck crosses the bare-glass ledge and wraps a U around the bottom glass edge. The inside radius is 0.7–0.9 mm: the tub has room to about 0.93, and 0.66 is the 6 × thickness minimum for single-layer copper. It then runs back under the glass, drops 90° through the board's FPC slot (y 141.2–142.5), and turns 90° onto the back to J3. The front shell's ribbon gap is widened to X 7.7, which leaves the neck 0.55 mm of clearance, and the U reaches about 1.7–2.1 mm past the glass edge.
 
-- **SW9's left lug lead** stands to Z 2.31 about 0.1 mm beside the U's lower leg. Trim it flush and cover it with Kapton (ASSEMBLY step 7).
-- **The EPD FPC.** The neck's right edge is 0.5 ± 0.3 mm from the panel's own FPC. The U must not ride onto it.
+- **SW9's left lug lead** stands to Z 2.31, 0.10 mm (0.26 mm as placed) beside the U's lower leg. At the far-left extreme they overlap, so trim it flush and cover it with Kapton (ASSEMBLY §5 step 1).
+- **The EPD FPC.** The neck's right edge is about 0.35 mm from the panel's own FPC at the 0.1 mm-inside placement. The U must not ride onto it.
 
-### 4.3 On the 3.68″ (silkscreen-enclosure-codex-x3, light-strip front shell and midplate)
+### 4.3 On the 3.68″ (silkscreen-enclosure-codex-x3: light-strip front shell, midplate, rocker caps, one lid latch arm)
 
 **Placement.** The 3.68″ glass starts at x 45.367, just right of the bar (x 43.00–45.30), so the bar lies **beside** the panel ("next to the screen"), 0.07 mm from the glass. It rests on a shelf in the front shell at the panel-front plane (Z 3.47), so the LEDs still sit above the page and graze it. The foot lies on the 3.68″ panel's bottom border.
 
 **Z.** The x3 front skin was only 0.6 mm over the panel, and the strip stands 1.185 mm tall.
 
-- The light-strip front shell raises the whole front by **1.2 mm**, keeping one flat face so it still prints face down. The case goes from 11.3 to 12.5 mm deep.
-- A channel runs along the left edge for the bar, with the light path under 0.4 mm of skin to the window.
-- The left lip is gone (it was in the light path), so small hold-down pads between the pairs hold the panel's left border. They shade about 4.7 % of the light, all of it steep rays.
-- The rocker keys are unchanged; each gets a well so it can still be pressed.
+- The light-strip front shell raises the whole front by **1.2 mm** (Z 4.07 → 5.27), keeping one flat face so it still prints face down. The case goes from 11.3 to 12.5 mm deep, and the LED tops (4.655) clear the skin by 0.215.
+- A channel runs along the left edge for the bar, with the light path under 0.4 mm of skin to the window. The window has a 0.6 land and a 1.2 mm 45° bevel, so the thicker border skin doesn't shade the edge.
+- **Six stop ribs** (0.18 mm) on the channel's wall set the bar's left edge at X −1.24. They sit between the lid's latch arms; the two on the fold zone also stop the folded piece.
+- **Seat.** The bar's tape side rests on a strip of the old frame at the panel-front plane, over Y 14.5–73.4. It starts at 14.5 so a bar sliding in with a thick stack and a 0.9 mm LED clears its edge; the G-code puts its first line at Y 14.72.
+- **The foot is the panel's stop** at the bottom-left corner. The lip there is gone, and the foot pocket's roof (Z 3.87) sits 0.015 over the foot. The midplate spring under that corner deflects 0.04–0.33 mm (0.2–1.8 N).
+- **Corner stops** at the panel's two left corners locate its left edge, now that no wall is beside it.
+- The left lip is gone (it was in the light path), so five small hold-down pads between the pairs hold the panel's left border. They shade about 4.7 % of the light, all of it steep rays.
+- **Rocker keys.** Each opening's chamfer continues up to the new face as a well, and the caps are 0.155 mm taller, so each key's highest point is flush with the face. Ian chose flush and thin over proud caps, so the case stays 12.505 mm deep with the keys. x3's rule (a cap never sinks below the surface round it at full travel) holds against the well's floor. Nothing else about the keys changes.
 
-**The fold-back.** The top piece folds 180° backward at the hinge and lies under the bar, its LEDs facing the back. The front shell's frame is removed there, and the **midplate is notched through** under it. Nothing else in the midplate changes except one detent moved clear of the fold.
+**The fold-back.** The top piece folds 180° backward at the hinge and lies under the bar, its LEDs facing the back. The front shell's frame is removed there (Y 73.4–92.7), and the **midplate is notched through** under it, on into SW7's two front lead holes so no web narrower than a printed line is left. Nothing else in the midplate changes except one detent, moved from Y 86 to 58, clear of the fold.
+
+- **Lid latch arm.** The folded pair's D1 lies over the lid's left latch arm at Y 83. That arm gets a 0.5 × 0.5 mm chamfer on its inner top corner, so D1 clears it in every case: strip at the ribs or against the wall, 0.8 or 0.9 mm LED, nominal or thick stack, at rest and while the lid snaps on. The worst case clears it by 0.10 mm as modelled and 0.066 mm in the sliced G-code. The barb, catch and lead-in are untouched, so the latch holds as before. This is the lid's only change.
 
 **Fold path.** The x3 panel's bottom glass edge is the board slot's top edge (y 141.2), so the neck folds 90° over it straight down the slot. That path needs 19.8–21.3 mm, against the 25.4 mm the strip has from that edge, so the 3.68″ build has **4–5.6 mm of spare tail**. It goes into a small loop into the chin (a new neck gap in the front shell makes room) and a hairpin loop on the board's back that stands about 2–3 mm off the board. The lid clears it by about 2.9 mm.
 
@@ -285,7 +294,7 @@ The strip has had four review rounds:
 1. **Independent review before rev A.** Four lenses: electrical, mechanical, DFM, KiCad ([review/](review/)).
 2. **Final check of the docs and board.** 42 confirmed findings, including the P03 case clash that led to this dual-panel design.
 3. **Dual-panel survey.** Both cases, the 3.68″ panel and the six-LED budget.
-4. **Each case variant built and adversarially re-measured, twice.** Findings were fixed in the fix round, see §9.
+4. **Each case variant built, then fixed and adversarially re-measured in rounds:** three on the 4.26″ case, four on the 3.68″. The last 3.68″ round applied Ian's decisions (flush rocker caps, the lid latch-arm chamfer) and was checked by two independent verifiers. Each case README's "Light-strip variant" section has the numbers; the remaining items are in §9.
 
 | Finding | Resolution |
 |---|---|
@@ -304,7 +313,7 @@ The strip has had four review rounds:
 1. **LED polarity and face position** are derived from documents, not measured. Diode-test one part (ASSEMBLY step 1). If the anode turns out to be on the other side, the footprint and routing must be mirrored.
 2. **Six LEDs per string** assumes the XL-4008 bins as published. If a batch reads above about 3.4 V per LED at 13 mA, the string can pass the 22 V ceiling in the cold (still under OVP). Check one string on the bench (ASSEMBLY step 3).
 3. **The hinge fold** has not been bent on a real board. Fold one bare board before trusting it.
-4. **3.68″ rocker keys** now sit in wells below the raised face. They work with a fingertip but feel recessed. Optional 1.2 mm-taller caps are generated in the x3 case; choose after a test print.
-5. **Board issues on the x3 build** (§1): no D3/D8, and the trim cuts 3V3 to the charger enable.
+4. **3.68″ rocker keys** are flush with the raised face, in wells. Check on the first print that they are easy to find and press.
+5. **Board issues on the x3 build** (§1): no D3/D8, and the trim cuts 3V3 to the charger enable. Both are to be fixed in the next silkscreen-pcb revision (one trace for the charger enable), and are tracked in `NOTICE.md` in the silkscreen-pcb repo. Boards already built need the bodge wire described there.
 6. **Cost.** No instant quote has been run.
 7. **Antenna.** The bar passes 5–8 mm from the ESP32-S3 antenna. Compare RSSI with and without the strip.
