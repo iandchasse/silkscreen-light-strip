@@ -1,0 +1,16 @@
+(version 1)
+
+# Gold fingers stop 0.2 mm from the tip (JLCPCB gold-finger rule), closer than the 0.3 mm copper-to-edge
+# rule that governs the rest of the flex.
+(rule "gold_fingers_to_tip"
+    (constraint edge_clearance (min 0.19mm))
+    (condition "A.memberOfFootprint('J1') || B.memberOfFootprint('J1')"))
+
+# The fingers sit at 0.5 mm pitch with 0.3 mm conductors (Hirose FH34SRJ recommended FPC).
+(rule "finger_pitch"
+    (constraint clearance (min 0.19mm))
+    (condition "A.memberOfFootprint('J1') || B.memberOfFootprint('J1')"))
+
+# Flex copper: nothing thinner than 0.15 mm anywhere.
+(rule "flex_min_track"
+    (constraint track_width (min 0.15mm)))

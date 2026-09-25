@@ -1,0 +1,26 @@
+# KiCad per-user and cache files
+*.kicad_prl
+fp-info-cache
+*-backups/
+~*.lck
+*.lck
+_autosave-*
+*-cache.lib
+# generated scratch (regenerate with tools/generate.py and tools/make_outputs.py)
+build/
+tools/__pycache__/
+__pycache__/
+*.pyc
+# MCP server reports written next to the board
+*_drc_violations.json
+# enclosure copies: build outputs, caches and the originals' old print packages stay on disk, not in git
+enclosures/*/out/
+enclosures/*/hardware/cache/
+enclosures/*/silkscreen-enclosure-rev-*/
+enclosures/*/*.zip
+enclosures/*/.venv/
+enclosures/*/.claude/
+# third-party reference downloads used by the enclosures' comparison pages (not ours to redistribute)
+enclosures/*/hardware/compare/
+enclosures/*/hardware/reference/retrocase/
+enclosures/*/hardware/reference/vendor/

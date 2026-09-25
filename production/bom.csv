@@ -1,0 +1,4 @@
+Qty,Designators,Value,Manufacturer,MPN,LCSC,Footprint,Description
+6,"D1,D2,D3,D4,D5,D6",XL-4008WWC,XINGLIGHT,XL-4008WWC,C5440667,LED_SideView_XINGLIGHT_XL-4008,"Warm white 3000 K side-view LED, 4.0x1.4x0.8 mm"
+6,"D7,D8,D9,D10,D11,D12",XL-4008UWC,XINGLIGHT,XL-4008UWC,C2843774,LED_SideView_XINGLIGHT_XL-4008,"Cool white 6000-6500 K side-view LED, 4.0x1.4x0.8 mm"
+2,"D13,D14",BAV70W,Nexperia,"BAV70W,115",C28064,SOT-323_SC-70,D13: Warm string: series block + reverse clamp (flip protection); D14: Cool string: series block + reverse clamp (flip protection)

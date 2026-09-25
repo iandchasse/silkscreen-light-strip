@@ -1,0 +1,29 @@
+Silkscreen light strip — warm/cool side-view LED flex for the Silkscreen e-reader frontlight connector
+
+Copyright © 2026 idc LLC.
+
+This source describes Open Hardware and is licensed under the CERN-OHL-S v2.
+
+You may redistribute and modify this source and make products using it under the
+terms of the CERN Open Hardware Licence Version 2 - Strongly Reciprocal
+(CERN-OHL-S v2, https://ohwr.org/cern_ohl_s_v2.txt; full text in ./LICENSE).
+
+This source is distributed WITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF
+MERCHANTABILITY, SATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE.
+Please see the CERN-OHL-S v2 for applicable conditions.
+
+Companion to https://github.com/iandchasse/silkscreen-pcb
+
+SPDX-License-Identifier: CERN-OHL-S-2.0
+
+-------------------------------------------------------------------------------
+
+Third-party content (NOT covered by the license above):
+
+- lib/silkscreen-light-strip.kicad_sym copies and renames symbols from the KiCad
+  standard libraries (Device:LED, Diode:BAV70, Connector_Generic:Conn_01x06,
+  Connector:TestPoint), and lib/silkscreen-light-strip.pretty/SOT-323_SC-70.kicad_mod
+  is the KiCad standard footprint with its silkscreen removed. These remain under
+  CC-BY-SA-4.0 with the KiCad library exception.
+- All other footprints, the LED 3D models and every script under tools/ are
+  project-made and covered by the project license.

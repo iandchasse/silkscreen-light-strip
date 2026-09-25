@@ -1,0 +1,1077 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "ad90a496-3b8d-544f-b19b-1531dc20ae92")
+	(paper "A4")
+	(title_block
+		(title "Silkscreen light strip")
+		(date "2026-09-24")
+		(rev "A")
+		(company "idc LLC")
+		(comment 1 "Warm/cool side-view LED strip on flex for the Silkscreen reader frontlight connector J3")
+		(comment 2 "Licensed under CERN-OHL-S-2.0")
+		(comment 3 "(c) 2026 idc LLC")
+		(comment 4 "Companion to github.com/iandchasse/silkscreen-pcb")
+	)
+	(lib_symbols
+		(symbol "silkscreen-light-strip:LED_SideView"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LED"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Side-view (right-angle) white LED"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Sim.Pins" "1=K 2=A"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "LED diode"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "LED* LED_SideView*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LED_SideView_0_1"
+				(polyline
+					(pts
+						(xy -3.048 -0.762) (xy -4.572 -2.286) (xy -3.81 -2.286) (xy -4.572 -2.286) (xy -4.572 -1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 -0.762) (xy -3.302 -2.286) (xy -2.54 -2.286) (xy -3.302 -2.286) (xy -3.302 -1.524)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.27) (xy -1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -1.27) (xy 1.27 1.27) (xy -1.27 0) (xy 1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "LED_SideView_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "silkscreen-light-strip:BAV70W"
+			(pin_names
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0.635 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "BAV70W"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "silkscreen-light-strip:SOT-323_SC-70"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAV70_SER.pdf"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Dual 100V 215mA high-speed switching diodes, common cathode, SOT-23"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "diode"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SOT?323*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "BAV70W_0_1"
+				(polyline
+					(pts
+						(xy -3.81 1.27) (xy -1.27 0) (xy -3.81 -1.27) (xy -3.81 1.27) (xy -3.81 1.27) (xy -3.81 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.81 0) (xy 3.81 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.27) (xy -1.27 1.27) (xy -1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 0)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -1.27) (xy 1.27 1.27) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.81 -1.27) (xy 1.27 0) (xy 3.81 1.27) (xy 3.81 -1.27) (xy 3.81 -1.27) (xy 3.81 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -7.62 0 0)
+					(length 3.81)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 0 180)
+					(length 3.81)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "silkscreen-light-strip:FPC_Tail_J3"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "FPC_Tail_J3"
+				(at 0 -10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "silkscreen-light-strip:FPC_Tail_FH34SRJ_6P_P0.50mm_TopContact"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Gold-finger tail that plugs into the Silkscreen main board's frontlight connector J3 (Hirose FH34SRJ-6S-0.5SH(50))"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "FPC_Tail*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "FPC_Tail_J3_1_1"
+				(rectangle
+					(start -1.27 6.35)
+					(end 1.27 -8.89)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 5.207)
+					(end 0 4.953)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -4.953)
+					(end 0 -5.207)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -7.493)
+					(end 0 -7.747)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 5.08 0)
+					(length 3.81)
+					(name "LED_SW(C+)"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 3.81)
+					(name "C-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -5.08 0)
+					(length 3.81)
+					(name "LED_SW(W+)"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -7.62 0)
+					(length 3.81)
+					(name "W-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "silkscreen-light-strip:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "silkscreen-light-strip:TestPad_0.8mm_Wire"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(wire (pts (xy 35.56 93.98) (xy 45.72 93.98)) (stroke (width 0) (type default)) (uuid "6ccac634-2085-571d-8ce3-9afb4cc4dacd"))
+	(label "LED_SW" (at 45.72 93.98 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "4cf37b7b-9761-5668-bb8e-846b35e84e32"))
+	(wire (pts (xy 35.56 96.52) (xy 45.72 96.52)) (stroke (width 0) (type default)) (uuid "383ab0f6-0337-50e9-81c4-1531d17ff2a5"))
+	(label "C-" (at 45.72 96.52 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "59599fc7-580e-5193-a844-1a2f89e8b474"))
+	(wire (pts (xy 35.56 104.14) (xy 45.72 104.14)) (stroke (width 0) (type default)) (uuid "6dc0c2ac-9e20-5bd3-9517-bf93384cac6d"))
+	(label "LED_SW" (at 45.72 104.14 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "4dffdfbd-e425-5a6b-a926-5d6c93407935"))
+	(wire (pts (xy 35.56 106.68) (xy 45.72 106.68)) (stroke (width 0) (type default)) (uuid "ae8a49fa-9e6e-53cc-a0a1-d6c1b4a1846f"))
+	(label "W-" (at 45.72 106.68 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "b24a3c1f-8613-5c70-a7fd-b52612ebcf48"))
+	(no_connect (at 35.56 99.06) (uuid "fc0b3d0f-af0a-5e7f-9fe6-665f2dac4159"))
+	(no_connect (at 35.56 101.6) (uuid "3e2a1a17-85a5-541f-9a43-81b587c561d0"))
+	(wire (pts (xy 30.48 139.7) (xy 30.48 147.32)) (stroke (width 0) (type default)) (uuid "7e549400-b5d5-56cc-88cf-aa79c279367e"))
+	(label "LED_SW" (at 30.48 147.32 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "bccbe589-9c57-5c35-9e0d-3fd00ed00143"))
+	(wire (pts (xy 45.72 139.7) (xy 45.72 147.32)) (stroke (width 0) (type default)) (uuid "157eade7-281a-5db0-a24c-ccdaa86cd52b"))
+	(label "C-" (at 45.72 147.32 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "000fdb0a-41fc-547a-8e82-c0703acc0398"))
+	(wire (pts (xy 60.96 139.7) (xy 60.96 147.32)) (stroke (width 0) (type default)) (uuid "ae69c307-8b95-59cc-8257-9e990b87bbc6"))
+	(label "W-" (at 60.96 147.32 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "b8089fcd-f740-5ebc-b893-12a5db12940a"))
+	(wire (pts (xy 76.2 40.64) (xy 71.12 40.64)) (stroke (width 0) (type default)) (uuid "0d0d4926-be62-5412-bf43-f0b739471703"))
+	(label "LED_SW" (at 71.12 40.64 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right bottom)) (uuid "8d2a00e4-1ee3-5615-9a78-49a13534031b"))
+	(wire (pts (xy 91.44 40.64) (xy 96.52 40.64)) (stroke (width 0) (type default)) (uuid "93ed8f5c-e053-5fb9-812f-a41f43e8132b"))
+	(label "W-" (at 96.52 40.64 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "633dd31d-b3df-559a-9dff-a5382e5fe625"))
+	(wire (pts (xy 83.82 45.72) (xy 83.82 55.88)) (stroke (width 0) (type default)) (uuid "e22dfac4-cc78-50f9-87e7-2f96b0ba8b09"))
+	(wire (pts (xy 83.82 55.88) (xy 105.41 55.88)) (stroke (width 0) (type default)) (uuid "26a49d4e-947c-5f19-b9c0-caa0e46e2c08"))
+	(label "W_A" (at 86.36 55.88 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "e0ebd927-46e0-5553-83a6-865f57481ace"))
+	(wire (pts (xy 113.03 55.88) (xy 123.19 55.88)) (stroke (width 0) (type default)) (uuid "9c7ad144-ac62-54f7-bcc7-d4d404509545"))
+	(label "W1_2" (at 114.3 55.88 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "fa061e72-6909-599d-b139-f188545e7735"))
+	(wire (pts (xy 130.81 55.88) (xy 140.97 55.88)) (stroke (width 0) (type default)) (uuid "588dbeb0-ddb1-5ce5-98e7-b855cbaa215f"))
+	(label "W2_3" (at 132.08 55.88 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "551df178-6ff9-576e-8e55-e271a9494f50"))
+	(wire (pts (xy 148.59 55.88) (xy 158.75 55.88)) (stroke (width 0) (type default)) (uuid "eab2b49e-c22a-5efb-87b3-4f4494f6cc04"))
+	(label "W3_4" (at 149.86 55.88 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "c6762a80-79ed-53b5-803b-3c9a36d08e56"))
+	(wire (pts (xy 166.37 55.88) (xy 176.53 55.88)) (stroke (width 0) (type default)) (uuid "d61fc4c9-7be9-5be5-a470-dda0022d5e94"))
+	(label "W4_5" (at 167.64 55.88 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "236e6a52-fd78-5d54-8626-c0cb4fc6a918"))
+	(wire (pts (xy 184.15 55.88) (xy 194.31 55.88)) (stroke (width 0) (type default)) (uuid "51ad3cb9-662e-5b19-b96d-9e29a3e328fe"))
+	(label "W5_6" (at 185.42 55.88 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "65e80bee-021a-57ba-9354-418278a044ab"))
+	(wire (pts (xy 201.93 55.88) (xy 209.55 55.88)) (stroke (width 0) (type default)) (uuid "54216a7d-5219-5a72-b192-f08e23e498f3"))
+	(label "W-" (at 209.55 55.88 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "74d8773e-79b1-5831-8585-ea39f5b34663"))
+	(wire (pts (xy 76.2 86.36) (xy 71.12 86.36)) (stroke (width 0) (type default)) (uuid "7c6362d5-420e-5d15-8366-c1fa709463ba"))
+	(label "LED_SW" (at 71.12 86.36 180) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify right bottom)) (uuid "e824f7a2-d9b1-5013-98ef-2c06d199987f"))
+	(wire (pts (xy 91.44 86.36) (xy 96.52 86.36)) (stroke (width 0) (type default)) (uuid "1b454a9c-d634-512a-abd5-2a6033842057"))
+	(label "C-" (at 96.52 86.36 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "66ca105b-426a-5211-914b-8cffbdbbf052"))
+	(wire (pts (xy 83.82 91.44) (xy 83.82 101.6)) (stroke (width 0) (type default)) (uuid "2df69cd2-8d6c-57a4-a3c2-daf28b860a11"))
+	(wire (pts (xy 83.82 101.6) (xy 105.41 101.6)) (stroke (width 0) (type default)) (uuid "6fc0be97-916b-5627-a96c-0d2790800247"))
+	(label "C_A" (at 86.36 101.6 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "d738fcdd-cbe5-536d-a64a-86ab81019471"))
+	(wire (pts (xy 113.03 101.6) (xy 123.19 101.6)) (stroke (width 0) (type default)) (uuid "dab1923f-b597-50f1-8d02-0aa2ea850524"))
+	(label "C7_8" (at 114.3 101.6 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "c5139006-bed9-535a-84e1-d408c7f86d55"))
+	(wire (pts (xy 130.81 101.6) (xy 140.97 101.6)) (stroke (width 0) (type default)) (uuid "5a93993a-b087-5546-842c-0557c550d91a"))
+	(label "C8_9" (at 132.08 101.6 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "2dd675f6-d273-5da5-8c8e-c38aeed76e02"))
+	(wire (pts (xy 148.59 101.6) (xy 158.75 101.6)) (stroke (width 0) (type default)) (uuid "30ebe404-344a-5178-985a-f38d00880ca1"))
+	(label "C9_10" (at 149.86 101.6 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "a9b32b8b-92aa-5ebb-a229-acee9659c7df"))
+	(wire (pts (xy 166.37 101.6) (xy 176.53 101.6)) (stroke (width 0) (type default)) (uuid "b13d792e-c0a7-5059-af3a-546c90d39ec1"))
+	(label "C10_11" (at 167.64 101.6 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "ca81f580-d659-5fd0-8cc1-f7688173687c"))
+	(wire (pts (xy 184.15 101.6) (xy 194.31 101.6)) (stroke (width 0) (type default)) (uuid "4e0633ce-d584-5f46-be5c-0a654c0ac1f3"))
+	(label "C11_12" (at 185.42 101.6 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "1ca0f5e5-b480-56a7-80d2-e76d74fde249"))
+	(wire (pts (xy 201.93 101.6) (xy 209.55 101.6)) (stroke (width 0) (type default)) (uuid "4eba619e-7b6d-5a80-ab09-dddd6cc102fe"))
+	(label "C-" (at 209.55 101.6 0) (fields_autoplaced yes) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid "f080d57e-f96d-560c-a8a0-4deffe5a1a97"))
+	(text "HOW IT CONNECTS\nJ1 is not a part: it is the flex's own gold-finger tail. It plugs into the main board's frontlight connector\nJ3 (Hirose FH34SRJ-6S-0.5SH(50)) in place of a panel's bonded frontlight. J3 map (owner-confirmed):\n1 C+ = LED_SW, 2 C-, 3 NC, 4 NC, 5 W+ = LED_SW, 6 W-. Pins 1 and 5 are tied here as well (redundant contact).\n\nDRIVER LIMITS (main board U10 TPS923610, R37 = 15 ohm)\nConstant current 13.3 mA nominal, 13.9 mA max, one string at a time (Q5 warm / Q6 cool). OVP 24.25 V min;\ndesign ceiling 22 V at -10 C. 6 LEDs per string: about 17.4 V typ (15.0-20.4 V over bins and -10..60 C) + 0.65-0.95 V diode;\nLED_SW about 18.4 V typ, 21.7 V worst case. Firmware: 'open' is LED_MONIT >= 2.49 V (peak in the first second).\n\nD13/D14 BAV70W: A1 is the series block, A2 clamps the string if the tail is inserted face-down\n(J3 contacts both faces; a flipped tail mirrors pins 1<->6, 2<->5). Flipped: no current, OVP latches.\n\nLEDs: XINGLIGHT XL-4008WWC (3000 K) / XL-4008UWC (6000-6500 K). Warm/cool pairs, top to bottom:\n(D7/D1) (D8/D2) (D9/D3) (D10/D4) (D11/D5) (D12/D6); the anode is the top pad of every LED.\nOn the 3.68in panel the top pair (D7/D1) folds back under the bar on the hinge; it stays in the strings." (exclude_from_sim no) (at 101.6 124.46 0) (effects (font (size 1.27 1.27)) (justify left top)) (uuid "e1d9dc57-019d-5afa-bfa5-9d2050e7d872"))
+	(symbol (lib_id "silkscreen-light-strip:FPC_Tail_J3") (at 30.48 99.06 0) (mirror y) (unit 1)
+		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "b3cb5c5a-0eac-58e1-a433-bde18a01718c")
+		(property "Reference" "J1" (at 30.48 90.17 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "FPC tail to J3" (at 30.48 110.49 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:FPC_Tail_FH34SRJ_6P_P0.50mm_TopContact" (at 30.48 99.06 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://www.hirose.com/en/product/series/FH34SRJ" (at 30.48 99.06 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Contact fingers, not a part: plugs into FH34SRJ-6S-0.5SH(50) J3 on the main board" (at 30.48 99.06 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "b604cf1e-1805-5990-bcc7-392e432453cc"))
+		(pin "2" (uuid "d87ab0ae-ca5e-5d54-904e-b177af77b97a"))
+		(pin "3" (uuid "96571e12-200a-5c60-ad76-d2eb7bea3957"))
+		(pin "4" (uuid "d3f14143-6cca-5c28-bc23-ff6b1af4a408"))
+		(pin "5" (uuid "9ebded58-d678-5d72-91d2-a14fddf21fc4"))
+		(pin "6" (uuid "20501c5e-d5c3-5ed8-b39d-b8e4debb7de5"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "J1") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:TestPoint") (at 30.48 139.7 0) (unit 1)
+		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "beac5a9f-ff7d-5604-bad4-12fc9cfc299a")
+		(property "Reference" "TP1" (at 31.75 134.62 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "LED_SW" (at 31.75 137.16 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "silkscreen-light-strip:TestPad_0.8mm_Wire" (at 30.48 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "~" (at 30.48 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Wire/probe pad on the stiffened tab behind the main board" (at 30.48 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "662928d1-8275-558d-a7ae-b9077ae6af63"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "TP1") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:TestPoint") (at 45.72 139.7 0) (unit 1)
+		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "f3b1d0e3-1461-587d-a899-27308c663d75")
+		(property "Reference" "TP2" (at 46.99 134.62 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "C-" (at 46.99 137.16 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "silkscreen-light-strip:TestPad_0.8mm_Wire" (at 45.72 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "~" (at 45.72 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Wire/probe pad on the stiffened tab behind the main board" (at 45.72 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "6eaf91b9-cb13-59f1-a1d8-6aec813dc8d2"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "TP2") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:TestPoint") (at 60.96 139.7 0) (unit 1)
+		(exclude_from_sim no) (in_bom no) (on_board yes) (dnp no) (uuid "79dbb44c-2ba0-526b-9d19-65d2db56fbf2")
+		(property "Reference" "TP3" (at 62.23 134.62 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "W-" (at 62.23 137.16 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "silkscreen-light-strip:TestPad_0.8mm_Wire" (at 60.96 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "~" (at 60.96 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Wire/probe pad on the stiffened tab behind the main board" (at 60.96 139.7 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "40362a3f-b454-5529-81bd-691ae81fd172"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "TP3") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:BAV70W") (at 83.82 40.64 0) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "fee56028-5e9d-55cf-8b0d-5e46e2c8b98e")
+		(property "Reference" "D13" (at 86.36 35.56 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "BAV70W" (at 86.36 38.1 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "silkscreen-light-strip:SOT-323_SC-70" (at 83.82 40.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAV70_SER.pdf" (at 83.82 40.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Warm string: series block + reverse clamp (flip protection)" (at 83.82 40.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "BAV70W,115" (at 83.82 40.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "Nexperia" (at 83.82 40.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C28064" (at 83.82 40.64 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "291b5f69-1b3b-52e3-b2cd-caea69345f51"))
+		(pin "2" (uuid "f7c75487-b7da-54e6-82d1-e5d38d2f61c4"))
+		(pin "3" (uuid "7ed3a40a-36af-5144-ba86-14daea1f1db1"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D13") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 109.22 55.88 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "1116ba18-09cb-5d85-8834-2b76eb3525c0")
+		(property "Reference" "D1" (at 109.22 50.8 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008WWC" (at 109.22 60.96 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 109.22 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/98f3d1f702a22a454447380c669f5ab6.pdf?productCode=C5440667" (at 109.22 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Warm white 3000 K side-view LED, 4.0x1.4x0.8 mm" (at 109.22 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008WWC" (at 109.22 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 109.22 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C5440667" (at 109.22 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "6958fd98-ba05-567b-aa83-b53788d52365"))
+		(pin "2" (uuid "e9682daa-cbca-599c-a781-b8372a4fb39a"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D1") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 127 55.88 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "c61d41e8-c82e-5152-a2bd-a8a1ae4bad60")
+		(property "Reference" "D2" (at 127 50.8 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008WWC" (at 127 60.96 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 127 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/98f3d1f702a22a454447380c669f5ab6.pdf?productCode=C5440667" (at 127 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Warm white 3000 K side-view LED, 4.0x1.4x0.8 mm" (at 127 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008WWC" (at 127 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 127 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C5440667" (at 127 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "15a987b7-9733-557f-84bd-2c7161318ae2"))
+		(pin "2" (uuid "9e8a879d-ec86-5722-8fa1-106a641c5c78"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D2") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 144.78 55.88 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "28fe2cb3-65df-50c4-8ddf-a3ff59356e81")
+		(property "Reference" "D3" (at 144.78 50.8 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008WWC" (at 144.78 60.96 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 144.78 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/98f3d1f702a22a454447380c669f5ab6.pdf?productCode=C5440667" (at 144.78 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Warm white 3000 K side-view LED, 4.0x1.4x0.8 mm" (at 144.78 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008WWC" (at 144.78 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 144.78 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C5440667" (at 144.78 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "63c398db-7ea7-526d-9e52-405060b53d66"))
+		(pin "2" (uuid "ff23e7b7-38f1-5f52-8c95-82708581a5d1"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D3") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 162.56 55.88 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "e1e82c18-8268-5311-9237-73a9473152b3")
+		(property "Reference" "D4" (at 162.56 50.8 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008WWC" (at 162.56 60.96 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 162.56 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/98f3d1f702a22a454447380c669f5ab6.pdf?productCode=C5440667" (at 162.56 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Warm white 3000 K side-view LED, 4.0x1.4x0.8 mm" (at 162.56 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008WWC" (at 162.56 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 162.56 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C5440667" (at 162.56 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "fae2f83d-8148-58c7-bbd5-05d8f6642770"))
+		(pin "2" (uuid "e251cd53-21c0-5508-8c0b-bfa99f9607b3"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D4") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 180.34 55.88 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "efa03804-3760-5c86-a19c-8d5671e687c0")
+		(property "Reference" "D5" (at 180.34 50.8 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008WWC" (at 180.34 60.96 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 180.34 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/98f3d1f702a22a454447380c669f5ab6.pdf?productCode=C5440667" (at 180.34 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Warm white 3000 K side-view LED, 4.0x1.4x0.8 mm" (at 180.34 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008WWC" (at 180.34 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 180.34 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C5440667" (at 180.34 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "b2750276-9783-5968-abbe-1710acfe5dae"))
+		(pin "2" (uuid "1a078b66-fd21-56e9-81cd-236c5a42f5da"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D5") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 198.12 55.88 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "7c3233d5-116b-55fe-b91e-167118c1088b")
+		(property "Reference" "D6" (at 198.12 50.8 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008WWC" (at 198.12 60.96 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 198.12 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/98f3d1f702a22a454447380c669f5ab6.pdf?productCode=C5440667" (at 198.12 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Warm white 3000 K side-view LED, 4.0x1.4x0.8 mm" (at 198.12 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008WWC" (at 198.12 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 198.12 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C5440667" (at 198.12 55.88 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "b42cba6f-03c2-545c-962d-f526c8fd2f22"))
+		(pin "2" (uuid "df123b1d-a2a2-57c1-8e68-738e1e80f34d"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D6") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:BAV70W") (at 83.82 86.36 0) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "59ce5726-0786-5b04-a026-320a54bfff48")
+		(property "Reference" "D14" (at 86.36 81.28 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Value" "BAV70W" (at 86.36 83.82 0) (effects (font (size 1.27 1.27)) (justify left)))
+		(property "Footprint" "silkscreen-light-strip:SOT-323_SC-70" (at 83.82 86.36 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAV70_SER.pdf" (at 83.82 86.36 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Cool string: series block + reverse clamp (flip protection)" (at 83.82 86.36 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "BAV70W,115" (at 83.82 86.36 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "Nexperia" (at 83.82 86.36 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C28064" (at 83.82 86.36 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d79fb6ee-1f69-50f0-b33c-07f1eb26083f"))
+		(pin "2" (uuid "8acfb944-9c98-52ca-9a60-26bd8109d2cb"))
+		(pin "3" (uuid "2176766b-7bf9-5980-a351-d7b320219961"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D14") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 109.22 101.6 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "dbee43df-453e-5149-823e-da26956d24ed")
+		(property "Reference" "D7" (at 109.22 96.52 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008UWC" (at 109.22 106.68 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 109.22 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/e6aed946d22bf266730bba05a11330f0.pdf?productCode=C2843774" (at 109.22 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Cool white 6000-6500 K side-view LED, 4.0x1.4x0.8 mm" (at 109.22 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008UWC" (at 109.22 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 109.22 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2843774" (at 109.22 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "d81f6c1f-3716-50a3-85fa-dcd805d28cad"))
+		(pin "2" (uuid "7bebe553-3d91-5f93-ac2a-4c285e8c52b2"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D7") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 127 101.6 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "41ea8734-9d59-5b70-8fca-9401f5c95119")
+		(property "Reference" "D8" (at 127 96.52 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008UWC" (at 127 106.68 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 127 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/e6aed946d22bf266730bba05a11330f0.pdf?productCode=C2843774" (at 127 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Cool white 6000-6500 K side-view LED, 4.0x1.4x0.8 mm" (at 127 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008UWC" (at 127 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 127 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2843774" (at 127 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "90f5db58-0dac-50d6-b2e3-f792ff8e20ce"))
+		(pin "2" (uuid "e2605705-2038-5bb8-a4a8-e6f4fde36fdd"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D8") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 144.78 101.6 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "81b55660-aaf1-5ab4-837d-869640e4d577")
+		(property "Reference" "D9" (at 144.78 96.52 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008UWC" (at 144.78 106.68 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 144.78 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/e6aed946d22bf266730bba05a11330f0.pdf?productCode=C2843774" (at 144.78 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Cool white 6000-6500 K side-view LED, 4.0x1.4x0.8 mm" (at 144.78 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008UWC" (at 144.78 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 144.78 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2843774" (at 144.78 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "15c4ce66-c114-5899-b092-07c9e3718e0f"))
+		(pin "2" (uuid "c8c4e6b3-de19-5acc-99f8-ca97bfb70417"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D9") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 162.56 101.6 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "feff36c6-dab2-5be8-b333-5667e8f18eb0")
+		(property "Reference" "D10" (at 162.56 96.52 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008UWC" (at 162.56 106.68 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 162.56 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/e6aed946d22bf266730bba05a11330f0.pdf?productCode=C2843774" (at 162.56 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Cool white 6000-6500 K side-view LED, 4.0x1.4x0.8 mm" (at 162.56 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008UWC" (at 162.56 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 162.56 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2843774" (at 162.56 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "11968fe7-70fc-5028-8e6f-0752b550282c"))
+		(pin "2" (uuid "af231c79-d789-546a-a624-5efa28e7a171"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D10") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 180.34 101.6 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "3d6a23ec-9f31-52bd-a403-18cc5d33a75b")
+		(property "Reference" "D11" (at 180.34 96.52 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008UWC" (at 180.34 106.68 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 180.34 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/e6aed946d22bf266730bba05a11330f0.pdf?productCode=C2843774" (at 180.34 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Cool white 6000-6500 K side-view LED, 4.0x1.4x0.8 mm" (at 180.34 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008UWC" (at 180.34 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 180.34 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2843774" (at 180.34 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "4c88372a-50ef-5e3a-9984-f9a9312500b1"))
+		(pin "2" (uuid "1b371ff3-b7a6-57f3-8c44-62a4a4dbbeec"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D11") (unit 1))))
+	)
+	(symbol (lib_id "silkscreen-light-strip:LED_SideView") (at 198.12 101.6 180) (unit 1)
+		(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (uuid "b1dbcab5-e3dc-5fe1-84ab-17e26a110668")
+		(property "Reference" "D12" (at 198.12 96.52 0) (effects (font (size 1.27 1.27))))
+		(property "Value" "XL-4008UWC" (at 198.12 106.68 0) (effects (font (size 1.27 1.27))))
+		(property "Footprint" "silkscreen-light-strip:LED_SideView_XINGLIGHT_XL-4008" (at 198.12 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/e6aed946d22bf266730bba05a11330f0.pdf?productCode=C2843774" (at 198.12 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Description" "Cool white 6000-6500 K side-view LED, 4.0x1.4x0.8 mm" (at 198.12 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "MPN" "XL-4008UWC" (at 198.12 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "Manufacturer" "XINGLIGHT" (at 198.12 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2843774" (at 198.12 101.6 0) (effects (font (size 1.27 1.27)) (hide yes)))
+		(pin "1" (uuid "bf130f84-ea96-5cd7-84dd-b630f6b958f0"))
+		(pin "2" (uuid "2dc1a4a2-d606-544f-b337-4a3230dc12b6"))
+		(instances (project "silkscreen-light-strip" (path "/ad90a496-3b8d-544f-b19b-1531dc20ae92" (reference "D12") (unit 1))))
+	)
+	(sheet_instances (path "/" (page "1")))
+	(embedded_fonts no)
+)

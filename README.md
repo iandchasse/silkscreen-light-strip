@@ -1,0 +1,146 @@
+# Silkscreen light strip
+
+**A DIY warm/cool reading light for the [Silkscreen](https://github.com/iandchasse/silkscreen-pcb) e-reader.** It is a thin flex PCB that plugs into the main board's frontlight connector, `J3`, in place of a panel's bonded frontlight. It runs six warm/cool pairs of side-emitting LEDs along the left edge of the e-paper panel, and the light grazes across the page with no light guide.
+
+**One strip fits two readers:**
+
+- the **4.26″** plain `GDEY0426T82`, where the LED bar lies on the panel's left border;
+- the **3.68″** 528 × 792 panel of the x3 build, where the bar lies beside the glass and the top pair folds back under it.
+
+Each reader has its own light-strip case in [`enclosures/`](enclosures/).
+
+> **Rev A is untested.** The strip passes ERC, DRC and schematic parity with no findings. Two review rounds have been worked through (see [docs/review/](docs/review/) and [docs/DESIGN.md §8](docs/DESIGN.md#8-verification)). No board has been built yet. Before you solder a whole strip, diode-test one loose LED ([docs/ASSEMBLY.md](docs/ASSEMBLY.md#1-check-led-polarity-before-anything-else)).
+
+**Showcase:** an interactive fitting guide folds the strip into either reader step by step, shows where the tape goes, and shows what changes in each case. Its source is in [`docs/showcase/`](docs/showcase/).
+
+| Flat, LED side (turned 90°) |
+|:---:|
+| ![Flat pattern](docs/images/render_front.png) |
+
+| 4.26″: on the border, around the glass edge | 4.26″: behind the board, into J3 |
+|:---:|:---:|
+| ![4.26 corner](docs/images/fold_corner.png) | ![4.26 back](docs/images/fold_back.png) |
+
+| 3.68″: beside the panel | 3.68″: top pair folded back under the bar | 3.68″: spare tail looped on the board's back |
+|:---:|:---:|:---:|
+| ![3.68 overview](docs/images/fold368_overview.png) | ![3.68 hinge](docs/images/fold368_hinge.png) | ![3.68 back](docs/images/fold368_back.png) |
+
+## What it is
+
+- **Where it goes.** The LED bar runs along the panel's left long edge, hidden under the bezel. The strip then sweeps along the bottom border and folds over the bottom glass edge, through the main board's FPC slot, and plugs into `J3` on the back of the board. The fold follows the path of the stock frontlight ribbon.
+  - **On the 4.26″** the bar is taped onto the panel's border, and the tail wraps the glass edge in a U.
+  - **On the 3.68″** the smaller panel leaves the bar beside its glass, on a shelf in the front shell at the panel-front plane. The tail folds over the glass edge straight into the slot.
+- **Light.** There are twelve XINGLIGHT side-view LEDs: six `XL-4008WWC` (3000 K) and six `XL-4008UWC` (6000–6500 K). Each is 4.0 × 1.4 mm and 0.8 mm tall. They sit in six tight warm/cool pairs, 6.6 mm apart within a pair, so both colours light the same patch of page. Each LED's face points across the screen, parallel to its surface.
+- **Two readers, one layout.**
+  - The bottom five pairs are 15.55 mm apart, which is the 3.68″ active height divided by five.
+  - The top pair sits 17.0 mm above them, on its own stiffener piece, with a 3.6 mm bare **hinge** in between.
+  - On the 4.26″ all six pairs light the screen.
+  - On the 3.68″ the top pair would stick out past the case, so it folds back under the bar, tape to tape, and its light is hidden.
+- **Electrically, it is a stock frontlight.**
+  - Each colour is one series string of 6 LEDs, about 17.4 V at 13.3 mA, or about 18.4 V at the driver including the flip-protection diode.
+  - Worst case (−10 °C, top Vf bin) is 21.7 V, under the 22 V design ceiling and the driver's 24.25 V over-voltage limit.
+  - The main board's TPS923610 does everything: constant current, dimming and warm/cool select. Only the firmware's "strip open" threshold changes (see below).
+- **Flip-proof.** J3 contacts both faces of a tail, so a tail inserted face-down would mirror the pins. A BAV70W per string blocks that case. The strip stays dark, the driver latches its over-voltage protection, and no LED is reverse-stressed.
+- **Built to survive handling.**
+  - The bar ends in a full round. Every turn of the outline is a sweeping radius of 1.6–4 mm, and the outer corners span the foot's full 3.5 mm height. Only two places stay small: the contact tab's R0.2 tip corners, which Hirose specifies, and one 1 mm inside corner on the stiffener.
+  - The folding section is 5.5 mm wide and carries four 0.4 mm conductors on one copper layer. It has no vias, pads or stiffener, and a copper tear-stop rail runs along each edge.
+  - The hinge has no vias, pads, stiffener or tape; its tracks run straight across it.
+
+| | |
+|---|---|
+| Flat size | 15.1 × 127.6 mm (bar 2.3 mm wide, foot 3.5 mm, tail 5.5 mm, contact tab 3.5 mm over the last 3.8 mm) |
+| Build | 2-layer flex, 0.11 mm, 25 µm adhesiveless polyimide, black coverlay, ENIG |
+| Stiffeners | PI 0.225 mm in three pieces: the top pair, the bar and foot, and the last 14 mm of the tail (0.30 mm at the contacts). 3M 9077 tape on the two front pieces. |
+| Driver output | About 18.4 V typical; 15.9–21.7 V across LED bins and −10 to 60 °C, including the flip-protection diode |
+| Current | 13.3 mA nominal and 13.9 mA maximum, set by the main board's `R37` = 15 Ω. One string at a time. |
+| Connector | Gold fingers for `J3`, Hirose FH34SRJ-6S-0.5SH(50). Pins: 1 LED_SW, 2 C−, 3/4 NC, 5 LED_SW, 6 W−. |
+| Parts | 12 LEDs and 2 BAV70W, plus three wire/probe pads on the tail (`S`, `C`, `W`) |
+
+## Bill of materials
+
+| Qty | Ref | Part | Manufacturer | LCSC |
+|---|---|---|---|---|
+| 6 | D1–D6 | XL-4008WWC, warm 3000 K side-view LED | XINGLIGHT | C5440667 |
+| 6 | D7–D12 | XL-4008UWC, cool 6000–6500 K side-view LED | XINGLIGHT | C2843774 |
+| 2 | D13, D14 | BAV70W,115, dual common-cathode diode, SOT-323 | Nexperia | C28064 |
+
+These three LCSC parts are all JLCPCB "Extended" parts. The LEDs are sold only through LCSC. The BAV70W is also a stock DigiKey part.
+
+## The two cases
+
+Both are copies of their original projects, with only the parts the strip needs changed. See each copy's README, section "Light-strip variant", for the numbers, and [docs/DESIGN.md §4](docs/DESIGN.md#4-geometry-and-fold) for the geometry.
+
+| | 4.26″: [`enclosures/silkscreen-enclosure-claude`](enclosures/silkscreen-enclosure-claude) | 3.68″: [`enclosures/silkscreen-enclosure-codex-x3`](enclosures/silkscreen-enclosure-codex-x3) |
+|---|---|---|
+| Panel | Plain GDEY0426T82 instead of the FT01C | The x3's 3.68″ panel |
+| Changed parts | The front shell (tub) only | The front shell and the midplate |
+| Front shell | Stops for the thinner plain panel; a raised ceiling over the left border; hold-down pads between the pairs; a wider ribbon gap | Front raised 1.2 mm (still one flat face); a channel for the bar with the light path to the window; hold-down pads; a neck gap in the chin; wells around the rocker keys |
+| Midplate | Original | Notched through under the folded pair |
+
+## Using it
+
+1. **Order** the flex from JLCPCB. Every file and every order-form setting is in [docs/ORDERING.md](docs/ORDERING.md). A bare order that you solder yourself is the cheap, simple path.
+2. **Assemble, test, fit** by following [docs/ASSEMBLY.md](docs/ASSEMBLY.md), or step through the showcase. It covers the polarity check, a bench test through the three pads, the fold-back (3.68″), the tape, the fold, J3, and the case.
+3. **Print** your reader's light-strip parts from its folder in `enclosures/`.
+4. **Firmware:**
+   - Drive it exactly like the stock frontlight ([silkscreen-pcb HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
+   - Enable `ADIM` (`PWM_LED`, IO42) with a HIGH pulse of at least 100 µs (the datasheet minimum is 40 µs), then dim with PWM at 10–200 kHz.
+   - Change the colour with `COLOR_SEL` (IO40) only while the PWM duty is 0. Keep that pause under about 1 ms, or send the enable pulse again.
+   - Watch `LED_MONIT` (IO2). A lit strip reads 1.4–2.4 V at full duty.
+     - **Open, flipped or missing:** the peak over the first ~1 s after enabling is **2.49 V or more**. The old 2.2 V threshold would call a cold six-LED strip open.
+     - The driver then latches off, and `LED_MONIT` sinks back to the off level over several seconds, so record the fault when you first see it.
+     - **Shorted LEDs or a bridge:** below 1.30 V at full duty, at least 50 ms after enabling.
+     - To restart after a latch, hold `ADIM` low for at least 3 ms.
+
+## What to expect from the light
+
+Light that grazes a page falls off steeply with distance. The geometric model in `tools/optics_sim.py` puts the irradiance 2 mm in from the lit edge at about 230 times the far edge on the 4.26″, and at about 10 times the far edge 20 mm in. The textured front film of an e-paper panel scatters grazing light, which flattens this in practice. The page will still be brighter on the left than the right.
+
+- **On the 4.26″,** six pairs light the edge more evenly than the first layout's five. The ripple along the edge 6 mm in drops from 3.7:1 to 3.1:1.
+- **On the 3.68″,** the LED faces are 2.37 mm from the image instead of 1.2 mm. That softens the bright band at the edge; the ripple 3 mm in drops to 5:1.
+
+| Model, one string lit (4.26″ left, 3.68″ right) | Falloff across the page |
+|:---:|:---:|
+| ![Heatmaps](docs/images/optics_heatmaps.png) | ![Profile](docs/images/optics_profile.png) |
+
+![Lights off, warm string on](docs/images/fold_night_warm.png)
+
+## Repository
+
+| Path | What |
+|---|---|
+| `silkscreen-light-strip.kicad_pro/.kicad_sch/.kicad_pcb` | The KiCad 9 project. It is generated, but you can open and edit it like any other project. |
+| `lib/` | Project footprints, symbols and 3D models: the LED (VRML plus a STEP body), the J3 contact tail, SOT-323 and the wire pad |
+| `production/` | `*_gerbers.zip` for the flex order, plus `jlc_bom.csv`, `jlc_cpl.csv`, `bom.csv` and `gerbers/` |
+| `enclosures/` | The two light-strip cases, each a full copy of its enclosure project (built with that project's own venv; see its README) |
+| `docs/` | Schematic and layout PDFs, `DESIGN.md`, `ASSEMBLY.md`, `ORDERING.md`, renders, `showcase/`, `mechanical/` (flat STEP/VRML), `reports/` (ERC/DRC/as-built summary), `research/`, `review/` |
+| `tools/params.py` | Every dimension and part choice in one file, including both panels, the pair layout and the hinge |
+| `tools/generate.py`, `build_pcb.py` | Write the footprints, symbols, schematic, project and board. The layout is built from the schematic's own netlist. |
+| `tools/make_outputs.py` | ERC, DRC with parity, Gerbers and drill, BOM and CPL, PDFs, STEP, renders. It fails if any check finds anything. |
+| `tools/foldpath.py` | Tail length each reader needs, over a tolerance sweep |
+| `tools/optics_sim.py` | Grazing-light irradiance model for both panels |
+| `tools/blender_fold.py`, `export_geometry.py` | Fold the real outline into either reader in Blender for the renders above |
+| `tools/export_case_glb.py` | Packs a case's parts for the showcase |
+
+### Regenerating
+
+Close the project in KiCad first; the generator refuses to run while KiCad holds a lock file. Then run:
+
+```bash
+"C:\Program Files\KiCad\9.0\bin\python.exe" tools\generate.py
+```
+
+```bash
+"C:\Program Files\KiCad\9.0\bin\python.exe" tools\make_outputs.py
+```
+
+Set `KICAD9_DIR` and `KICAD_CLI` if KiCad is installed somewhere else.
+
+- **Fold renders:** run `tools/export_geometry.py`, then `blender -b -P tools/blender_fold.py -- 64 426` and `-- 64 368`.
+- **After a geometry change:** copy `build/geometry.json` into each case's `hardware/reference/light-strip/strip-geometry.json` and rebuild that case.
+
+The layout is generated, so GUI edits to the `.kicad_pcb` are overwritten the next time `generate.py` runs. Make changes in `tools/params.py` or `tools/build_pcb.py`, or stop using the generator and edit the board by hand from then on.
+
+## License
+
+CERN-OHL-S-2.0, © 2026 idc LLC. See [LICENSE](LICENSE) and [NOTICE](NOTICE). The enclosure projects copied into `enclosures/` have no licence file of their own.
