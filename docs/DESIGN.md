@@ -180,7 +180,7 @@ The layout is chosen so one strip serves both panels:
 - **Springs.** The midplate springs deflect 0.276 mm (0.176–0.376 over the panel's ± 0.1 mm), 6.5 N in all against 8.2 N with the FT01C.
 - **Ceiling.** The stack is tape 0.05 + PI 0.225 + flex 0.11 + LED 0.8, so the LED tops are at 5.185. The skin's underside over the left border rises to **5.40** (0.215 mm clearance) up to the window edge, so the light passes under it. That leaves 0.6 mm of skin, so print the tub dark or line the ceiling.
 - **Window edge.** The left window edge has a 0.2 mm bevel instead of 0.6, so there is no knife edge in front of the LEDs.
-- **Hold-down pads.** They bear on the bar's bare flex between the pairs, bottoms at 4.40 (0.015 mm clear). They are sized from the LEDs' **solder pads**, at least 0.6 mm clear nominally and 0.10 mm at the worst placement.
+- **Hold-down pads.** They bear on the bar's bare flex between the pairs, bottoms at 4.40 (0.015 mm clear). They are sized from the LEDs' **solder pads**, at least 0.6 mm clear nominally and 0.10 mm at the worst placement. They reach X 0.90, just inside the edge of the panel's e-ink film with the glass centred, so they press where it backs the protective sheet (§4.5). Because their gap is only 0.015 mm and the stiffener is held to ±0.1, the delivered strip's thickness is measured before fitting and the pads shimmed or scraped to match (ASSEMBLY §5).
 - **Wall relief.** A 0.3 mm relief in the pocket's left wall, with a 43° roof, keeps the bar from ever being the panel's left stop.
 - **Insertion.** The stack goes in with the glass kept toward the right wall. With the bar 0.1 mm inside the glass edge it then clears the left wall by at least 0.275 mm over the whole stroke.
 
@@ -202,8 +202,8 @@ The layout is chosen so one strip serves both panels:
 - **Six stop ribs** (0.18 mm) on the channel's wall set the bar's left edge at X −1.24. They sit between the lid's latch arms; the two on the fold zone also stop the folded piece.
 - **Seat.** The bar's tape side rests on a strip of the old frame at the panel-front plane, over Y 14.5–73.4. It starts at 14.5 so a bar sliding in with a thick stack and a 0.9 mm LED clears its edge; the G-code puts its first line at Y 14.72.
 - **The foot is the panel's stop** at the bottom-left corner. The lip there is gone, and the foot pocket's roof (Z 3.87) sits 0.015 over the foot. The midplate spring under that corner deflects 0.04–0.33 mm (0.2–1.8 N).
-- **Corner stops** at the panel's two left corners locate its left edge, now that no wall is beside it.
-- The left lip is gone (it was in the light path), so five small hold-down pads between the pairs hold the panel's left border. They shade about 4.7 % of the light, all of it steep rays.
+- **Corner stops** at the panel's two left corners locate its left edge, now that no wall is beside it. They face the glass edge's full thickness (Z 2.47–3.27) at every panel tolerance, with through-notches in the midplate under them.
+- The left lip is gone (it was in the light path), so small hold-down pads between the pairs hold the panel's left border. Pads 1–4 each hang from a 2 mm rib under the channel ceiling, which keeps the border within about 0.03 mm of the other three. Pads and ribs shade about 4.8 % of the light, all of it steep rays.
 - **Rocker keys.** Each opening's chamfer continues up to the new face as a well, and the caps are 0.155 mm taller, so each key's highest point is flush with the face. Ian chose flush and thin over proud caps, so the case stays 12.505 mm deep with the keys. x3's rule (a cap never sinks below the surface round it at full travel) holds against the well's floor. Nothing else about the keys changes.
 
 **The fold-back.** The top piece folds 180° backward at the hinge and lies under the bar, its LEDs facing the back. The front shell's frame is removed there (Y 73.4–92.7), and the **midplate is notched through** under it, on into SW7's two front lead holes so no web narrower than a printed line is left. Nothing else in the midplate changes except one detent, moved from Y 86 to 58, clear of the fold.
@@ -222,6 +222,20 @@ The layout is chosen so one strip serves both panels:
 | 3.68″ (90° fold) | 19.8–21.3 mm (20.5 nominal) | 25.4 mm (the glass edge is 1.77 mm higher) | 4.1–5.6 mm, into the chin loop and the back loop |
 
 On the 4.26″ the bends end by flat y 150.5, and on the 3.68″ by about 146 plus its loops. The back stiffener starts at 152.6, so it never sits in a bend.
+
+### 4.5 How the panel is held
+
+A review compared each light-strip case with its original, measuring the models and modelling the glass as a plate on its springs and stops (2026-09-25/26). An independent check confirmed each figure. Neither case lets the panel rattle: every border has a front stop and the springs keep it clamped at every tolerance.
+
+| | 4.26″ | 3.68″ |
+|---|---|---|
+| Spring preload | 6.5 N (8.2 N on the FT01C); lift-off 34 g against 27 g, since the plain panel is half the mass | 7.5 N, unchanged (3.7–11.2 N over tolerance) |
+| Front stops | Rails on the right, top and bottom (the original lip was a closed frame); the left border only through the strip, under 7 pads | The original lip on three sides; the left border on 4 ribbed pads; the bottom-left corner on the strip's foot |
+| Left border against the rest | Within ±0.1 mm, set by the strip's thickness, hence the fitting check | About 0.03 mm proud (0.07 in a 200 g knock); it was 0.07–0.10 before the ribs |
+| In-plane location | The original pocket, 0.35–0.55 mm play | 0.28 mm play; two full-depth corner stops on the left |
+| Glass bending | About twice the original's, 8–14 MPa | 30–50 % higher at one spot, about 12 MPa; the same as the original in a drop |
+
+The original 4.26″ tub cannot hold the plain panel at all: it would sit 0.7 mm loose with no preload. On the first print, look for marks on the protective sheet under the pads and rails, and check the left border's height against the other three.
 
 ## 5. Robustness
 

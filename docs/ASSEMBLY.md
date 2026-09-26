@@ -76,12 +76,13 @@ Both case READMEs have a "Light-strip variant" section with the measured numbers
 2. **Kapton on the slot edges.** Put Kapton on both edges of the board's FPC slot where the neck passes (the left end of the slot).
 3. **Prepare the panel.** Peel its thin shipping film (0.065 mm) at least where the case's stops and the strip land, and its pull tape. Clean the left and bottom borders with isopropyl alcohol, not the active area. Leave the panel's own protective sheet on.
 4. **Lay the strip.**
-   1. Peel the liners off the two taped pieces: the short top-pair piece and the long bar + foot.
-   2. Lay the bar with its straight outer edge **0.1 mm inside the panel's left glass edge** (0 to 0.2 mm). It must never overhang the glass, or it scrapes the case wall when the stack goes in. Much further in, the neck moves onto the panel's own FPC.
-   3. The rounded top sits about 1.3 mm below the top glass edge. The foot lies along the bottom border on the flat protective sheet.
-   4. The hinge between the top two pairs lies flat and untaped on this reader.
-   5. Tack one end, check the alignment along the whole length, then press the rest down with a soft tool. **Press on the flex between the LEDs, not on the LEDs.**
-   6. Check that every window faces the screen and sits just outside the image area (about 1.2 mm outside it).
+   1. **Measure it first.** With a micrometer, measure the bar (flex + stiffener + tape) at 2–3 points between LED pairs, with the liner on, and subtract the liner. It should be **0.37–0.40 mm**: the case's hold-down pads sit only 0.015 mm over a nominal strip, and JLC holds the stiffener to ±0.1. If it is thinner, stick 0.05 mm Kapton on each hold-down pad face in the tub (two layers below 0.32). If it is more than 0.03 mm thicker, scrape the pad faces back.
+   2. Peel the liners off the two taped pieces: the short top-pair piece and the long bar + foot.
+   3. Lay the bar with its straight outer edge **0.1 mm inside the panel's left glass edge** (0 to 0.2 mm). It must never overhang the glass, or it scrapes the case wall when the stack goes in. Much further in, the neck moves onto the panel's own FPC.
+   4. The rounded top sits about 1.3 mm below the top glass edge. The foot lies along the bottom border on the flat protective sheet.
+   5. The hinge between the top two pairs lies flat and untaped on this reader.
+   6. Tack one end, check the alignment along the whole length, then press the rest down with a soft tool. **Press on the flex between the LEDs, not on the LEDs.**
+   7. Check that every window faces the screen and sits just outside the image area (about 1.2 mm outside it).
 5. **Wrap the U.** Wrap the neck 180° around the bottom glass edge, inside radius about 0.7–0.9 mm (a 1.5–1.8 mm drill shank is a good former). **Never crease it**: the glass edge is bare and sharp.
    - Keep the wrap square to the glass edge. The neck's right edge is only 0.2–0.8 mm from the panel's own FPC; the U must not ride onto, press on or pull that FPC's bond or bend area.
    - The spare 0.5–2.2 mm of tail stays in the U; don't let the loop balloon toward the board.
