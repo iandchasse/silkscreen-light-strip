@@ -7,7 +7,7 @@
 - the **4.26″** plain `GDEY0426T82`, where the LED bar lies on the panel's left border;
 - the **3.68″** 528 × 792 panel of the x3 build, where the bar lies beside the glass and the top pair folds back under it.
 
-Each reader has its own light-strip case in [`enclosures/`](enclosures/).
+Both readers' cases live in [`enclosures/`](enclosures/), each as one project that builds a standard case and a light-strip case. The two share every printed part except the tub, so the light strip costs one extra print.
 
 > **Rev A is untested.** The strip passes ERC, DRC and schematic parity with no findings. Two review rounds have been worked through (see [docs/review/](docs/review/) and [docs/DESIGN.md §8](docs/DESIGN.md#8-verification)). No board has been built yet. Before you solder a whole strip, diode-test one loose LED ([docs/ASSEMBLY.md](docs/ASSEMBLY.md#1-check-led-polarity-before-anything-else)).
 
@@ -68,21 +68,20 @@ These three LCSC parts are all JLCPCB "Extended" parts. The LEDs are sold only t
 
 ## The two cases
 
-Both are copies of their original projects, with only the parts the strip needs changed. See each copy's README, section "Light-strip variant", for the numbers, and [docs/DESIGN.md §4](docs/DESIGN.md#4-geometry-and-fold) for the geometry.
+This repo is the main home of both case projects (since 2026-09-26; the git tag `originals-2026-09-25` marks them as first copied in). Each builds two ways from one code base: `src/build.py` makes the **standard** build and the **light-strip** build, checks each, and fails if any part other than the tub differs between them. The files to print are in each project's `print/`: the shared parts once, plus `tub-standard` and `tub-light-strip`. See each README's top section and its "Light-strip variant" section for the numbers, and [docs/DESIGN.md §4](docs/DESIGN.md#4-geometry-and-fold) for the geometry. [`enclosures/BUTTONS.md`](enclosures/BUTTONS.md) is the research on replacing the bottom keys.
 
 | | 4.26″: [`enclosures/silkscreen-enclosure-claude`](enclosures/silkscreen-enclosure-claude) | 3.68″: [`enclosures/silkscreen-enclosure-codex-x3`](enclosures/silkscreen-enclosure-codex-x3) |
 |---|---|---|
 | Panel | Plain GDEY0426T82 instead of the FT01C | The x3's 3.68″ panel |
-| Changed parts | The front shell (tub) only | The front shell, the midplate, the four rocker keys' cap height, and one lid latch arm |
+| Differs from the standard build | The tub only | The tub only |
 | Front shell | Stops for the thinner plain panel; a raised ceiling over the left border; hold-down pads between the pairs; a wider ribbon gap | Front raised 1.2 mm (still one flat face); a channel for the bar with the light path to the window; hold-down pads; a neck gap in the chin; wells around the rocker keys |
-| Midplate | Original | Notched through under the folded pair |
-| Keys and lid | Original | Rocker caps 0.155 mm taller, flush with the raised face; a 0.5 mm chamfer on the lid's latch arm under the folded pair |
+| Shared parts | Rev K's lid, midplate and keys, unchanged | x3's, with the strip's needs built in for both builds: the midplate notched under the folded pair and the corner stops (one detent moved), a 0.5 mm chamfer on one lid latch arm, and rocker caps 0.155 mm taller (interim, until the bottom keys are redesigned) |
 
 ## Using it
 
 1. **Order** the flex from JLCPCB. Every file and every order-form setting is in [docs/ORDERING.md](docs/ORDERING.md). A bare order that you solder yourself is the cheap, simple path.
 2. **Assemble, test, fit** by following [docs/ASSEMBLY.md](docs/ASSEMBLY.md), or step through the showcase. It covers the polarity check, a bench test through the three pads, the fold-back (3.68″), the tape, the fold, J3, and the case.
-3. **Print** your reader's light-strip parts from its folder in `enclosures/`.
+3. **Print** your reader's case from its project's `print/` folder in `enclosures/`, with `tub-light-strip` as the tub.
 4. **Firmware:**
    - Drive it exactly like the stock frontlight ([silkscreen-pcb HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
    - Enable `ADIM` (`PWM_LED`, IO42) with a HIGH pulse of at least 100 µs (the datasheet minimum is 40 µs), then dim with PWM at 10–200 kHz.
@@ -114,7 +113,7 @@ Light that grazes a page falls off steeply with distance. The geometric model in
 | `lib/` | Project footprints, symbols and 3D models: the LED (VRML plus a STEP body), the J3 contact tail, SOT-323 and the wire pad |
 | `production/` | `*_gerbers.zip` for the flex order, plus `jlc_bom.csv`, `jlc_cpl.csv`, `bom.csv` and `gerbers/` |
 | `fabrication-toolkit-options.json` | Settings for the Fabrication Toolkit plugin, if you make the order files with it instead ([ORDERING.md](docs/ORDERING.md#with-the-fabrication-toolkit-plugin)) |
-| `enclosures/` | The two light-strip cases, each a full copy of its enclosure project (built with that project's own venv; see its README) |
+| `enclosures/` | Both case projects, each building a standard and a light-strip case (see its README); `BUTTONS.md`, the bottom-key research |
 | `docs/` | Schematic and layout PDFs, `DESIGN.md`, `ASSEMBLY.md`, `ORDERING.md`, renders, `showcase/`, `mechanical/` (flat STEP/VRML), `reports/` (ERC/DRC/as-built summary), `research/`, `review/` |
 | `tools/params.py` | Every dimension and part choice in one file, including both panels, the pair layout and the hinge |
 | `tools/generate.py`, `build_pcb.py` | Write the footprints, symbols, schematic, project and board. The layout is built from the schematic's own netlist. |
@@ -145,4 +144,4 @@ The layout is generated, so GUI edits to the `.kicad_pcb` are overwritten the ne
 
 ## License
 
-CERN-OHL-S-2.0, © 2026 idc LLC. See [LICENSE](LICENSE) and [NOTICE](NOTICE). The enclosure projects copied into `enclosures/` have no licence file of their own.
+CERN-OHL-S-2.0, © 2026 idc LLC. See [LICENSE](LICENSE) and [NOTICE](NOTICE). The enclosure projects in `enclosures/` have no licence file of their own.

@@ -63,7 +63,7 @@ Test before the strip goes anywhere near a panel. Three pads on the tail each ha
 | | 4.26″ | 3.68″ |
 |---|---|---|
 | Panel | Plain **GDEY0426T82** (no touch, no frontlight). The FT01C does not fit the light-strip case. | The x3's 3.68″ 528 × 792 panel |
-| Case | `enclosures/silkscreen-enclosure-claude`: print its **light-strip tub**; everything else is Rev K's | `enclosures/silkscreen-enclosure-codex-x3`: print its **light-strip tub, midplate, four rocker keys and lid**; everything else is x3's |
+| Case | `enclosures/silkscreen-enclosure-claude/print/`: the shared parts plus **`tub-light-strip`** | `enclosures/silkscreen-enclosure-codex-x3/print/`: the shared parts plus **`tub-light-strip`** |
 | Where the strip goes | **On** the panel's left border | **Beside** the panel, in a channel in the tub; the top pair folds back under the bar |
 | Order | Strip onto the panel, then the whole stack into the tub | Strip into the tub first, then the panel |
 | Read | [§5](#5-426-strip-on-the-panel) | [§6](#6-368-fold-back-and-fit-beside-the-panel) |
@@ -132,7 +132,7 @@ A tail inserted upside down is harmless: the strip stays dark and the driver lat
   - The springs push the plain panel a little less than the FT01C: 6.5 N in all at nominal, against 8.2 N.
   - The left window edge has a 0.2 mm bevel instead of 0.6, so it looks slightly different from the other three.
 - **3.68″ (silkscreen-enclosure-codex-x3):**
-  - Print the light-strip tub, midplate, rocker keys and lid. The case is 12.5 mm deep (x3: 11.3), keys included.
+  - Print the parts in `print/` with `tub-light-strip`. The case is 12.5 mm deep (the standard build: 11.3), keys included.
   - The **rocker keys** sit in wells, their highest point flush with the face. They press like x3's; you find them by the wells.
   - On the first print, check that the seat's underside is flat and that the light looks even past the hold-down pads.
 - **Both:** look straight on with the case closed. No flex or LED should be visible. At steep side angles a dark sliver of the black coverlay may show.

@@ -26,3 +26,5 @@ enclosures/*/.claude/
 enclosures/*/hardware/compare/
 enclosures/*/hardware/reference/retrocase/
 enclosures/*/hardware/reference/vendor/
+# OrcaSlicer rewrites its log in each case project on every slice
+enclosures/*/00000.log
