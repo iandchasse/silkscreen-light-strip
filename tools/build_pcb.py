@@ -321,7 +321,10 @@ class Builder:
         fp.SetPath(pcbnew.KIID_PATH("/" + uid("sym", ref)))
         fp.SetSheetname("/")
         fp.SetSheetfile(G.NAME + ".kicad_sch")
-        for k in ("MPN", "Manufacturer", "LCSC", "Datasheet", "Description"):
+        # the coverlay opening is pinned on each footprint: a plotter that changes the board-wide mask margin
+        # (the Fabrication Toolkit sets 0.05) must not change the openings measured in docs/review/dfm.md
+        fp.SetLocalSolderMaskMargin(MM(P.RULES["mask_expansion"]))
+        for k in ("MPN", "Manufacturer", "LCSC", "FT Rotation Offset", "Datasheet", "Description"):
             v = comp["fields"].get(k)
             if v:
                 fp.SetField(k, v)

@@ -11,6 +11,8 @@ build/
 tools/__pycache__/
 __pycache__/
 *.pyc
+# Fabrication Toolkit plugin backups (its order files in production/ are fine to commit)
+production/backups/
 # MCP server reports written next to the board
 *_drc_violations.json
 # enclosure copies: build outputs, caches and the originals' old print packages stay on disk, not in git

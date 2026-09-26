@@ -510,7 +510,8 @@ def build_schematic(syms):
                  fields={"Value": P.DIODE["value"], "Footprint": f"{LIBNAME}:{FP_SOT}",
                          "Datasheet": P.DIODE["datasheet"],
                          "Description": f"{colour.capitalize()} string: series block + reverse clamp (flip protection)",
-                         "MPN": P.DIODE["mpn"], "Manufacturer": P.DIODE["manufacturer"], "LCSC": P.DIODE["lcsc"]},
+                         "MPN": P.DIODE["mpn"], "Manufacturer": P.DIODE["manufacturer"], "LCSC": P.DIODE["lcsc"],
+                         "FT Rotation Offset": f'{P.DIODE["jlc_rot"]:g}'},
                  pins=["1", "2", "3"], ref_at=(dx + 2.54, y_diode - 5.08), val_at=(dx + 2.54, y_diode - 2.54),
                  justify="left")
         p1, p2, p3 = (dx - 7.62, y_diode), (dx + 7.62, y_diode), (dx, y_diode + 5.08)
@@ -528,7 +529,8 @@ def build_schematic(syms):
             s.symbol("LED_SideView", led["ref"], (x, y_row), 180,
                      fields={"Value": spec["mpn"], "Footprint": f"{LIBNAME}:{FP_LED}", "Datasheet": spec["datasheet"],
                              "Description": f"{colour.capitalize()} white {spec['cct']} side-view LED, 4.0x1.4x0.8 mm",
-                             "MPN": spec["mpn"], "Manufacturer": P.LED["manufacturer"], "LCSC": spec["lcsc"]},
+                             "MPN": spec["mpn"], "Manufacturer": P.LED["manufacturer"], "LCSC": spec["lcsc"],
+                             "FT Rotation Offset": f'{P.LED["jlc_rot"]:g}'},
                      pins=["1", "2"], ref_at=(x, y_row - 5.08), val_at=(x, y_row + 5.08))
             kx = x + 3.81
             if i < len(leds) - 1:

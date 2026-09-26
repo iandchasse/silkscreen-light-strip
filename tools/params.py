@@ -82,6 +82,9 @@ LED = {
     "cool": {"mpn": "XL-4008UWC", "lcsc": "C2843774", "cct": "6000-6500 K",
              "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/e6aed946d22bf266730bba05a11330f0.pdf?productCode=C2843774"},
     "manufacturer": "XINGLIGHT",
+    # JLC CPL rotation offset: the EasyEDA footprints of C5440667/C2843774 match ours at 0 deg (docs/review/dfm.md).
+    # Written into each LED's "FT Rotation Offset" field, which the Fabrication Toolkit plugin reads.
+    "jlc_rot": 0.0,
     "per_string": 6,       # 6 x XL-4008 + BAV70W: 21.7 V worst case (-10 C, top bin) vs the 22 V ceiling
     # XINGLIGHT 4008 ("335") side view: 4.0 long, 1.4 deep, 0.8 tall; pads 1.6 x 1.1, centres +/-1.85;
     # emitting face 1.0 mm ahead of the pad centreline, body rear 0.4 mm behind it.
@@ -138,6 +141,8 @@ TAIL = {
     "bend_zone": (140.7, 152.3),   # no vias, pads, or stiffener: the 3.68in fold is at 141.2, the 4.26in bends end by 150.5
 }
 
-DIODE = {"mpn": "BAV70W,115", "manufacturer": "Nexperia", "lcsc": "C28064",
+# jlc_rot: EasyEDA C28064 at 0 deg == KiCad SOT-323 at 180 deg (docs/review/dfm.md), so JLC's CPL needs +180.
+# make_outputs.py applies it, and it goes into the "FT Rotation Offset" field for the Fabrication Toolkit.
+DIODE = {"mpn": "BAV70W,115", "manufacturer": "Nexperia", "lcsc": "C28064", "jlc_rot": 180.0,
          "datasheet": "https://assets.nexperia.com/documents/data-sheet/BAV70_SER.pdf",
          "value": "BAV70W"}

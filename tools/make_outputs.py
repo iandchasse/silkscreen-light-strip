@@ -129,10 +129,11 @@ def cpl():
          "-o", raw, PCB])
     rows = list(csv.DictReader(open(raw, encoding="utf-8")))
     # JLC's library footprints are not always at KiCad's 0 deg.  Offsets checked against the EasyEDA
-    # footprints of the ordered LCSC parts (docs/review/dfm.md):
+    # footprints of the ordered LCSC parts (docs/review/dfm.md), kept in params (jlc_rot), the same values
+    # the footprints carry in "FT Rotation Offset" for the Fabrication Toolkit:
     #   BAV70W C28064: EasyEDA 0 deg == KiCad SOT-323 at 180 deg -> add 180
     #   XL-4008 C5440667/C2843774: lens toward -y, anode at -x at 0 deg, same as ours -> add 0
-    offset = {"SOT-323_SC-70": 180.0, "LED_SideView_XINGLIGHT_XL-4008": 0.0}
+    offset = {"SOT-323_SC-70": P.DIODE["jlc_rot"], "LED_SideView_XINGLIGHT_XL-4008": P.LED["jlc_rot"]}
     with open(os.path.join(PROD, "jlc_cpl.csv"), "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation"])

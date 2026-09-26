@@ -113,6 +113,7 @@ Light that grazes a page falls off steeply with distance. The geometric model in
 | `silkscreen-light-strip.kicad_pro/.kicad_sch/.kicad_pcb` | The KiCad 9 project. It is generated, but you can open and edit it like any other project. |
 | `lib/` | Project footprints, symbols and 3D models: the LED (VRML plus a STEP body), the J3 contact tail, SOT-323 and the wire pad |
 | `production/` | `*_gerbers.zip` for the flex order, plus `jlc_bom.csv`, `jlc_cpl.csv`, `bom.csv` and `gerbers/` |
+| `fabrication-toolkit-options.json` | Settings for the Fabrication Toolkit plugin, if you make the order files with it instead ([ORDERING.md](docs/ORDERING.md#with-the-fabrication-toolkit-plugin)) |
 | `enclosures/` | The two light-strip cases, each a full copy of its enclosure project (built with that project's own venv; see its README) |
 | `docs/` | Schematic and layout PDFs, `DESIGN.md`, `ASSEMBLY.md`, `ORDERING.md`, renders, `showcase/`, `mechanical/` (flat STEP/VRML), `reports/` (ERC/DRC/as-built summary), `research/`, `review/` |
 | `tools/params.py` | Every dimension and part choice in one file, including both panels, the pair layout and the hinge |

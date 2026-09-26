@@ -14,6 +14,18 @@ One strip design fits both readers: the 4.26in panel in `enclosures/silkscreen-e
 
 JLC does not read the stiffener or tape layers automatically. You have to choose them on the form and name the files in the remark, as below.
 
+### With the Fabrication Toolkit plugin
+
+You can also make the order files with the Fabrication Toolkit plugin in KiCad's PCB editor instead of `make_outputs.py`:
+
+- **BOM.** Every placed part has an `LCSC` field, which the toolkit puts in its BOM. J1 (the contact tail) and TP1–TP3 are left out of the BOM and placement.
+- **Placement.** D13 and D14 carry `FT Rotation Offset` = 180 (the LEDs 0), so the toolkit's placement file matches `jlc_cpl.csv`.
+- **Layers.** `fabrication-toolkit-options.json`, next to the board, preselects the extra layers `User.1,User.2` (stiffener and adhesive). The bend-zone layer (User.3) stays out. It also names the outputs `silkscreen-light-strip_rev-A_fab-toolkit…` (the revision comes from the title block), so they don't overwrite `production/bom.csv`.
+- **Leave two boxes unticked:** "Set User.1 as V-Cut layer" and "Set User.2 as alternative Edge-Cut layer". On this board those layers are the stiffener and the tape.
+- **Coverlay.** Each footprint pins its coverlay opening at 0.1 mm, so no plugin setting can change it.
+
+Checked with toolkit 5.2.0 on KiCad 9.0.6: every layer both tools make, and the drill, are geometrically identical to `make_outputs.py`'s. The toolkit adds an empty B.Paste file and drill maps.
+
 ## Order form (Flex PCB)
 
 | Field | Setting |
@@ -63,7 +75,7 @@ After upload, check the online Gerber viewer:
 
 - **Assembly service.** Flex assembly needs a fixture ($23.57) and a panel with rails and fiducials. The files don't include one, so choose **"Panel by JLCPCB"**. Use Standard PCBA.
 - **Parts.** All three parts are JLC **Extended** parts, so expect a feeder fee of about $3 each.
-- **Files.** Upload `jlc_bom.csv` and `jlc_cpl.csv`. The CPL already carries the rotation corrections for JLC's library footprints (SOT-323 +180°, LED 0°).
+- **Files.** Upload `jlc_bom.csv` and `jlc_cpl.csv` (or the Fabrication Toolkit's BOM and positions files). The CPL already carries the rotation corrections for JLC's library footprints (SOT-323 +180°, LED 0°).
 - **Check every part in the placement preview:**
   - **LEDs:** the window faces the bar's **inner** edge, toward the screen side. The anode goes on the upper pad, toward the rounded top end. The cathode goes on the pad with the short white silk bar.
     - JLC's polarity dot sits at opposite ends for the two parts: on the anode (upper) pad for the warm C5440667, and on the cathode (lower) pad for the cool C2843774.
