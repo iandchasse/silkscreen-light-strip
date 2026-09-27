@@ -11,7 +11,7 @@ Both readers' cases live in [`enclosures/`](enclosures/), each as one project th
 
 > **Rev A is untested.** The strip passes ERC, DRC and schematic parity with no findings. Two review rounds have been worked through (see [docs/review/](docs/review/) and [docs/DESIGN.md §8](docs/DESIGN.md#8-verification)). No board has been built yet. Before you solder a whole strip, diode-test one loose LED ([docs/ASSEMBLY.md](docs/ASSEMBLY.md#1-check-led-polarity-before-anything-else)).
 
-**Showcase:** an interactive fitting guide folds the strip into either reader step by step, shows where the tape goes, and shows what changes in each case. Its source is in [`docs/showcase/`](docs/showcase/).
+**Showcase:** an interactive page for both cases. Switch between 4.26″ and 3.68″ and between the standard and light-strip builds. It covers the bell-crank bottom keys in motion, how each part fits (toggle any part in 3D), the light strip's fold and tape, assembly, the checks, and the print files. Its source is in [`showcase/`](showcase/) (see [`showcase/API.md`](showcase/API.md)). `python -B showcase/gen/bundle.py --strict-page` rebuilds it into [`docs/showcase/`](docs/showcase/); the generated data files there are not in git.
 
 | Flat, LED side (turned 90°) |
 |:---:|
@@ -122,6 +122,7 @@ Light that grazes a page falls off steeply with distance. The geometric model in
 | `tools/optics_sim.py` | Grazing-light irradiance model for both panels |
 | `tools/blender_fold.py`, `export_geometry.py` | Fold the real outline into either reader in Blender for the renders above |
 | `tools/export_case_glb.py` | Packs a case's parts for the showcase |
+| `showcase/` | The showcase's source: per-size adapters, the data contract, the bundler, and the page shell and cards |
 
 ### Regenerating
 
