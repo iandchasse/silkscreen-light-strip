@@ -4,10 +4,10 @@ The tail leaves the panel front, goes over the bottom glass edge, through the ma
 (KiCad y 141.2..142.5) and along the board's back into J3.  Lengths are on the flex mid-plane.
 Frames: KiCad y (down the board), Z = 0 at the board's rear face, +Z toward the viewer.
 
-  4.26in (silkscreen-enclosure-claude, light-strip tub): plain GDEY0426T82 held with its rear on the
+  4.26in (enclosures/case-426, light-strip tub): plain GDEY0426T82 held with its rear on the
       midplate at Z 3.0; the glass edge (y 142.965) overhangs the slot, so the tail wraps a U around it,
       runs back under the glass and drops through the slot.
-  3.68in (silkscreen-enclosure-codex-x3, light-strip tub): the glass edge (y 141.2) is the slot's top
+  3.68in (enclosures/case-368, light-strip tub): the glass edge (y 141.2) is the slot's top
       edge, so the tail folds 90 deg over it straight down through the slot.
 
 Run with any Python 3:  python tools/foldpath.py

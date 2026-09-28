@@ -27,7 +27,7 @@ The strip replaces a bonded frontlight, so the main board decides almost everyth
 | J3 nets | 1 LED_SW, 2 C−, 3 NC, 4 NC, 5 LED_SW, 6 W−. The fitting nails are GND, but the FPC never touches them. **The tail has no ground.** | main-board PCB |
 | Design target | Good Display's -FL01C frontlight: 5 dies per string, 15 V typ, IF ≤ 15 mA | FL01C spec |
 
-**The 3.68″ build uses a trimmed board** (cut at KiCad y 62, see the x3 case's `hardware/reference/board-trim-codex-x3.md`).
+**The 3.68″ build uses a trimmed board** (cut at KiCad y 62, see the x3 case's `hardware/reference/board-trim.md`).
 
 - Every frontlight part survives the trim: U10, L2, C9, R37, Q5/Q6, U12, R39/R41, R49/R50 and J3. The FPC slot is unchanged.
 - **The trim removes D3 and D8.** On that build nothing clamps the strip's nets, so handle the strip ESD-safe and plug it in with the board unpowered.
@@ -170,7 +170,7 @@ The layout is chosen so one strip serves both panels:
 - **The foot's top edge (y 135.5)** is 0.38 mm outside the 3.68″ window (135.12) and 1.75 mm outside the 4.26″ one. Its bottom edge (139.0) sits on or just over the flat protective sheet of either panel.
 - **The contact face.** Every fold is about an x-parallel axis, so x is preserved: finger 1 at x 52.987 lands on J3 pad 1. After the folds the F side faces away from the board on the back run, where J3's top contact touches it.
 
-### 4.2 On the 4.26″ (silkscreen-enclosure-claude, light-strip front shell)
+### 4.2 On the 4.26″ (`enclosures/case-426`, light-strip front shell)
 
 **Placement.** The bar lies **on** the plain GDEY0426T82's left border ("above the screen"). Its outer edge is laid **0.1 mm inside** the glass edge (0 to 0.2 mm), never over it. The foot lies along the bottom border.
 
@@ -191,7 +191,7 @@ The layout is chosen so one strip serves both panels:
 - **SW9's left lug lead** stands to Z 2.31, 0.10 mm (0.26 mm as placed) beside the U's lower leg. At the far-left extreme they overlap, so trim it flush and cover it with Kapton (ASSEMBLY §5 step 1).
 - **The EPD FPC.** The neck's right edge is about 0.35 mm from the panel's own FPC at the 0.1 mm-inside placement. The U must not ride onto it.
 
-### 4.3 On the 3.68″ (silkscreen-enclosure-codex-x3: light-strip front shell, midplate, rocker caps, one lid latch arm)
+### 4.3 On the 3.68″ (`enclosures/case-368`: light-strip front shell, midplate, its own bottom keys, one lid latch arm)
 
 **Placement.** The 3.68″ glass starts at x 45.367, just right of the bar (x 43.00–45.30), so the bar lies **beside** the panel ("next to the screen"), 0.07 mm from the glass. It rests on a shelf in the front shell at the panel-front plane (Z 3.47), so the LEDs still sit above the page and graze it. The foot lies on the 3.68″ panel's bottom border.
 
@@ -204,7 +204,7 @@ The layout is chosen so one strip serves both panels:
 - **The foot is the panel's stop** at the bottom-left corner. The lip there is gone, and the foot pocket's roof (Z 3.87) sits 0.015 over the foot. The midplate spring under that corner deflects 0.04–0.33 mm (0.2–1.8 N).
 - **Corner stops** at the panel's two left corners locate its left edge, now that no wall is beside it. They face the glass edge's full thickness (Z 2.47–3.27) at every panel tolerance, with through-notches in the midplate under them.
 - The left lip is gone (it was in the light path), so small hold-down pads between the pairs hold the panel's left border. Pads 1–4 each hang from a 2 mm rib under the channel ceiling, which keeps the border within about 0.03 mm of the other three. Pads and ribs shade about 4.8 % of the light, all of it steep rays.
-- **Rocker keys.** Each opening's chamfer continues up to the new face as a well, and the caps are 0.155 mm taller, so each key's highest point is flush with the face. Ian chose flush and thin over proud caps, so the case stays 12.505 mm deep with the keys. x3's rule (a cap never sinks below the surface round it at full travel) holds against the well's floor. Nothing else about the keys changes.
+- **Bottom keys.** Since Rev L (2026-09-26) the keys are straight sliding keys on bell cranks (the case README's "Bottom keys"). Each stands 1.5 mm over its own tub's face, so the light-strip build has its own four keys (`key-x3ls`), 1.2 mm taller than the standard build's; the cranks, the rod and the gate are shared. (Until then the rocker caps were 0.155 mm taller and flush in wells.)
 
 **The fold-back.** The top piece folds 180° backward at the hinge and lies under the bar, its LEDs facing the back. The front shell's frame is removed there (Y 73.4–92.7), and the **midplate is notched through** under it, on into SW7's two front lead holes so no web narrower than a printed line is left. Nothing else in the midplate changes except one detent, moved from Y 86 to 58, clear of the fold.
 
@@ -308,7 +308,7 @@ The strip has had four review rounds:
 1. **Independent review before rev A.** Four lenses: electrical, mechanical, DFM, KiCad ([review/](review/)).
 2. **Final check of the docs and board.** 42 confirmed findings, including the P03 case clash that led to this dual-panel design.
 3. **Dual-panel survey.** Both cases, the 3.68″ panel and the six-LED budget.
-4. **Each case variant built, then fixed and adversarially re-measured in rounds:** three on the 4.26″ case, four on the 3.68″. The last 3.68″ round applied Ian's decisions (flush rocker caps, the lid latch-arm chamfer) and was checked by two independent verifiers. Each case README's "Light-strip variant" section has the numbers; the remaining items are in §9.
+4. **Each case variant built, then fixed and adversarially re-measured in rounds:** three on the 4.26″ case, four on the 3.68″. The last 3.68″ round applied Ian's decisions (flush rocker caps, since replaced by the Rev L keys; the lid latch-arm chamfer) and was checked by two independent verifiers. Each case README's "Light-strip variant" section has the numbers; the remaining items are in §9.
 
 | Finding | Resolution |
 |---|---|
@@ -327,7 +327,7 @@ The strip has had four review rounds:
 1. **LED polarity and face position** are derived from documents, not measured. Diode-test one part (ASSEMBLY step 1). If the anode turns out to be on the other side, the footprint and routing must be mirrored.
 2. **Six LEDs per string** assumes the XL-4008 bins as published. If a batch reads above about 3.4 V per LED at 13 mA, the string can pass the 22 V ceiling in the cold (still under OVP). Check one string on the bench (ASSEMBLY step 3).
 3. **The hinge fold** has not been bent on a real board. Fold one bare board before trusting it.
-4. **3.68″ rocker keys** are flush with the raised face, in wells. Check on the first print that they are easy to find and press.
+4. **The bottom keys (Rev L, both cases)** are modelled and checked, not printed. Print the drag and gate coupons first (plate 3 of the plate file in `print/`), and check a real TS365ZJ against its drawing before printing crank-T.
 5. **Board issues on the x3 build** (§1): no D3/D8, and the trim cuts 3V3 to the charger enable. Both are to be fixed in the next silkscreen-pcb revision (one trace for the charger enable), and are tracked in `NOTICE.md` in the silkscreen-pcb repo. Boards already built need the bodge wire described there.
 6. **Cost.** No instant quote has been run.
 7. **Antenna.** The bar passes 5–8 mm from the ESP32-S3 antenna. Compare RSSI with and without the strip.

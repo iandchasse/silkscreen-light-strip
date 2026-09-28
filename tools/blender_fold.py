@@ -3,10 +3,10 @@
     tools\\export_geometry.py            (KiCad Python) writes build/geometry.json
     blender -b -P tools\\blender_fold.py -- [samples] [426|368]
 
-426: the strip lies on the plain 4.26in panel's left border (enclosure silkscreen-enclosure-claude, light-strip
+426: the strip lies on the plain 4.26in panel's left border (enclosures/case-426, light-strip
      tub): flat on the border, a U around the bottom glass edge, back under the glass, down the main board's
      FPC slot and along the board's back into J3.
-368: the strip lies beside the 3.68in panel (enclosure silkscreen-enclosure-codex-x3, light-strip tub) on a
+368: the strip lies beside the 3.68in panel (enclosures/case-368, light-strip tub) on a
      shelf at the panel-front plane; the top pair folds back under the bar on its hinge; the tail folds over the
      glass edge with a small loop into the chin, drops through the slot and takes its spare length as a loop
      on the board's back.

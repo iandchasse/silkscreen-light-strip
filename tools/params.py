@@ -20,8 +20,7 @@ COMPANY = "idc LLC"
 # The strip is drawn for the plain 4.26in GDEY0426T82 (800x480): its bar lies ON that panel's left border.
 # The same strip also fits the 3.68in 528x792 panel (PANEL_368), where the bar lies BESIDE the glass and
 # the top pair folds back under the bar on a hinge (see HINGE and docs/DESIGN.md).
-# Enclosures: enclosures/silkscreen-enclosure-claude (4.26in) and enclosures/silkscreen-enclosure-codex-x3
-# (3.68in), each with a light-strip front shell.
+# Enclosures: enclosures/case-426 (4.26in) and enclosures/case-368 (3.68in), each with a light-strip front shell.
 PANEL = {
     "left": 43.052,        # glass edge (main-board KiCad x)
     "right": 105.422,      # 62.37 wide
@@ -34,7 +33,7 @@ PANEL = {
 ACTIVE = {"left": 46.397, "right": 102.077, "top": 40.35, "bottom": 133.15}   # 55.68 x 92.8
 BEZEL_MARGIN = 0.7     # the P03 aperture is the active area + 0.7 mm per side
 
-# 3.68in 528x792 (the Xteink X3 panel, no maker part number), as placed in silkscreen-enclosure-codex-x3:
+# 3.68in 528x792 (the Xteink X3 panel, no maker part number), as placed in enclosures/case-368:
 # centred on J2 in x, its bottom glass edge on the board slot's top edge.  56.24 x 86.54 x 0.87 glass;
 # PS film inset 0.65 (1.78 at the bottom); active area 51.84 x 77.76 with 2.20 / 2.20 / 2.20 / 6.58 borders.
 PANEL_368 = {"left": 45.367, "right": 101.607, "top": 54.66, "bottom": 141.20, "thickness": 0.87,

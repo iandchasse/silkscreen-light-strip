@@ -8,28 +8,34 @@ _autosave-*
 *-cache.lib
 # generated scratch (regenerate with tools/generate.py and tools/make_outputs.py)
 build/
-tools/__pycache__/
 __pycache__/
 *.pyc
+.venv/
 # Fabrication Toolkit plugin backups (its order files in production/ are fine to commit)
 production/backups/
 # MCP server reports written next to the board
 *_drc_violations.json
-# enclosure copies: build outputs, caches and the originals' old print packages stay on disk, not in git
+# case projects: build outputs and caches stay on disk, not in git (the files to print are in print/)
 enclosures/*/out/
 enclosures/*/hardware/cache/
-enclosures/*/silkscreen-enclosure-rev-*/
-enclosures/*/*.zip
-enclosures/*/.venv/
-enclosures/*/.claude/
+# ... and what prepare_hardware.py and hw.py regenerate from the board: kicad-cli's input copy and log, the board
+# mesh (python src/hw.py; only the 4.26 review.py reads it) and the board summary (the 4.26's hw.py writes it here;
+# no code reads it, and the 3.68's hw.py writes its own to out/<variant>/)
+enclosures/*/hardware/silkscreen_pcb-portable.kicad_pcb
+enclosures/*/hardware/step-export.log
+enclosures/*/hardware/board.stl
+enclosures/*/hardware/mechanical.json
 # third-party reference downloads used by the enclosures' comparison pages (not ours to redistribute)
 enclosures/*/hardware/compare/
 enclosures/*/hardware/reference/retrocase/
-enclosures/*/hardware/reference/vendor/
-# OrcaSlicer rewrites its log in each case project on every slice
-enclosures/*/00000.log
-enclosures/00000.log
-# the case showcase's generated data (about 38 MB; rebuild with python -B showcase/gen/bundle.py --strict-page)
+# OrcaSlicer rewrites its log in the folder it runs from on every slice
+00000.log
+# the showcase adapters' outputs (showcase/gen/adapt_*.py --out default)
+showcase/build/
+# the case showcase's generated data (about 38 MB; rebuild with python -B showcase/gen/bundle.py --strict-page),
+# and the two assets the bundle copies in (sources: showcase/page/strip.json, docs/images/optics_heatmaps.png)
+docs/showcase/strip.json
+docs/showcase/optics_heatmaps.png
 docs/showcase/core-*.json
 docs/showcase/build-*.json
 docs/showcase/extras-*.json

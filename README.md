@@ -7,11 +7,22 @@
 - the **4.26″** plain `GDEY0426T82`, where the LED bar lies on the panel's left border;
 - the **3.68″** 528 × 792 panel of the x3 build, where the bar lies beside the glass and the top pair folds back under it.
 
-Both readers' cases live in [`enclosures/`](enclosures/), each as one project that builds a standard case and a light-strip case. The two share every printed part except the tub, so the light strip costs one extra print.
+Both readers' cases live here too, each as one project that builds a standard case and a light-strip case. The two builds share every printed part except the tub (and, on the 3.68″, the four bottom keys), so the light strip costs one or two extra prints.
+
+**Where things are:**
+
+| To | Go to |
+|---|---|
+| **Print a case** | [`print/`](print/): one OrcaSlicer plate file per size, `silkscreen-426-plates.3mf` and `silkscreen-368-plates.3mf`, plus every part on its own in `print/4.26/` and `print/3.68/`. Start at [`print/README.md`](print/README.md). |
+| **Order the light strip** | [`production/`](production/) and [docs/ORDERING.md](docs/ORDERING.md) |
+| **Assemble the strip and the case** | [docs/ASSEMBLY.md](docs/ASSEMBLY.md) |
+| **Change a case** | [`enclosures/`](enclosures/README.md): `case-426/` and `case-368/`, their build scripts and design records |
+| **Change the strip** | `tools/` (it generates the KiCad project at the root and everything in `docs/` and `production/`); the design is in [docs/DESIGN.md](docs/DESIGN.md) |
+| **See it all in 3D** | the showcase (below); its source is [`showcase/`](showcase/) |
 
 > **Rev A is untested.** The strip passes ERC, DRC and schematic parity with no findings. Two review rounds have been worked through (see [docs/review/](docs/review/) and [docs/DESIGN.md §8](docs/DESIGN.md#8-verification)). No board has been built yet. Before you solder a whole strip, diode-test one loose LED ([docs/ASSEMBLY.md](docs/ASSEMBLY.md#1-check-led-polarity-before-anything-else)).
 
-**Showcase:** an interactive page for both cases. Switch between 4.26″ and 3.68″ and between the standard and light-strip builds. It covers the bell-crank bottom keys in motion, how each part fits (toggle any part in 3D), the light strip's fold and tape, assembly, the checks, and the print files. Its source is in [`showcase/`](showcase/) (see [`showcase/API.md`](showcase/API.md)). `python -B showcase/gen/bundle.py --strict-page` rebuilds it into [`docs/showcase/`](docs/showcase/); the generated data files there are not in git.
+**Showcase:** an interactive page for both cases. Switch between 4.26″ and 3.68″ and between the standard and light-strip builds. It covers the bell-crank bottom keys in motion, how each part fits (toggle any part in 3D), the light strip's fold and tape, assembly, the checks, and the print files. Its source is in [`showcase/`](showcase/) (see [`showcase/API.md`](showcase/API.md)). Its two adapters (one per case project) and then `python -B showcase/gen/bundle.py --strict-page` rebuild it into [`docs/showcase/`](docs/showcase/); the generated data files there are not in git.
 
 | Flat, LED side (turned 90°) |
 |:---:|
@@ -68,20 +79,20 @@ These three LCSC parts are all JLCPCB "Extended" parts. The LEDs are sold only t
 
 ## The two cases
 
-This repo is the main home of both case projects (since 2026-09-26; the git tag `originals-2026-09-25` marks them as first copied in). Each builds two ways from one code base: `src/build.py` makes the **standard** build and the **light-strip** build, checks each, and fails if any part other than the tub differs between them. The files to print are in each project's `print/`: the shared parts once, plus `tub-standard` and `tub-light-strip`. See each README's top section and its "Light-strip variant" section for the numbers, and [docs/DESIGN.md §4](docs/DESIGN.md#4-geometry-and-fold) for the geometry. [`enclosures/BUTTONS.md`](enclosures/BUTTONS.md) is the research on replacing the bottom keys.
+This repo is the main home of both case projects (since 2026-09-26; the git tag `originals-2026-09-25` marks them as first copied in; renamed `case-426` and `case-368` on 2026-09-28). Each builds two ways from one code base: `src/build.py` makes the **standard** build and the **light-strip** build, checks each, and fails if a part that should be shared differs between them. Both are at **Rev L**: bell-crank bottom keys on a 1.75 mm filament rod, held by a printed side gate; modelled and checked, not printed yet. The files to print are in [`print/`](print/) (see above). [`enclosures/README.md`](enclosures/README.md) covers the two projects, the scripts and the rebuild order. Each project's README has the numbers (its top section and its "Light-strip variant" section), and [docs/DESIGN.md §4](docs/DESIGN.md#4-geometry-and-fold) has the strip's geometry. The bottom keys' design records are [`enclosures/BELL-CRANK-SPEC.md`](enclosures/BELL-CRANK-SPEC.md), [`enclosures/SIDE-GATE-SPEC.md`](enclosures/SIDE-GATE-SPEC.md) and [`enclosures/BUTTONS.md`](enclosures/BUTTONS.md) (why a bell crank).
 
-| | 4.26″: [`enclosures/silkscreen-enclosure-claude`](enclosures/silkscreen-enclosure-claude) | 3.68″: [`enclosures/silkscreen-enclosure-codex-x3`](enclosures/silkscreen-enclosure-codex-x3) |
+| | 4.26″: [`enclosures/case-426`](enclosures/case-426) | 3.68″: [`enclosures/case-368`](enclosures/case-368) |
 |---|---|---|
 | Panel | Plain GDEY0426T82 instead of the FT01C | The x3's 3.68″ panel |
-| Differs from the standard build | The tub only | The tub only |
-| Front shell | Stops for the thinner plain panel; a raised ceiling over the left border; hold-down pads between the pairs; a wider ribbon gap | Front raised 1.2 mm (still one flat face); a channel for the bar with the light path to the window; hold-down pads; a neck gap in the chin; wells around the rocker keys |
-| Shared parts | Rev K's lid, midplate and keys, unchanged | x3's, with the strip's needs built in for both builds: the midplate notched under the folded pair and the corner stops (one detent moved), a 0.5 mm chamfer on one lid latch arm, and rocker caps 0.155 mm taller (interim, until the bottom keys are redesigned) |
+| Differs from the standard build | The tub only | The tub and the four bottom keys (`key-x3ls` stands 1.2 mm taller, for the raised face) |
+| Front shell | Stops for the thinner plain panel; a raised ceiling over the left border; hold-down pads between the pairs; a wider ribbon gap | Front raised 1.2 mm (still one flat face); a channel for the bar with the light path to the window; hold-down pads; a neck gap in the chin |
+| Shared parts | The lid, midplate, bottom keys (`key-426`), cranks and gate | x3's lid and midplate, with the strip's needs built in for both builds (the midplate notched under the folded pair and the corner stops, one detent moved; a 0.5 mm chamfer on one lid latch arm), the cranks and the gate |
 
 ## Using it
 
 1. **Order** the flex from JLCPCB. Every file and every order-form setting is in [docs/ORDERING.md](docs/ORDERING.md). A bare order that you solder yourself is the cheap, simple path.
 2. **Assemble, test, fit** by following [docs/ASSEMBLY.md](docs/ASSEMBLY.md), or step through the showcase. It covers the polarity check, a bench test through the three pads, the fold-back (3.68″), the tape, the fold, J3, and the case.
-3. **Print** your reader's case from its project's `print/` folder in `enclosures/`, with `tub-light-strip` as the tub.
+3. **Print** your reader's case from [`print/`](print/): the coupons on plate 3 first, then plate 2 ("Light-strip case") of `silkscreen-426-plates.3mf` or `silkscreen-368-plates.3mf` ([`print/README.md`](print/README.md)).
 4. **Firmware:**
    - Drive it exactly like the stock frontlight ([silkscreen-pcb HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
    - Enable `ADIM` (`PWM_LED`, IO42) with a HIGH pulse of at least 100 µs (the datasheet minimum is 40 µs), then dim with PWM at 10–200 kHz.
@@ -113,16 +124,17 @@ Light that grazes a page falls off steeply with distance. The geometric model in
 | `lib/` | Project footprints, symbols and 3D models: the LED (VRML plus a STEP body), the J3 contact tail, SOT-323 and the wire pad |
 | `production/` | `*_gerbers.zip` for the flex order, plus `jlc_bom.csv`, `jlc_cpl.csv`, `bom.csv` and `gerbers/` |
 | `fabrication-toolkit-options.json` | Settings for the Fabrication Toolkit plugin, if you make the order files with it instead ([ORDERING.md](docs/ORDERING.md#with-the-fabrication-toolkit-plugin)) |
-| `enclosures/` | Both case projects, each building a standard and a light-strip case (see its README); `BUTTONS.md`, the bottom-key research |
+| `print/` | What to print for both cases: the two plate files, the rod jig, and every part in `4.26/` and `3.68/` (generated; see its README) |
+| `enclosures/` | Both case projects, `case-426/` and `case-368/`, each building a standard and a light-strip case; `make_plates.py`, `rod_jig.py` and the bottom keys' design records (see its README) |
 | `docs/` | Schematic and layout PDFs, `DESIGN.md`, `ASSEMBLY.md`, `ORDERING.md`, renders, `showcase/`, `mechanical/` (flat STEP/VRML), `reports/` (ERC/DRC/as-built summary), `research/`, `review/` |
 | `tools/params.py` | Every dimension and part choice in one file, including both panels, the pair layout and the hinge |
-| `tools/generate.py`, `build_pcb.py` | Write the footprints, symbols, schematic, project and board. The layout is built from the schematic's own netlist. |
+| `tools/generate.py`, `build_pcb.py`, `kigeom.py`, `make_step_model.py` | Write the footprints, symbols, schematic, project and board (and the LED's STEP body). The layout is built from the schematic's own netlist. |
 | `tools/make_outputs.py` | ERC, DRC with parity, Gerbers and drill, BOM and CPL, PDFs, STEP, renders. It fails if any check finds anything. |
+| `tools/report_design.py` | Writes the as-built summary, `docs/reports/design_summary.md` |
 | `tools/foldpath.py` | Tail length each reader needs, over a tolerance sweep |
 | `tools/optics_sim.py` | Grazing-light irradiance model for both panels |
 | `tools/blender_fold.py`, `export_geometry.py` | Fold the real outline into either reader in Blender for the renders above |
-| `tools/export_case_glb.py` | Packs a case's parts for the showcase |
-| `showcase/` | The showcase's source: per-size adapters, the data contract, the bundler, and the page shell and cards |
+| `showcase/` | The showcase's source: per-size adapters, the data contract, the bundler, and the page shell and cards; `docs/showcase/` is its output |
 
 ### Regenerating
 
@@ -139,7 +151,7 @@ Close the project in KiCad first; the generator refuses to run while KiCad holds
 Set `KICAD9_DIR` and `KICAD_CLI` if KiCad is installed somewhere else.
 
 - **Fold renders:** run `tools/export_geometry.py`, then `blender -b -P tools/blender_fold.py -- 64 426` and `-- 64 368`.
-- **After a geometry change:** copy `build/geometry.json` into each case's `hardware/reference/light-strip/strip-geometry.json` and rebuild that case.
+- **After a geometry change:** copy `build/geometry.json` into each case's `hardware/reference/light-strip/strip-geometry.json` (in `enclosures/case-426/` and `enclosures/case-368/`) and rebuild that case ([enclosures/README.md](enclosures/README.md#rebuilding)).
 
 The layout is generated, so GUI edits to the `.kicad_pcb` are overwritten the next time `generate.py` runs. Make changes in `tools/params.py` or `tools/build_pcb.py`, or stop using the generator and edit the board by hand from then on.
 

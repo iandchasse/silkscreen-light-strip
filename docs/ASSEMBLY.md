@@ -63,7 +63,7 @@ Test before the strip goes anywhere near a panel. Three pads on the tail each ha
 | | 4.26″ | 3.68″ |
 |---|---|---|
 | Panel | Plain **GDEY0426T82** (no touch, no frontlight). The FT01C does not fit the light-strip case. | The x3's 3.68″ 528 × 792 panel |
-| Case | `enclosures/silkscreen-enclosure-claude/print/`: the shared parts plus **`tub-light-strip`** | `enclosures/silkscreen-enclosure-codex-x3/print/`: the shared parts plus **`tub-light-strip`** |
+| Case | Plate 2 of `print/silkscreen-426-plates.3mf` (or `print/4.26/`: the shared parts plus **`tub-light-strip`**) | Plate 2 of `print/silkscreen-368-plates.3mf` (or `print/3.68/`: the shared parts plus **`tub-light-strip`** and four **`key-x3ls`**) |
 | Where the strip goes | **On** the panel's left border | **Beside** the panel, in a channel in the tub; the top pair folds back under the bar |
 | Order | Strip onto the panel, then the whole stack into the tub | Strip into the tub first, then the panel |
 | Read | [§5](#5-426-strip-on-the-panel) | [§6](#6-368-fold-back-and-fit-beside-the-panel) |
@@ -127,13 +127,13 @@ A tail inserted upside down is harmless: the strip stays dark and the driver lat
 
 ## 8. The case
 
-- **4.26″ (silkscreen-enclosure-claude):**
+- **4.26″ (`enclosures/case-426`):**
   - Print the light-strip tub in a **dark or opaque** filament. Over the LEDs the skin is 0.6 mm, and a light colour may glow. Or line the raised ceiling with black tape before fitting.
   - The springs push the plain panel a little less than the FT01C: 6.5 N in all at nominal, against 8.2 N.
   - The left window edge has a 0.2 mm bevel instead of 0.6, so it looks slightly different from the other three.
-- **3.68″ (silkscreen-enclosure-codex-x3):**
-  - Print the parts in `print/` with `tub-light-strip`. The case is 12.5 mm deep (the standard build: 11.3), keys included.
-  - The **rocker keys** sit in wells, their highest point flush with the face. They press like x3's; you find them by the wells.
+- **3.68″ (`enclosures/case-368`):**
+  - Print plate 2 of `print/silkscreen-368-plates.3mf`, or from `print/3.68/` the shared parts with `tub-light-strip` and four `key-x3ls`. The shell is 12.5 mm deep (the standard build: 11.3).
+  - The bottom keys (`key-x3ls`) stand 1.5 mm proud of the raised face, 1.2 mm taller than the standard build's; the cranks, rod and gate are the same in both builds.
   - On the first print, check that the seat's underside is flat and that the light looks even past the hold-down pads.
 - **Both:** look straight on with the case closed. No flex or LED should be visible. At steep side angles a dark sliver of the black coverlay may show.
 - **Antenna.** The bar passes 5–8 mm from the ESP32-S3 antenna. Compare the Wi-Fi RSSI with and without the strip on the first build.
