@@ -28,6 +28,7 @@ enclosures/*/hardware/reference/retrocase/
 enclosures/*/hardware/reference/vendor/
 # OrcaSlicer rewrites its log in each case project on every slice
 enclosures/*/00000.log
+enclosures/00000.log
 # the case showcase's generated data (about 38 MB; rebuild with python -B showcase/gen/bundle.py --strict-page)
 docs/showcase/core-*.json
 docs/showcase/build-*.json
