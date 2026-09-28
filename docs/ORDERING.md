@@ -39,14 +39,25 @@ Checked with toolkit 5.2.0 on KiCad 9.0.6: every layer both tools make, and the 
 | Coverlay colour | **Black**. It hides under the bezel and doesn't reflect amber. Yellow works if you prefer the cheaper default. |
 | Silkscreen | **White** |
 | Surface finish | **ENIG**, 1 U″. 2 U″ is worth it if you expect to re-insert the tail often; J3 is rated for 20 cycles. |
-| Stiffener | **PI, 0.225 mm**. On the bottom side, in the three areas in `…-Stiffener_PI0_225.gbr`. |
-| 3M tape | **3M 9077** (0.05 mm, heat-resistant). On the bottom side of the two front stiffener pieces, in `…-Adhesive_3M9077.gbr`, stacked on the PI stiffener. |
-| EMI shielding film | No |
-| Outline tolerance | Ask for ± 0.05 mm (see the remark). The standard is ± 0.1. |
+| Coverlay thickness | PI 12.5 µm / adhesive 15 µm (the only choice at 1/3 oz) |
+| EDA software | **Other.** JLC's form warns that stiffeners from other software "require manual review". That is what this board wants anyway; the EasyEDA discount ($7.37) isn't worth porting the design. |
+| Stiffener | **Polyimide, 0.225 mm** and **3M Tape, 3M 9077**. They share one row on the form; select both. The PI goes on the bottom side, in the three areas in `…-Stiffener_PI0_225.gbr`. The tape (0.05 mm, heat-resistant) goes on the bottom side of the two front stiffener pieces, stacked on the PI, in `…-Adhesive_3M9077.gbr`. |
+| Gold fingers | The fingers get the ENIG finish either way. Read the option's `?` tooltip. If Yes means thicker hard gold on the fingers, take it: Hirose's recommended finger build has 0.2 µm of gold, and ENIG gives 0.025–0.05 µm. (Unverified: JLC's gold-finger help page describes rigid boards.) |
+| EMI shielding film | Without |
+| Cutting method | Laser cutting (the default) |
+| Confirm production file | **Yes.** JLC sends its production files for approval before making the board. That is where you check the stiffener and tape placement, the bare hinge and the finger-area thickness, since the remark only has room for the essentials. |
 
-**Remark** (paste as is):
+**Remark** (the form allows 200 characters; this is 190, paste as is):
 
-> Stiffener: PI 0.225 mm on the BOTTOM side, three filled areas in silkscreen-light-strip-Stiffener_PI0_225.gbr (the short piece under the top LED pair, the LED bar + foot, and the last 14 mm of the tail). Leave the 3.6 mm gap between the top piece and the bar BARE: it is a fold hinge (no stiffener, no tape). 3M 9077 tape on the BOTTOM side of the top piece and of the LED bar + foot only, over the PI stiffener (stacked), areas in silkscreen-light-strip-Adhesive_3M9077.gbr. The gold fingers at the tail tip mate a Hirose FH34SRJ ZIF connector, which needs 0.30 +/-0.03 mm FPC thickness at the fingers. Please use PI 0.225 mm for all stiffener areas and do not change it to 0.25 mm: with no copper behind the fingers your formula gives 0.11 - 0.0275 - 0.012 + 0.225 = 0.2955 mm, the closest of your PI options. Please keep the finished finger-area thickness within 0.27-0.33 mm, and the 3.50 mm contact tab width within +/-0.05 mm. Cut the tip stiffener with the board outline (R0.2 tip corners).
+> PI stiffener 0.225mm BOTTOM per Stiffener_PI0_225.gbr. 3M9077 tape BOTTOM, stacked on PI, per Adhesive_3M9077.gbr. Keep 3.6mm hinge bare. Finger area 0.30+/-0.03mm (ZIF), do not use 0.25 PI.
+
+**In the production-file review, check these (the full intent behind the remark):**
+
+- **Stiffener:** PI 0.225 mm on the bottom side, in three filled areas: the short piece under the top LED pair, the LED bar + foot, and the last 14 mm of the tail. The tip stiffener is cut with the board outline (R0.2 tip corners).
+- **Hinge:** the 3.6 mm gap between the top piece and the bar is bare, with no stiffener and no tape. It is a fold.
+- **Tape:** 3M 9077 on the bottom side of the top piece and of the LED bar + foot only, over the PI.
+- **Fingers:** they mate a Hirose FH34SRJ ZIF connector, which needs 0.30 ± 0.03 mm at the fingers. With no copper behind them, JLC's formula gives 0.11 − 0.0275 − 0.012 + 0.225 = 0.2955 mm. The finished finger area should be 0.27–0.33 mm.
+- **Tab width:** 3.50 mm, ± 0.05 mm. If JLC's outline tolerance is ± 0.1, ask them to hold ± 0.05 here.
 
 **Why the thickness remark.** No PI option lands exactly on 0.30:
 
