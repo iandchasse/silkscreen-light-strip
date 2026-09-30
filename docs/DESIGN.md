@@ -31,7 +31,7 @@ The strip replaces a bonded frontlight, so the main board decides almost everyth
 
 - Every frontlight part survives the trim: U10, L2, C9, R37, Q5/Q6, U12, R39/R41, R49/R50 and J3. The FPC slot is unchanged.
 - **The trim removes D3 and D8.** On that build nothing clamps the strip's nets, so handle the strip ESD-safe and plug it in with the board unpowered.
-- **The trim also cuts 3V3 to Q2/R81**, so the charger's enable stays low and the x3 board will not charge. This is a board issue, not a strip issue. One wire from a retained 3V3 point to Q2 pad 2 / R81 pad 2 fixes it on a built board; the next silkscreen-pcb revision fixes it with one trace (see that repo's `NOTICE.md`).
+- **On a board made before silkscreen-pcb Rev 1.01, the trim also cuts 3V3 to Q2/R81 and splits the ground.** The charger's enable stays low, so the x3 board will not charge, and the power section's ground (U3, U2, Q1) reaches the rest of the board only through one shell tab of the microSD socket. This is a board issue, not a strip issue. Two wires fix a built board, including the 2026-09-21 order: R40 pad 2 to R81 pad 2 (or bridge the two cut 3V3 stubs at the edge), and C6 pad 2 to C21 pad 2. Rev 1.01 (2026-09-30) has a 3V3 link and GND stitching vias below the cut and needs neither (silkscreen-pcb README, "Cutting the board down for a smaller display").
 
 ## 2. Electrical
 
@@ -328,6 +328,6 @@ The strip has had four review rounds:
 2. **Six LEDs per string** assumes the XL-4008 bins as published. If a batch reads above about 3.4 V per LED at 13 mA, the string can pass the 22 V ceiling in the cold (still under OVP). Check one string on the bench (ASSEMBLY step 3).
 3. **The hinge fold** has not been bent on a real board. Fold one bare board before trusting it.
 4. **The bottom keys (Rev L, both cases).** The 4.26″ case has been printed twice. In the first print the keys bound in their openings; the 2026-09-29 refit gave them 0.40 on the chin side and 0.35 per side across. In the second (2026-09-30) the keys tilted, sat low, stuck or fell out: their drag leaf held each key wherever it was left. The keys are now **hook keys**: two rigid hooks per key run in two slots in the tub's chin wall and stop 1.0 mm out, and nothing on the key flexes or rubs. They are not printed yet: reprint the tub and the 4 keys, and keep the tub face down from the keys until the board is in (`print/README.md`). The chin coupon on plate 3, with one key, is an optional fit check; print the gate coupon first, and check a real TS365ZJ against its drawing before printing crank-T.
-5. **Board issues on the x3 build** (§1): no D3/D8, and the trim cuts 3V3 to the charger enable. Both are to be fixed in the next silkscreen-pcb revision (one trace for the charger enable), and are tracked in `NOTICE.md` in the silkscreen-pcb repo. Boards already built need the bodge wire described there.
+5. **Board issues on the x3 build** (§1): no D3/D8, which is accepted and not being changed, so handle the strip ESD-safe. On boards made before silkscreen-pcb Rev 1.01 the trim also cuts 3V3 to the charger enable and splits the power-section ground; those boards need the two wires in §1. Rev 1.01 fixes both on the board.
 6. **Cost.** No instant quote has been run.
 7. **Antenna.** The bar passes 5–8 mm from the ESP32-S3 antenna. Compare RSSI with and without the strip.
