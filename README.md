@@ -92,7 +92,7 @@ This repo is the main home of both case projects (since 2026-09-26; the git tag 
 
 1. **Order** the flex from JLCPCB. Every file and every order-form setting is in [docs/ORDERING.md](docs/ORDERING.md). A bare order that you solder yourself is the cheap, simple path.
 2. **Assemble, test, fit** by following [docs/ASSEMBLY.md](docs/ASSEMBLY.md), or step through the showcase. It covers the polarity check, a bench test through the three pads, the fold-back (3.68″), the tape, the fold, J3, and the case.
-3. **Print** your reader's case from [`print/`](print/): the gate coupon on plate 3 first (the drag coupon there is optional and only tunes how firm the keys feel), then plate 2 ("Light-strip case") of `silkscreen-426-plates.3mf` or `silkscreen-368-plates.3mf` ([`print/README.md`](print/README.md)).
+3. **Print** your reader's case from [`print/`](print/): the gate coupon on plate 3 first (the chin coupon there, with one key, is an optional fit check for the hook keys), then plate 2 ("Light-strip case") of `silkscreen-426-plates.3mf` or `silkscreen-368-plates.3mf` ([`print/README.md`](print/README.md)).
 4. **Firmware:**
    - Drive it exactly like the stock frontlight ([silkscreen-pcb HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
    - Enable `ADIM` (`PWM_LED`, IO42) with a HIGH pulse of at least 100 µs (the datasheet minimum is 40 µs), then dim with PWM at 10–200 kHz.
