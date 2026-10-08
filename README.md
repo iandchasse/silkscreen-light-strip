@@ -7,7 +7,7 @@
 - the **4.26″** plain `GDEY0426T82`, where the LED bar lies on the panel's left border;
 - the **3.68″** 528 × 792 panel of the x3 build, where the bar lies beside the glass and the top pair folds back under it.
 
-Both readers' cases live here too, each as one project that builds a standard case and a light-strip case. The two builds share every printed part except the tub (and, on the 3.68″, the four bottom keys), so the light strip costs one or two extra prints.
+Both readers' cases live here too, each as one project that builds a standard case and a light-strip case. The two builds share every printed part except the tub (and, on the 3.68″, the four bottom keys), so the light strip costs one or two extra prints. The 4.26″ project builds 32 configurations in all: either panel, with or without the bottom keys (chinless), four side-key layouts, and with or without the dev header ([`enclosures/case-426/README.md`](enclosures/case-426/README.md), "Builds").
 
 **Where things are:**
 
@@ -22,7 +22,7 @@ Both readers' cases live here too, each as one project that builds a standard ca
 
 > **Rev A is untested.** The strip passes ERC, DRC and schematic parity with no findings. Two review rounds have been worked through (see [docs/review/](docs/review/) and [docs/DESIGN.md §8](docs/DESIGN.md#8-verification)). No board has been built yet. Before you solder a whole strip, diode-test one loose LED ([docs/ASSEMBLY.md](docs/ASSEMBLY.md#1-check-led-polarity-before-anything-else)).
 
-**Showcase:** an interactive page for both cases. Switch between 4.26″ and 3.68″ and between the standard and light-strip builds. It covers the bell-crank bottom keys in motion, how each part fits (toggle any part in 3D), the light strip's fold and tape, assembly, the checks, and the print files. Its source is in [`showcase/`](showcase/) (see [`showcase/API.md`](showcase/API.md)). Its two adapters (one per case project) and then `python -B showcase/gen/bundle.py --strict-page` rebuild it into [`docs/showcase/`](docs/showcase/); the generated data files there are not in git.
+**Showcase:** an interactive page for both cases. Switch between 4.26″ and 3.68″ and between the standard and light-strip builds (on the 4.26″ also the chinless build). It covers the bell-crank bottom keys in motion, how each part fits (toggle any part in 3D), the light strip's fold and tape, assembly, the checks, and the print files. Its source is in [`showcase/`](showcase/) (see [`showcase/API.md`](showcase/API.md)). Its two adapters (one per case project) and then `python -B showcase/gen/bundle.py --strict-page` rebuild it into [`docs/showcase/`](docs/showcase/); the generated data files there are not in git.
 
 | Flat, LED side (turned 90°) |
 |:---:|
