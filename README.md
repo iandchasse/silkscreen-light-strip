@@ -86,7 +86,7 @@ This repo is the main home of both case projects (since 2026-09-26; the git tag 
 | Panel | Plain GDEY0426T82 instead of the FT01C | The x3's 3.68″ panel |
 | Differs from the standard build | The tub only | The tub and the four bottom keys (`key-x3ls` stands 0.8 mm taller than `key-x3std`, for the raised face) |
 | Front shell | Stops for the thinner plain panel; a raised ceiling over the left border; hold-down pads between the pairs; a wider ribbon gap | Front raised 1.2 mm over x3's, 0.8 over the standard build's (still one flat face); a channel for the bar with the light path to the window; hold-down pads; a neck gap in the chin |
-| Shared parts | The lid, midplate, bottom keys (`key-426`), cranks and gate | x3's lid and midplate, with the strip's needs built in for both builds (the midplate notched under the folded pair and the corner stops, one detent moved; a 0.5 mm chamfer on one lid latch arm), the cranks and the gate |
+| Shared parts | The lid, midplate, bottom keys (`key-426`), cranks and gate | x3's lid and midplate, with the strip's needs built in for both builds (the midplate notched under the folded pair and the corner stops, one detent moved; a 0.5 mm chamfer on one lid latch arm, on every arm since the 2026-10-12 lid fix), the cranks and the gate |
 
 ## Using it
 
