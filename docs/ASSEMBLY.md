@@ -132,7 +132,7 @@ A tail inserted upside down is harmless: the strip stays dark and the driver lat
   - The springs push the plain panel a little less than the FT01C: 6.5 N in all at nominal, against 8.2 N.
   - The left window edge has a 0.2 mm bevel instead of 0.6, so it looks slightly different from the other three.
 - **3.68″ (`enclosures/case-368`):**
-  - Print plate 2 of `print/silkscreen-368-plates.3mf`, or from `print/3.68/` the shared parts with `tub-light-strip` and four `key-x3ls`. The shell is 12.5 mm deep (the standard build: 11.7, with its screen bevel since 2026-10-10; 11.3 before).
+  - Print plate 2 of `print/silkscreen-368-plates.3mf`, or from `print/3.68/` the shared parts with `tub-light-strip` and four `key-x3ls`. The shell is 13.5 mm deep (the standard build: 12.7). Since 2026-10-12 the lid has 1.0 mm more air behind the board so that it closes over a Rev 1.0 board's charging wires (12.5 and 11.7 before; 11.3 before the standard build's screen bevel).
   - The bottom keys (`key-x3ls`) stand 1.5 mm proud of the raised face, 0.8 mm taller than the standard build's (`key-x3std`); the cranks, rod and gate are the same in both builds.
   - On the first print, check that the seat's underside is flat and that the light looks even past the hold-down pads.
 - **Both:** look straight on with the case closed. No flex or LED should be visible. At steep side angles a dark sliver of the black coverlay may show.

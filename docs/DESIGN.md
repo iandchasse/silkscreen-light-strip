@@ -197,7 +197,7 @@ The layout is chosen so one strip serves both panels:
 
 **Z.** The x3 front skin was only 0.6 mm over the panel, and the strip stands 1.185 mm tall.
 
-- The light-strip front shell raises the whole front by **1.2 mm** over x3's (Z 4.07 → 5.27), keeping one flat face so it still prints face down. The case goes from x3's 11.3 to 12.5 mm deep, and the LED tops (4.655) clear the skin by 0.215. (Since 2026-10-10 the standard build's face is at 4.47, raised 0.4 for its screen bevel, so the light-strip build is 0.8 mm deeper than the standard's 11.7.)
+- The light-strip front shell raises the whole front by **1.2 mm** over x3's (Z 4.07 → 5.27), keeping one flat face so it still prints face down. The case goes from x3's 11.3 to 12.5 mm deep, and the LED tops (4.655) clear the skin by 0.215. (Since 2026-10-10 the standard build's face is at 4.47, raised 0.4 for its screen bevel, so the light-strip build is 0.8 mm deeper than the standard's. Since 2026-10-12 both lids are 1.0 mm deeper so that they close: 13.5 and 12.7.)
 - A channel runs along the left edge for the bar, with the light path under 0.4 mm of skin to the window. The window has a 0.6 land and a 1.2 mm 45° bevel, so the thicker border skin doesn't shade the edge.
 - **Six stop ribs** (0.18 mm) on the channel's wall set the bar's left edge at X −1.24. They sit between the lid's latch arms; the two on the fold zone also stop the folded piece.
 - **Seat.** The bar's tape side rests on a strip of the old frame at the panel-front plane, over Y 14.5–73.4. It starts at 14.5 so a bar sliding in with a thick stack and a 0.9 mm LED clears its edge; the G-code puts its first line at Y 14.72.
