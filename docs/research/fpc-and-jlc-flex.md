@@ -7,9 +7,9 @@ Researched 2026-09-24. Every number cites a source. Anything not confirmed from 
 Sources:
 - [H25] Hirose FH34 series catalog, "Mar. 2025" edition (printed Aug.1.2026), official: https://www.hirose.com/en/product/document?clcode=&productname=&series=FH34SRJ&documenttype=Catalog&lang=en&documentid=en_FH34_CAT (pages 3, 4, 5, 6, 8, 9, 16-19 read; p.6 and p.8 rendered and inspected visually).
 - [H24] Same catalog, Mar.1.2024 edition, via Octopart mirror: https://datasheet.octopart.com/FH34SRJ-4S-0.5SH(50)-HIROSE-ELECTRIC-datasheet-178267795.pdf (page 14 "FH34SRJ/FH34D Series Recommended FPC/FFC Construction", rendered and inspected).
-- [FP] Local footprint: <workspace>\de-link_pcb\KiCad\9.0\3rdparty\FH34SRJ_6pin\HRS_FH34SRJ-6S-0.5SH_50_.kicad_mod
-- [BRD] Main board, read-only via pcbnew: <workspace>\de-link_pcb\silkscreen_pcb.kicad_pcb
-- [STEP] <workspace>\de-link_pcb\KiCad\9.0\3rdparty\FH34SRJ_6pin\WFH-2100190.stp (header FILE_NAME 'FH34SRJ-6S_ActuatorOPEN.stp', Creo export 2021-09-15; modelled with the actuator OPEN; solid bounds not parsed).
+- [FP] Local footprint: silkscreen-pcb\KiCad\9.0\3rdparty\FH34SRJ_6pin\HRS_FH34SRJ-6S-0.5SH_50_.kicad_mod
+- [BRD] Main board, read-only via pcbnew: silkscreen-pcb\silkscreen_pcb.kicad_pcb
+- [STEP] silkscreen-pcb\KiCad\9.0\3rdparty\FH34SRJ_6pin\WFH-2100190.stp (header FILE_NAME 'FH34SRJ-6S_ActuatorOPEN.stp', Creo export 2021-09-15; modelled with the actuator OPEN; solid bounds not parsed).
 
 ### 1.1 Connector basics
 - 0.5 mm pitch, 1.0 mm height, back-flip ZIF, "Top and Bottom Contact" [H25 p.1-2].

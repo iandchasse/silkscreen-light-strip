@@ -2,7 +2,7 @@
 
 **Rev A is untested.** Before you order, get one LED and diode-test it ([ASSEMBLY.md step 1](ASSEMBLY.md#1-check-led-polarity-before-anything-else)). LCSC sells them for a few cents, and the test settles the one assumption a reversed strip can't recover from.
 
-One strip design fits both readers: the 4.26in panel in `enclosures/case-426`, and the 3.68in panel in `enclosures/case-368`, both in the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo. Each case needs its light-strip tub (plate 2 of the size's plate file in `print/`); on the 4.26 every other part is the same as the standard build's, and the 3.68 also has its own four bottom keys ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case)). You can order and bench-test the strip before printing either.
+One strip design fits both readers: the 4.26in panel in `enclosures/case-426`, and the 3.68in panel in `enclosures/case-368`, both in the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo. Each reader needs a light-strip case, which is **in development and not released**: the website offers only the standard cases. The light-strip builds are in the silkscreen-enclosures source (its plate files' plate 2 holds the tub); on the 4.26 every other part is the same as the standard build's, and the 3.68 also has its own four bottom keys ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case)). You can order and bench-test the strip before printing either.
 
 ## Files
 
@@ -113,5 +113,5 @@ This is unverified: no instant quote has been run with these files. Upload the z
 - [ ] One LED diode-tested ([ASSEMBLY.md step 1](ASSEMBLY.md#1-check-led-polarity-before-anything-else))
 - [ ] Your panel is a plain **GDEY0426T82** (no bonded frontlight) or the **3.68in 528 × 792** panel of the x3 build
 - [ ] The main board has the frontlight driver populated (U10, Q5, Q6, R37, J3). The trimmed x3 board keeps all of it.
-- [ ] You will print that case's light-strip parts ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case))
+- [ ] You know the light-strip case for your reader is still in development, and what it needs ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case))
 - [ ] FPC thickness 0.11, black coverlay, ENIG, PI 0.225 stiffener (not 0.25) in three areas, 3M 9077 stacked, and the remark pasted

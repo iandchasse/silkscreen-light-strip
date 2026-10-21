@@ -2,8 +2,8 @@
 
 Reviewer: adversarial review agent, 2026-09-25. KiCad 9.0.6 (kicad-cli + pcbnew python), KiCAD MCP server (mixelpixx, stdio).
 
-Everything that writes ran in scratch copies only: `%TEMP%\ls_review_copy` (checks, old-generator test,
-re-enabled-rules DRC), `%TEMP%\ls_review_regen` (regeneration diff), `%TEMP%\ls_review_mcpcopy` (MCP + gerber
+Everything that writes ran in scratch copies only: `a scratch copy` (checks, old-generator test,
+re-enabled-rules DRC), `a scratch regeneration copy` (regeneration diff), `a scratch MCP copy` (MCP + gerber
 re-export). Nothing in the repo's .kicad_* / lib / tools files was written. No KiCad process and no `*.lck` file was
 present during the review.
 
@@ -30,15 +30,15 @@ polarity marks on the LEDs, and a repo with no commits and no .gitignore, README
 - Fix: add `pro["erc"]["erc_exclusions"] = []` in `write_project_files()`, and remove the entries from
   `tools/template.kicad_pro`.
 
-### K2 (MINOR, fixed in the working tree during the review) Generator only ran next to `../de-link_pcb`, and a failed run leaves a half-regenerated project
-- Evidence: the copy taken at 00:03 had `TEMPLATE_PRO = os.path.join(os.path.dirname(ROOT), "de-link_pcb",
-  "silkscreen_pcb.kicad_pro")`. Run from `%TEMP%\ls_review_copy` it stopped with
-  `FileNotFoundError: ...\Temp\de-link_pcb\silkscreen_pcb.kicad_pro`.
+### K2 (MINOR, fixed in the working tree during the review) Generator only ran next to `../silkscreen-pcb`, and a failed run leaves a half-regenerated project
+- Evidence: the copy taken at 00:03 had `TEMPLATE_PRO = os.path.join(os.path.dirname(ROOT), "silkscreen-pcb",
+  "silkscreen_pcb.kicad_pro")`. Run from `a scratch copy` it stopped with
+  `FileNotFoundError: ...\silkscreen-pcb\silkscreen_pcb.kicad_pro`.
 - Before the crash it had already rewritten `lib/*.pretty`, `lib/*.kicad_sym` and `.kicad_sch` (mtime 00:05:53),
   but not `.kicad_pro` or `.kicad_pcb`. The order in `__main__` is footprints -> symbols -> schematic -> project
   files -> netlist -> PCB, and nothing is written atomically.
 - At 00:04:03 the repo's `generate.py` line 48 was changed to `os.path.join(HERE, "template.kicad_pro")` and
-  `tools/template.kicad_pro` was added. I checked that version from `%TEMP%\ls_review_regen` and it
+  `tools/template.kicad_pro` was added. I checked that version from `a scratch regeneration copy` and it
   regenerates successfully (see "Verified OK").
 - Remaining fix:
   - Clean the template (K1, K4).
@@ -160,7 +160,7 @@ Evidence: `docs/silkscreen-light-strip_schematic.pdf` rendered to PNG with pymup
     the KiCad 9 install.
 
 **Reproducibility**
-- The current `generate.py`, run from a `%TEMP%` copy, reproduces these byte-for-byte:
+- The current `generate.py`, run from a scratch copy, reproduces these byte-for-byte:
   - `.kicad_sch`, `.kicad_pro`, `.kicad_dru`
   - both lib tables and `lib/*.kicad_sym`
   - all 4 `.kicad_mod` files and the `.wrl`
@@ -183,7 +183,7 @@ Evidence: `docs/silkscreen-light-strip_schematic.pdf` rendered to PNG with pymup
 - `get_component_list`: 16 parts.
 - `get_nets_list`: 15 nets plus net 0.
 - `run_drc`: 0 violations, which agrees with kicad-cli.
-- `get_board_2d_view` PNG saved as `%TEMP%\ls_review_mcpcopy\silkscreen-light-strip_2d_view.png`; it renders
+- `get_board_2d_view` PNG saved as `a scratch copy (silkscreen-light-strip_2d_view.png)`; it renders
   the outline, copper and tail correctly.
 
 **Field convention**

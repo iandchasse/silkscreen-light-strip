@@ -7,7 +7,9 @@
 - the **4.26″** plain `GDEY0426T82`, where the LED bar lies on the panel's left border;
 - the **3.68″** 528 × 792 panel of the x3 build, where the bar lies beside the glass and the top pair folds back under it.
 
-**The cases** are in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures). Each reader's case project builds a standard case and a light-strip case from one code base; the strip needs the light-strip case, which costs one or two extra prints (the tub, and on the 3.68″ also the four bottom keys).
+**Not released.** The website does not offer the strip or its cases. This repo is the design, its fabrication files and its documents, for anyone who wants to build one.
+
+**The cases** are in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures). Each reader's case project can also build a light-strip case, which the strip needs: the tub, and on the 3.68″ also the four bottom keys. Those cases are in development and not released either (see [The cases](#the-cases)).
 
 **Where things are:**
 
@@ -15,9 +17,9 @@
 |---|---|
 | **Order the light strip** | [`production/`](production/) and [docs/ORDERING.md](docs/ORDERING.md) |
 | **Assemble and fit the strip** | [docs/ASSEMBLY.md](docs/ASSEMBLY.md) |
-| **Print the case** | plate 2 ("Light-strip case") of the plate file for your size, in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) `print/` |
+| **The cases** | the light-strip builds in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) (`enclosures/case-426`, `enclosures/case-368`), in development with the strip |
 | **Change the strip** | `tools/` (it generates the KiCad project at the root and everything in `docs/` and `production/`); the design is in [docs/DESIGN.md](docs/DESIGN.md) |
-| **See it in 3D** | the showcase in silkscreen-enclosures (`showcase/`): the strip's fold and tape in either reader |
+| **Read the documents** | the [documents index](#documents) below: design, ordering, assembly, reports, research and reviews |
 
 > **Rev A is untested.** The strip passes ERC, DRC and schematic parity with no findings. Two review rounds have been worked through (see [docs/review/](docs/review/) and [docs/DESIGN.md §8](docs/DESIGN.md#8-verification)). No board has been built yet. Before you solder a whole strip, diode-test one loose LED ([docs/ASSEMBLY.md](docs/ASSEMBLY.md#1-check-led-polarity-before-anything-else)).
 
@@ -76,30 +78,41 @@ These three LCSC parts are all JLCPCB "Extended" parts. The LEDs are sold only t
 
 ## The cases
 
-Both readers' cases are in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) (`enclosures/case-426` and `enclosures/case-368`; until 2026-10-21 they lived in this repo). Each builds a **standard** and a **light-strip** case, and the two builds share every printed part except:
+**The light-strip cases are in development and are not released.** The website offers only the standard cases, and no case has been printed around a strip yet. Both readers' cases are in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) (`enclosures/case-426` and `enclosures/case-368`; until 2026-10-21 they lived in this repo). Each project builds a **standard** case and a **light-strip** case, and the two builds share every printed part except:
 
 | | 4.26″ (`enclosures/case-426`) | 3.68″ (`enclosures/case-368`) |
 |---|---|---|
 | Panel | Plain GDEY0426T82 instead of the FT01C | The x3's 3.68″ panel |
-| Differs from the standard build | The tub only | The tub and the four bottom keys (`key-x3ls` stands 0.8 mm taller than `key-x3std`, for the raised face) |
+| Differs from the standard build | The tub only | The tub and the four bottom keys (`key-x3ls` stands 0.8 mm taller than `key-x3std`, for the raised face); 13.7 mm deep |
 | Front shell | Stops for the thinner plain panel; a raised ceiling over the left border; hold-down pads between the pairs; a wider ribbon gap | Front raised 1.2 mm over x3's, 0.8 over the standard build's (still one flat face); a channel for the bar with the light path to the window; hold-down pads; a neck gap in the chin |
 
 Each case project carries a copy of this strip's outline and fold geometry (`hardware/reference/light-strip/strip-geometry.json`, from `build/geometry.json` here); [docs/DESIGN.md §4](docs/DESIGN.md#4-geometry-and-fold) has the geometry.
 
 ## Using it
 
-1. **Order** the flex from JLCPCB. Every file and every order-form setting is in [docs/ORDERING.md](docs/ORDERING.md). A bare order that you solder yourself is the cheap, simple path.
-2. **Assemble, test, fit** by following [docs/ASSEMBLY.md](docs/ASSEMBLY.md). It covers the polarity check, a bench test through the three pads, the fold-back (3.68″), the tape, the fold, J3, and the case.
-3. **Print** your reader's case from silkscreen-enclosures' `print/`: the gate coupon on plate 3 first, then plate 2 ("Light-strip case") of `silkscreen-426-plates.3mf` or `silkscreen-368-plates.3mf` (its `print/README.md` has the details).
-4. **Firmware:**
-   - Drive it exactly like the stock frontlight ([silkscreen-pcb HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
-   - Enable `ADIM` (`PWM_LED`, IO42) with a HIGH pulse of at least 100 µs (the datasheet minimum is 40 µs), then dim with PWM at 10–200 kHz.
-   - Change the colour with `COLOR_SEL` (IO40) only while the PWM duty is 0. Keep that pause under about 1 ms, or send the enable pulse again.
-   - Watch `LED_MONIT` (IO2). A lit strip reads 1.4–2.4 V at full duty.
-     - **Open, flipped or missing:** the peak over the first ~1 s after enabling is **2.49 V or more**. The old 2.2 V threshold would call a cold six-LED strip open.
-     - The driver then latches off, and `LED_MONIT` sinks back to the off level over several seconds, so record the fault when you first see it.
-     - **Shorted LEDs or a bridge:** below 1.30 V at full duty, at least 50 ms after enabling.
-     - To restart after a latch, hold `ADIM` low for at least 3 ms.
+### Order it
+
+[docs/ORDERING.md](docs/ORDERING.md) has every file and every field. In short:
+
+- **Files.** Upload `production/silkscreen-light-strip_rev-A_gerbers.zip` to JLCPCB's flex order. It holds the copper, coverlay, silkscreen, paste, outline and drill files, plus the two extra layers `Stiffener_PI0_225.gbr` and `Adhesive_3M9077.gbr`. The bend-zone layer stays out. `production/jlc_bom.csv` and `jlc_cpl.csv` are for an assembled order only; `production/bom.csv` is the parts list for a hand build or an LCSC order; `production/gerbers/` has the loose files, the job file and the drill map.
+- **The form.** Flex, 2 layers, quantity 5, FPC 0.11 mm, 1/3 oz copper, black coverlay, white silkscreen, ENIG (1 U″; 2 U″ if you expect to re-insert the tail often), EDA software "Other", stiffener **Polyimide 0.225 mm + 3M Tape 3M9077** selected together in one row, tape pull tab yes (at the foot end), **gold fingers yes, 0.295 mm**, no EMI film, laser cutting, **confirm production file yes**. Paste the 190-character remark from ORDERING.md as it is: JLC does not read the stiffener or tape layers by itself.
+- **Bare, soldered by hand** is the recommended path for rev A: it is cheap, and it lets you do the polarity test first. JLC assembly is possible (Panel by JLCPCB, Standard PCBA, a $23.57 fixture and three Extended-part fees); check each LED's window direction and anode position in the preview, not the polarity dot.
+- **Cost** is an unverified ballpark only: about $45–75 for 5 bare strips, plus shipping, and about $65–95 more to have JLC assemble 2 of them.
+
+### Assemble and fit
+
+[docs/ASSEMBLY.md](docs/ASSEMBLY.md) covers the polarity check, soldering, a bench test through the three pads (`S`, `C`, `W`), which reader and which case, the fit on the 4.26″ (on the border) and on the 3.68″ (beside the panel, with the top pair folded back), `J3`, the case, firmware bring-up and troubleshooting.
+
+### Firmware
+
+- Drive it exactly like the stock frontlight ([silkscreen-pcb HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
+- Enable `ADIM` (`PWM_LED`, IO42) with a HIGH pulse of at least 100 µs (the datasheet minimum is 40 µs), then dim with PWM at 10–200 kHz.
+- Change the colour with `COLOR_SEL` (IO40) only while the PWM duty is 0. Keep that pause under about 1 ms, or send the enable pulse again.
+- Watch `LED_MONIT` (IO2). A lit strip reads 1.4–2.4 V at full duty.
+  - **Open, flipped or missing:** the peak over the first ~1 s after enabling is **2.49 V or more**. The old 2.2 V threshold would call a cold six-LED strip open.
+  - The driver then latches off, and `LED_MONIT` sinks back to the off level over several seconds, so record the fault when you first see it.
+  - **Shorted LEDs or a bridge:** below 1.30 V at full duty, at least 50 ms after enabling.
+  - To restart after a latch, hold `ADIM` low for at least 3 ms.
 
 ## What to expect from the light
 
@@ -113,6 +126,28 @@ Light that grazes a page falls off steeply with distance. The geometric model in
 | ![Heatmaps](docs/images/optics_heatmaps.png) | ![Profile](docs/images/optics_profile.png) |
 
 ![Lights off, warm string on](docs/images/fold_night_warm.png)
+
+## Documents
+
+| Document | What |
+|---|---|
+| [`docs/DESIGN.md`](docs/DESIGN.md) | Why the strip is as it is: the main-board fixes, the electrical design (six LEDs per string, the firmware thresholds, the two diodes), the LEDs, the geometry and fold on both readers, robustness, optics, the flex build and DFM, verification and open items. It is current where the dated notes differ. |
+| [`docs/ORDERING.md`](docs/ORDERING.md) | The JLCPCB flex order: the files, the form field by field, the remark, the production-file review, bare or assembled, a cost ballpark and a checklist before you pay (also the Fabrication Toolkit route) |
+| [`docs/ASSEMBLY.md`](docs/ASSEMBLY.md) | The LED polarity test, soldering, the bench test, which reader and case, fitting on the 4.26″ and the 3.68″, `J3`, the case, firmware bring-up and troubleshooting |
+| [`docs/reports/design_summary.md`](docs/reports/design_summary.md) | The as-built numbers, regenerated by `tools/report_design.py` on every build |
+| [`docs/reports/erc.rpt`](docs/reports/erc.rpt), [`drc.rpt`](docs/reports/drc.rpt) (and `.json`) | The ERC and DRC (with schematic parity) reports from `tools/make_outputs.py`; zero findings |
+| [`docs/silkscreen-light-strip_schematic.pdf`](docs/silkscreen-light-strip_schematic.pdf), [`_layout.pdf`](docs/silkscreen-light-strip_layout.pdf) | The schematic, and the layout one layer per page |
+| [`docs/mechanical/`](docs/mechanical/) | The flat strip in 3D (`silkscreen-light-strip_flat.step` and `.wrl`) |
+| [`docs/images/`](docs/images/) | Renders (flat, folded into each reader, night view), the optics heatmaps and profile, and `optics_summary.json` |
+| [`docs/research/electrical-limits.md`](docs/research/electrical-limits.md) (with [`electrical-limits-calc.py`](docs/research/electrical-limits-calc.py)) | Dated 2026-09-24: string voltage and current limits against the TPS923610, cited |
+| [`docs/research/fpc-and-jlc-flex.md`](docs/research/fpc-and-jlc-flex.md) | Dated 2026-09-24: the Hirose FH34SRJ tail specification and JLCPCB's flex capabilities |
+| [`docs/research/leds.md`](docs/research/leds.md) | Dated 2026-09-24: a survey of side-view warm and cool LEDs on LCSC, and why the XL-4008 pair |
+| [`docs/research/mechanical-fit.md`](docs/research/mechanical-fit.md) | Dated 2026-09-24: how the strip fits the board and panel, with the coordinate frames |
+| [`docs/review/electrical.md`](docs/review/electrical.md) | Review of 2026-09-25: polarity, nets, the voltage budget, flip and fault behaviour |
+| [`docs/review/dfm.md`](docs/review/dfm.md) | Review of 2026-09-25: JLC flex manufacturability and the order files |
+| [`docs/review/kicad.md`](docs/review/kicad.md) | Review of 2026-09-25: project integrity, reproducibility and tooling |
+
+The research and review notes are dated records; `docs/DESIGN.md` is current where they differ.
 
 ## Repository
 
@@ -145,10 +180,18 @@ Close the project in KiCad first; the generator refuses to run while KiCad holds
 
 Set `KICAD9_DIR` and `KICAD_CLI` if KiCad is installed somewhere else.
 
-- **Fold renders:** run `tools/export_geometry.py`, then `blender -b -P tools/blender_fold.py -- 64 426` and `-- 64 368`.
+- **Fold renders:** run `tools/export_geometry.py`, then `blender -b -P tools/blender_fold.py -- 64 426` and `-- 64 368`. This needs Blender.
+- **Optics model:** `tools/optics_sim.py` needs numpy and matplotlib.
 - **After a geometry change:** copy `build/geometry.json` into both case projects of silkscreen-enclosures, as `enclosures/case-426/hardware/reference/light-strip/strip-geometry.json` and `enclosures/case-368/hardware/reference/light-strip/strip-geometry.json`, and rebuild those cases (that repo's `enclosures/README.md`, "Rebuilding"). If `tools/optics_sim.py`'s heatmap changes, copy `docs/images/optics_heatmaps.png` there too (the showcase uses it).
 
 The layout is generated, so GUI edits to the `.kicad_pcb` are overwritten the next time `generate.py` runs. Make changes in `tools/params.py` or `tools/build_pcb.py`, or stop using the generator and edit the board by hand from then on.
+
+## Related
+
+- [silkscreen-pcb](https://github.com/iandchasse/silkscreen-pcb): the main board, including `J3` and the TPS923610 driver ([HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
+- [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures): the cases; the light-strip builds are in development.
+- [silkscreen-light-attachment](https://github.com/iandchasse/silkscreen-light-attachment): a different light, a clip-on bar on `J6`, for a reader with nothing on `J3`. The two are alternatives.
+- [silkscreenreader.com](https://silkscreenreader.com): the Silkscreen site. It does not offer the strip.
 
 ## License
 

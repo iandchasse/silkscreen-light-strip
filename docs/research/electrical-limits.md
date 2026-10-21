@@ -6,10 +6,10 @@ things no primary source confirmed; swap in the chosen LED's datasheet curves be
 Source key:
 
 - **[TI]** TPS923610/1/2 datasheet, SNVSCN8A (Sep 2025, rev. Oct 2025), https://www.ti.com/lit/ds/symlink/tps923610.pdf
-- **[HW]** `de-link_pcb/docs/HARDWARE.md` §7 "Frontlight driver" (lines 749-861) and the USB note at lines 210-228
-- **[DR]** `de-link_pcb/DESIGN_REVIEW.md` §8 "Frontlight" (lines 375-429)
-- **[RM]** `de-link_pcb/README.md` lines 216-251 (TPS923611 swap)
-- **[PCB]** `de-link_pcb/silkscreen_pcb.kicad_pcb`, pad nets read with pcbnew (read-only) on 2026-09-24
+- **[HW]** `silkscreen-pcb/docs/HARDWARE.md` §7 "Frontlight driver" (lines 749-861) and the USB note at lines 210-228
+- **[DR]** `silkscreen-pcb/DESIGN_REVIEW.md` §8 "Frontlight" (lines 375-429)
+- **[RM]** `silkscreen-pcb/README.md` lines 216-251 (TPS923611 swap)
+- **[PCB]** `silkscreen-pcb/silkscreen_pcb.kicad_pcb`, pad nets read with pcbnew (read-only) on 2026-09-24
 - **[FL]** Good Display GDEQ0426T82-FL01C specification, https://www.good-display.com/companyfile/1946.html
   (PDF: https://v4.cecdn.yun300.cn/100001_1909185148/GDEQ0426T82-FL01c-specification.pdf)
 - **[HRS]** Hirose FH34 page, https://info.hirose.com/products/fh34 , and the catalog title at

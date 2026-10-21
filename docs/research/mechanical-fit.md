@@ -9,7 +9,7 @@ Coordinate conventions (from the project context):
 - "Panel left edge" means the left edge as seen from the front. It is KiCad x 43.055 (enclosure X -1.185).
 
 Sources used (all read in this session):
-- [FT01C] `<workspace>\silkscreen-case\references\GDEQ0426T82-FT01C.pdf`
+- [FT01C] `[an earlier case project, not in this repo]\references\GDEQ0426T82-FT01C.pdf`
   (1 page, rendered with pymupdf).
 - [GD457] https://www.good-display.com/product/457.html (GDEY0426T82 product page).
 - [GDEQ] GDEQ0426T82 specification, "4 Mechanical Drawing of EPD module", page 5/23, Rev 01, 2022-10-08.
@@ -19,11 +19,11 @@ Sources used (all read in this session):
 - [H25] Hirose FH34 catalog, Mar. 2025. Fetched from
   https://www.hirose.com/en/product/document?clcode=&productname=&series=FH34SRJ&documenttype=Catalog&lang=en&documentid=en_FH34_CAT ;
   pages 1-8, 14 and 16-18 read.
-- [PCB] `<workspace>\de-link_pcb\silkscreen_pcb.kicad_pcb`, loaded
+- [PCB] `silkscreen-pcb\silkscreen_pcb.kicad_pcb`, loaded
   read-only with pcbnew in KiCad 9.0 python (not saved).
-- [AUDIT] `<workspace>\silkscreen-case\design\MECHANICAL-AUDIT.md`.
-- [PARAM] `<workspace>\silkscreen-case\design\parameters.json`.
-- [BUILD] `<workspace>\silkscreen-case\design\build_enclosure.py`
+- [AUDIT] `[an earlier case project, not in this repo]\design\MECHANICAL-AUDIT.md`.
+- [PARAM] `[an earlier case project, not in this repo]\design\parameters.json`.
+- [BUILD] `[an earlier case project, not in this repo]\design\build_enclosure.py`
   (P03 bezel, carrier and shelf geometry, lines 170-200 and 370-417).
 - Sibling notes: `docs\research\leds.md` (LED package sizes) and `docs\research\fpc-and-jlc-flex.md` (JLC flex
   thickness, stiffeners, bend-radius rule).

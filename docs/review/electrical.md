@@ -171,7 +171,7 @@ In the normal insertion with reversed LEDs:
   - D12: pad 1 LED_SW, pad 2 C-, pad 3 C_A.
   - Both are correct.
 - **BAV70W part.** C28064 is "BAV70W,115, Nexperia, SOT-323, 1 pair common cathode, 100 V", with 21,660 in stock.
-- **J1 vs J3.** Read-only on `de-link_pcb/silkscreen_pcb.kicad_pcb`:
+- **J1 vs J3.** Read-only on `silkscreen-pcb/silkscreen_pcb.kicad_pcb`:
   - J3 (B.Cu, rot 180) pads: 1 LED_SW @ x 52.987, 2 C- @ 53.487, 3/4 unconnected @ 53.987/54.487,
     5 LED_SW @ 54.987, 6 W- @ 55.487.
   - J1 fingers carry the identical nets at the identical x. All folds are about lines parallel to x, so x is

@@ -1,8 +1,10 @@
 # Assembly and fitting
 
-This guide takes a bare rev A flex through to a working light in a Silkscreen reader: either the **4.26″** reader with a plain `GDEY0426T82` panel, or the **3.68″** x3 reader. Each needs its light-strip case from the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo (the `print/` and `enclosures/` paths below are in that repo) and a main board with the frontlight driver populated (U10 and friends; the trimmed x3 board keeps all of it).
+This guide takes a bare rev A flex through to a working light in a Silkscreen reader: either the **4.26″** reader with a plain `GDEY0426T82` panel, or the **3.68″** x3 reader. Each needs its light-strip case from the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo (the `print/` and `enclosures/` paths below are in that repo). You also need a main board with the frontlight driver populated (U10 and friends; the trimmed x3 board keeps all of it).
 
-The reasons behind each step are in [DESIGN.md](DESIGN.md). The showcase page folds the strip into either reader step by step and shows every piece of tape (its source is `showcase/` in silkscreen-enclosures).
+**The light-strip cases are in development and not released:** the website offers only the standard cases, and no case has been printed around a strip yet.
+
+The reasons behind each step are in [DESIGN.md](DESIGN.md). The showcase source in silkscreen-enclosures (`showcase/`) builds a page that folds the strip into either reader step by step and shows every piece of tape.
 
 **You need:**
 
@@ -63,7 +65,7 @@ Test before the strip goes anywhere near a panel. Three pads on the tail each ha
 | | 4.26″ | 3.68″ |
 |---|---|---|
 | Panel | Plain **GDEY0426T82** (no touch, no frontlight). The FT01C does not fit the light-strip case. | The x3's 3.68″ 528 × 792 panel |
-| Case | Plate 2 of `print/silkscreen-426-plates.3mf` (or `print/4.26/`: the shared parts plus **`tub-light-strip`**) | Plate 2 of `print/silkscreen-368-plates.3mf` (or `print/3.68/`: the shared parts plus **`tub-light-strip`** and four **`key-x3ls`**) |
+| Case (in development) | Plate 2 of `print/silkscreen-426-plates.3mf` (or `print/4.26/`: the shared parts plus **`tub-light-strip`**) | Plate 2 of `print/silkscreen-368-plates.3mf` (or `print/3.68/`: the shared parts plus **`tub-light-strip`** and four **`key-x3ls`**) |
 | Where the strip goes | **On** the panel's left border | **Beside** the panel, in a channel in the tub; the top pair folds back under the bar |
 | Order | Strip onto the panel, then the whole stack into the tub | Strip into the tub first, then the panel |
 | Read | [§5](#5-426-strip-on-the-panel) | [§6](#6-368-fold-back-and-fit-beside-the-panel) |
@@ -126,6 +128,8 @@ J3 is on the back of the main board. It is a back-flip ZIF: the lever is on the 
 A tail inserted upside down is harmless: the strip stays dark and the driver latches off. Turn it over and re-seat it.
 
 ## 8. The case
+
+The light-strip cases are in development and not released; this section records what they need.
 
 - **4.26″ (`enclosures/case-426`):**
   - Print the light-strip tub in a **dark or opaque** filament. Over the LEDs the skin is 0.6 mm, and a light colour may glow. Or line the raised ceiling with black tape before fitting.

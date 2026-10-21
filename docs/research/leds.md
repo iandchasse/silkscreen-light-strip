@@ -263,4 +263,4 @@ Stock and prices are LCSC figures as of 2026-09-24 (the JLC stock is in brackets
 - JLCPCB parts API (assembly class): `https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList`.
 - Catalog search mirror: https://jlcsearch.tscircuit.com/api/search
 - EasyEDA footprints: `https://easyeda.com/api/products/<C#>/components?version=6.4.19.5`
-- The local scratch copies of the datasheets, renders and JSON were in `%TEMP%\ledsrch` (not part of the repo).
+- The local scratch copies of the datasheets, renders and JSON were in `a scratch folder` (not part of the repo).
