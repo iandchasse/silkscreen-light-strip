@@ -1,6 +1,6 @@
 # Design notes: Silkscreen light strip, rev A
 
-These notes explain why the strip looks the way it does. Primary sources and the working behind each number are in [research/](research/), and the reviews are in [review/](review/). The as-built numbers are regenerated into [reports/design_summary.md](reports/design_summary.md) on every build. The research and review notes are dated records. Where they differ from this document, this document is current.
+These notes explain why the strip looks the way it does. Primary sources and the working behind each number are in [research/](research/), and the reviews are in [review/](review/). The as-built numbers are regenerated into [reports/design_summary.md](reports/design_summary.md) on every build. The research and review notes are dated records. Where they differ from this document, this document is current. The cases named here (`enclosures/case-426`, `enclosures/case-368`, `print/`) are in the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo.
 
 **Coordinates.** Every dimension is in millimetres in the **main board's KiCad frame**: seen from the screen side, x to the right, y down.
 

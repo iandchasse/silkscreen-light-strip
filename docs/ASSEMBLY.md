@@ -1,8 +1,8 @@
 # Assembly and fitting
 
-This guide takes a bare rev A flex through to a working light in a Silkscreen reader: either the **4.26″** reader with a plain `GDEY0426T82` panel, or the **3.68″** x3 reader. Each needs its light-strip case from [`enclosures/`](../enclosures/) and a main board with the frontlight driver populated (U10 and friends; the trimmed x3 board keeps all of it).
+This guide takes a bare rev A flex through to a working light in a Silkscreen reader: either the **4.26″** reader with a plain `GDEY0426T82` panel, or the **3.68″** x3 reader. Each needs its light-strip case from the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo (the `print/` and `enclosures/` paths below are in that repo) and a main board with the frontlight driver populated (U10 and friends; the trimmed x3 board keeps all of it).
 
-The reasons behind each step are in [DESIGN.md](DESIGN.md). The showcase page folds the strip into either reader step by step and shows every piece of tape ([README](../README.md)).
+The reasons behind each step are in [DESIGN.md](DESIGN.md). The showcase page folds the strip into either reader step by step and shows every piece of tape (its source is `showcase/` in silkscreen-enclosures).
 
 **You need:**
 

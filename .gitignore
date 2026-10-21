@@ -15,29 +15,7 @@ __pycache__/
 production/backups/
 # MCP server reports written next to the board
 *_drc_violations.json
-# case projects: build outputs and caches stay on disk, not in git (the files to print are in print/)
-enclosures/*/out/
-enclosures/*/hardware/cache/
-# ... and what prepare_hardware.py and hw.py regenerate from the board: kicad-cli's input copy and log, the board
-# mesh (python src/hw.py; only the 4.26 review.py reads it) and the board summary (the 4.26's hw.py writes it here;
-# no code reads it, and the 3.68's hw.py writes its own to out/<variant>/)
-enclosures/*/hardware/silkscreen_pcb-portable.kicad_pcb
-enclosures/*/hardware/step-export.log
-enclosures/*/hardware/board.stl
-enclosures/*/hardware/mechanical.json
-# third-party reference downloads used by the enclosures' comparison pages (not ours to redistribute)
-enclosures/*/hardware/compare/
-enclosures/*/hardware/reference/retrocase/
-# OrcaSlicer rewrites its log in the folder it runs from on every slice
+# OrcaSlicer / OCC logs
 00000.log
-# the showcase adapters' outputs (showcase/gen/adapt_*.py --out default)
-showcase/build/
-# the case showcase's generated data (about 38 MB; rebuild with python -B showcase/gen/bundle.py --strict-page),
-# and the two assets the bundle copies in (sources: showcase/page/strip.json, docs/images/optics_heatmaps.png)
-docs/showcase/strip.json
-docs/showcase/optics_heatmaps.png
-docs/showcase/core-*.json
-docs/showcase/build-*.json
-docs/showcase/extras-*.json
-docs/showcase/data-*.json
-docs/showcase/models-*.js
+# local agent notes (machine paths); never published
+CLAUDE.local.md
