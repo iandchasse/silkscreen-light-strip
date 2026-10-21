@@ -15,13 +15,13 @@
 
 | To | Go to |
 |---|---|
-| **Order the light strip** | [`production/`](production/) and [docs/ORDERING.md](docs/ORDERING.md) |
+| **Order the light strip (rev A, untested)** | [`production/`](production/) and [docs/ORDERING.md](docs/ORDERING.md) |
 | **Assemble and fit the strip** | [docs/ASSEMBLY.md](docs/ASSEMBLY.md) |
 | **The cases** | the light-strip builds in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) (`enclosures/case-426`, `enclosures/case-368`), in development with the strip |
 | **Change the strip** | `tools/` (it generates the KiCad project at the root and everything in `docs/` and `production/`); the design is in [docs/DESIGN.md](docs/DESIGN.md) |
 | **Read the documents** | the [documents index](#documents) below: design, ordering, assembly, reports, research and reviews |
 
-> **Rev A is untested.** The strip passes ERC, DRC and schematic parity with no findings. Two review rounds have been worked through (see [docs/review/](docs/review/) and [docs/DESIGN.md §8](docs/DESIGN.md#8-verification)). No board has been built yet. Before you solder a whole strip, diode-test one loose LED ([docs/ASSEMBLY.md](docs/ASSEMBLY.md#1-check-led-polarity-before-anything-else)).
+> **Rev A is untested.** The strip passes ERC, DRC and schematic parity with no findings. Four review rounds have been worked through ([docs/DESIGN.md §8](docs/DESIGN.md#8-verification) lists them; the first round's reports are in [docs/review/](docs/review/)). No board has been built yet. Before you solder a whole strip, diode-test one loose LED ([docs/ASSEMBLY.md](docs/ASSEMBLY.md#1-check-led-polarity-before-anything-else)).
 
 | Flat, LED side (turned 90°) |
 |:---:|
@@ -48,7 +48,7 @@
   - On the 3.68″ the top pair would stick out past the case, so it folds back under the bar, tape to tape, and its light is hidden.
 - **Electrically, it is a stock frontlight.**
   - Each colour is one series string of 6 LEDs, about 17.4 V at 13.3 mA, or about 18.4 V at the driver including the flip-protection diode.
-  - Worst case (−10 °C, top Vf bin) is 21.7 V, under the 22 V design ceiling and the driver's 24.25 V over-voltage limit.
+  - Worst case (−10 °C, top Vf bin) is 21.7 V, under the 22 V design ceiling and the driver's 24.25 V over-voltage limit. A high batch (LCSC lists the cool LED at 3.4 V) can pass 22 V in the cold, still under the over-voltage limit; check one string on the bench ([docs/DESIGN.md §2.1](docs/DESIGN.md#21-six-leds-per-string)).
   - The main board's TPS923610 does everything: constant current, dimming and warm/cool select. Only the firmware's "strip open" threshold changes (see below).
 - **Flip-proof.** J3 contacts both faces of a tail, so a tail inserted face-down would mirror the pins. A BAV70W per string blocks that case. The strip stays dark, the driver latches its over-voltage protection, and no LED is reverse-stressed.
 - **Built to survive handling.**
@@ -86,7 +86,7 @@ These three LCSC parts are all JLCPCB "Extended" parts. The LEDs are sold only t
 | Differs from the standard build | The tub only | The tub and the four bottom keys (`key-x3ls` stands 0.8 mm taller than `key-x3std`, for the raised face); 13.7 mm deep |
 | Front shell | Stops for the thinner plain panel; a raised ceiling over the left border; hold-down pads between the pairs; a wider ribbon gap | Front raised 1.2 mm over x3's, 0.8 over the standard build's (still one flat face); a channel for the bar with the light path to the window; hold-down pads; a neck gap in the chin |
 
-Each case project carries a copy of this strip's outline and fold geometry (`hardware/reference/light-strip/strip-geometry.json`, from `build/geometry.json` here); [docs/DESIGN.md §4](docs/DESIGN.md#4-geometry-and-fold) has the geometry.
+Each case project carries a copy of this strip's outline and fold geometry (`hardware/reference/light-strip/strip-geometry.json`, from `build/geometry.json` here, a git-ignored file that `tools/export_geometry.py` writes with KiCad's Python); [docs/DESIGN.md §4](docs/DESIGN.md#4-geometry-and-fold) has the geometry.
 
 ## Using it
 
@@ -168,21 +168,21 @@ The research and review notes are dated records; `docs/DESIGN.md` is current whe
 
 ### Regenerating
 
-Close the project in KiCad first; the generator refuses to run while KiCad holds a lock file. Then run:
+Close the project in KiCad first; the generator refuses to run while KiCad holds a lock file. Then run these in PowerShell (on another system, use KiCad 9's Python the same way):
 
-```bash
-"C:\Program Files\KiCad\9.0\bin\python.exe" tools\generate.py
+```powershell
+& "C:\Program Files\KiCad\9.0\bin\python.exe" tools\generate.py
 ```
 
-```bash
-"C:\Program Files\KiCad\9.0\bin\python.exe" tools\make_outputs.py
+```powershell
+& "C:\Program Files\KiCad\9.0\bin\python.exe" tools\make_outputs.py
 ```
 
 Set `KICAD9_DIR` and `KICAD_CLI` if KiCad is installed somewhere else.
 
-- **Fold renders:** run `tools/export_geometry.py`, then `blender -b -P tools/blender_fold.py -- 64 426` and `-- 64 368`. This needs Blender.
+- **Fold renders:** run `tools/export_geometry.py` with KiCad's Python (it writes the git-ignored `build/geometry.json`), then `blender -b -P tools/blender_fold.py -- 64 426` and `-- 64 368`. This needs Blender.
 - **Optics model:** `tools/optics_sim.py` needs numpy and matplotlib.
-- **After a geometry change:** copy `build/geometry.json` into both case projects of silkscreen-enclosures, as `enclosures/case-426/hardware/reference/light-strip/strip-geometry.json` and `enclosures/case-368/hardware/reference/light-strip/strip-geometry.json`, and rebuild those cases (that repo's `enclosures/README.md`, "Rebuilding"). If `tools/optics_sim.py`'s heatmap changes, copy `docs/images/optics_heatmaps.png` there too (the showcase uses it).
+- **After a geometry change:** first run `tools/export_geometry.py` with KiCad's Python, which writes `build/geometry.json` (git-ignored, so it is not in a fresh clone), then copy that file into both case projects of silkscreen-enclosures, as `enclosures/case-426/hardware/reference/light-strip/strip-geometry.json` and `enclosures/case-368/hardware/reference/light-strip/strip-geometry.json`, and rebuild those cases (that repo's `enclosures/README.md`, "Rebuilding"). If `tools/optics_sim.py`'s heatmap changes, copy `docs/images/optics_heatmaps.png` there too (the showcase uses it).
 
 The layout is generated, so GUI edits to the `.kicad_pcb` are overwritten the next time `generate.py` runs. Make changes in `tools/params.py` or `tools/build_pcb.py`, or stop using the generator and edit the board by hand from then on.
 
