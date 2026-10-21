@@ -2,7 +2,7 @@
 
 This guide takes a bare rev A flex through to a working light in a Silkscreen reader: either the **4.26″** reader with a plain `GDEY0426T82` panel, or the **3.68″** x3 reader. Each needs its light-strip case from the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo (the `print/` and `enclosures/` paths below are in that repo). You also need a main board with the frontlight driver populated (U10 and friends; the trimmed x3 board keeps all of it).
 
-**The light-strip cases are in development and not released:** the website offers only the standard cases, and no case has been printed around a strip yet.
+**The light-strip cases are in development and not released:** the website does not offer them, and no case has been printed around a strip yet.
 
 The reasons behind each step are in [DESIGN.md](DESIGN.md). The showcase source in silkscreen-enclosures (`showcase/`) builds a page that folds the strip into either reader step by step and shows every piece of tape.
 

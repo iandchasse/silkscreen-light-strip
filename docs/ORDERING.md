@@ -2,7 +2,7 @@
 
 **Rev A is untested.** Before you order, get one LED and diode-test it ([ASSEMBLY.md step 1](ASSEMBLY.md#1-check-led-polarity-before-anything-else)). LCSC sells them for a few cents, and the test settles the one assumption a reversed strip can't recover from.
 
-One strip design fits both readers: the 4.26in panel in `enclosures/case-426`, and the 3.68in panel in `enclosures/case-368`, both in the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo. Each reader needs a light-strip case, which is **in development and not released**: the website offers only the standard cases. The light-strip builds are in the silkscreen-enclosures source (its plate files' plate 2 holds the tub); on the 4.26 every other part is the same as the standard build's, and the 3.68 also has its own four bottom keys ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case)). You can order and bench-test the strip before printing either.
+One strip design fits both readers: the 4.26in panel in `enclosures/case-426`, and the 3.68in panel in `enclosures/case-368`, both in the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo. Each reader needs a light-strip case, which is **in development and not released**: the website does not offer them. The light-strip builds are in the silkscreen-enclosures source (its plate files' plate 2 holds the tub); on the 4.26 every other part is the same as the standard build's, and the 3.68 also has its own four bottom keys ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case)). You can order and bench-test the strip before printing either.
 
 ## Files
 

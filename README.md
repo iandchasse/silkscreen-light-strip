@@ -78,7 +78,7 @@ These three LCSC parts are all JLCPCB "Extended" parts. The LEDs are sold only t
 
 ## The cases
 
-**The light-strip cases are in development and are not released.** The website offers only the standard cases, and no case has been printed around a strip yet. Both readers' cases are in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) (`enclosures/case-426` and `enclosures/case-368`; until 2026-10-21 they lived in this repo). Each project builds a **standard** case and a **light-strip** case, and the two builds share every printed part except:
+**The light-strip cases are in development and are not released.** The website does not offer them, and no case has been printed around a strip yet. Both readers' cases are in [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) (`enclosures/case-426` and `enclosures/case-368`; until 2026-10-21 they lived in this repo). Each project builds a **standard** case and a **light-strip** case, and the two builds share every printed part except:
 
 | | 4.26″ (`enclosures/case-426`) | 3.68″ (`enclosures/case-368`) |
 |---|---|---|
