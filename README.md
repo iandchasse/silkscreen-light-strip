@@ -10,7 +10,7 @@
 >
 > See Silkscreen's AI disclosure: https://silkscreenreader.com/ai
 
-**A DIY warm/cool reading light for the [Silkscreen](https://github.com/iandchasse/silkscreen-pcb) e-reader.** It is a thin flex PCB that plugs into the main board's frontlight connector, `J3`, in place of a panel's bonded frontlight. It runs six warm/cool pairs of side-emitting LEDs along the left edge of the e-paper panel, and the light grazes across the page with no light guide.
+**A DIY warm/cool reading light for the [Silkscreen](https://github.com/iandchasse/silkscreen-pcb) e-reader.** It is a thin flex PCB that plugs into the main board's frontlight connector (labelled `J3` on the back of the board), in place of a panel's bonded frontlight. It runs six warm/cool pairs of side-emitting LEDs along the left edge of the e-paper panel, and the light grazes across the page with no light guide.
 
 **One strip fits two readers:**
 
@@ -37,7 +37,7 @@
 |:---:|
 | ![Flat pattern](docs/images/render_front.png) |
 
-| 4.26″: on the border, around the glass edge | 4.26″: behind the board, into J3 |
+| 4.26″: on the border, around the glass edge | 4.26″: behind the board, into the frontlight connector |
 |:---:|:---:|
 | ![4.26 corner](docs/images/fold_corner.png) | ![4.26 back](docs/images/fold_back.png) |
 
@@ -47,7 +47,7 @@
 
 ## What it is
 
-- **Where it goes.** The LED bar runs along the panel's left long edge, hidden under the bezel. The strip then sweeps along the bottom border and folds over the bottom glass edge, through the main board's FPC slot, and plugs into `J3` on the back of the board. The fold follows the path of the stock frontlight ribbon.
+- **Where it goes.** The LED bar runs along the panel's left long edge, hidden under the bezel. The strip then sweeps along the bottom border and folds over the bottom glass edge, through the main board's FPC slot, and plugs into the frontlight connector on the back of the board. The fold follows the path of the stock frontlight ribbon.
   - **On the 4.26″** the bar is taped onto the panel's border, and the tail wraps the glass edge in a U.
   - **On the 3.68″** the smaller panel leaves the bar beside its glass, on a shelf in the front shell at the panel-front plane. The tail folds over the glass edge straight into the slot.
 - **Light.** There are twelve XINGLIGHT side-view LEDs: six `XL-4008WWC` (3000 K) and six `XL-4008UWC` (6000–6500 K). Each is 4.0 × 1.4 mm and 0.8 mm tall. They sit in six tight warm/cool pairs, 6.6 mm apart within a pair, so both colours light the same patch of page. Each LED's face points across the screen, parallel to its surface.
@@ -60,7 +60,7 @@
   - Each colour is one series string of 6 LEDs, about 17.4 V at 13.3 mA, or about 18.4 V at the driver including the flip-protection diode.
   - Worst case (−10 °C, top Vf bin) is 21.7 V, under the 22 V design ceiling and the driver's 24.25 V over-voltage limit. A high batch (LCSC lists the cool LED at 3.4 V) can pass 22 V in the cold, still under the over-voltage limit; check one string on the bench ([docs/DESIGN.md §2.1](docs/DESIGN.md#21-six-leds-per-string)).
   - The main board's TPS923610 does everything: constant current, dimming and warm/cool select. Only the firmware's "strip open" threshold changes (see below).
-- **Flip-proof.** J3 contacts both faces of a tail, so a tail inserted face-down would mirror the pins. A BAV70W per string blocks that case. The strip stays dark, the driver latches its over-voltage protection, and no LED is reverse-stressed.
+- **Flip-proof.** The frontlight connector contacts both faces of a tail, so a tail inserted face-down would mirror the pins. A BAV70W per string blocks that case. The strip stays dark, the driver latches its over-voltage protection, and no LED is reverse-stressed.
 - **Built to survive handling.**
   - The bar ends in a full round. Every turn of the outline is a sweeping radius of 1.6–4 mm, and the outer corners span the foot's full 3.5 mm height. Only two places stay small: the contact tab's R0.2 tip corners, which Hirose specifies, and one 1 mm inside corner on the stiffener.
   - The folding section is 5.5 mm wide and carries four 0.4 mm conductors on one copper layer. It has no vias, pads or stiffener, and a copper tear-stop rail runs along each edge.
@@ -72,8 +72,8 @@
 | Build | 2-layer flex, 0.11 mm, 25 µm adhesiveless polyimide, black coverlay, ENIG |
 | Stiffeners | PI 0.225 mm in three pieces: the top pair, the bar and foot, and the last 14 mm of the tail (0.30 mm at the contacts). 3M 9077 tape on the two front pieces. |
 | Driver output | About 18.4 V typical; 15.9–21.7 V across LED bins and −10 to 60 °C, including the flip-protection diode |
-| Current | 13.3 mA nominal and 13.9 mA maximum, set by the main board's `R37` = 15 Ω. One string at a time. |
-| Connector | Gold fingers for `J3`, Hirose FH34SRJ-6S-0.5SH(50). Pins: 1 LED_SW, 2 C−, 3/4 NC, 5 LED_SW, 6 W−. |
+| Current | 13.3 mA nominal and 13.9 mA maximum, set by the main board's 15 Ω current-set resistor (`R37`). One string at a time. |
+| Connector | Gold fingers for the main board's frontlight connector (`J3`), a Hirose FH34SRJ-6S-0.5SH(50). Pins: 1 LED_SW, 2 C−, 3/4 NC, 5 LED_SW, 6 W−. |
 | Parts | 12 LEDs and 2 BAV70W, plus three wire/probe pads on the tail (`S`, `C`, `W`) |
 
 ## Bill of materials
@@ -111,7 +111,7 @@ Each case project carries a copy of this strip's outline and fold geometry (`har
 
 ### Assemble and fit
 
-[docs/ASSEMBLY.md](docs/ASSEMBLY.md) covers the polarity check, soldering, a bench test through the three pads (`S`, `C`, `W`), which reader and which case, the fit on the 4.26″ (on the border) and on the 3.68″ (beside the panel, with the top pair folded back), `J3`, the case, firmware bring-up and troubleshooting.
+[docs/ASSEMBLY.md](docs/ASSEMBLY.md) covers the polarity check, soldering, a bench test through the three pads (`S`, `C`, `W`), which reader and which case, the fit on the 4.26″ (on the border) and on the 3.68″ (beside the panel, with the top pair folded back), plugging into the frontlight connector, the case, firmware bring-up and troubleshooting.
 
 ### Firmware
 
@@ -143,7 +143,7 @@ Light that grazes a page falls off steeply with distance. The geometric model in
 |---|---|
 | [`docs/DESIGN.md`](docs/DESIGN.md) | Why the strip is as it is: the main-board fixes, the electrical design (six LEDs per string, the firmware thresholds, the two diodes), the LEDs, the geometry and fold on both readers, robustness, optics, the flex build and DFM, verification and open items. It is current where the dated notes differ. |
 | [`docs/ORDERING.md`](docs/ORDERING.md) | The JLCPCB flex order: the files, the form field by field, the remark, the production-file review, bare or assembled, a cost ballpark and a checklist before you pay (also the Fabrication Toolkit route) |
-| [`docs/ASSEMBLY.md`](docs/ASSEMBLY.md) | The LED polarity test, soldering, the bench test, which reader and case, fitting on the 4.26″ and the 3.68″, `J3`, the case, firmware bring-up and troubleshooting |
+| [`docs/ASSEMBLY.md`](docs/ASSEMBLY.md) | The LED polarity test, soldering, the bench test, which reader and case, fitting on the 4.26″ and the 3.68″, plugging into the frontlight connector, the case, firmware bring-up and troubleshooting |
 | [`docs/reports/design_summary.md`](docs/reports/design_summary.md) | The as-built numbers, regenerated by `tools/report_design.py` on every build |
 | [`docs/reports/erc.rpt`](docs/reports/erc.rpt), [`drc.rpt`](docs/reports/drc.rpt) (and `.json`) | The ERC and DRC (with schematic parity) reports from `tools/make_outputs.py`; zero findings |
 | [`docs/silkscreen-light-strip_schematic.pdf`](docs/silkscreen-light-strip_schematic.pdf), [`_layout.pdf`](docs/silkscreen-light-strip_layout.pdf) | The schematic, and the layout one layer per page |
@@ -164,7 +164,7 @@ The research and review notes are dated records; `docs/DESIGN.md` is current whe
 | Path | What |
 |---|---|
 | `silkscreen-light-strip.kicad_pro/.kicad_sch/.kicad_pcb` | The KiCad 9 project. It is generated, but you can open and edit it like any other project. |
-| `lib/` | Project footprints, symbols and 3D models: the LED (VRML plus a STEP body), the J3 contact tail, SOT-323 and the wire pad |
+| `lib/` | Project footprints, symbols and 3D models: the LED (VRML plus a STEP body), the contact tail for the frontlight connector, SOT-323 and the wire pad |
 | `production/` | `*_gerbers.zip` for the flex order, plus `jlc_bom.csv`, `jlc_cpl.csv`, `bom.csv` and `gerbers/` |
 | `fabrication-toolkit-options.json` | Settings for the Fabrication Toolkit plugin, if you make the order files with it instead ([ORDERING.md](docs/ORDERING.md#with-the-fabrication-toolkit-plugin)) |
 | `docs/` | Schematic and layout PDFs, `DESIGN.md`, `ASSEMBLY.md`, `ORDERING.md`, renders, `mechanical/` (flat STEP/VRML), `reports/` (ERC/DRC/as-built summary), `research/`, `review/` |
@@ -198,9 +198,9 @@ The layout is generated, so GUI edits to the `.kicad_pcb` are overwritten the ne
 
 ## Related
 
-- [silkscreen-pcb](https://github.com/iandchasse/silkscreen-pcb): the main board, including `J3` and the TPS923610 driver ([HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
+- [silkscreen-pcb](https://github.com/iandchasse/silkscreen-pcb): the main board, including the frontlight connector (`J3`) and the TPS923610 driver ([HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
 - [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures): the cases; the light-strip builds are in development.
-- [silkscreen-light-attachment](https://github.com/iandchasse/silkscreen-light-attachment): a different light, a clip-on bar on `J6`, for a reader with nothing on `J3`. The two are alternatives.
+- [silkscreen-light-attachment](https://github.com/iandchasse/silkscreen-light-attachment): a different light, a clip-on bar that plugs into the main board's expansion header (`J6`), for a reader with nothing in the frontlight connector. The two are alternatives.
 - [silkscreenreader.com](https://silkscreenreader.com): the Silkscreen site. It does not offer the strip.
 
 ## License

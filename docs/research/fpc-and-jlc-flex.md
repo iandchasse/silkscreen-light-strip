@@ -2,7 +2,7 @@
 
 Researched 2026-09-24. Every number cites a source. Anything not confirmed from a source is marked UNVERIFIED. Source tags ([H25], [JCAP], ...) are defined at the top of each section.
 
-## 1. Hirose FH34SRJ-6S-0.5SH(50) (main board J3)
+## 1. Hirose FH34SRJ-6S-0.5SH(50) (the main board's frontlight connector, J3)
 
 Sources:
 - [H25] Hirose FH34 series catalog, "Mar. 2025" edition (printed Aug.1.2026), official: https://www.hirose.com/en/product/document?clcode=&productname=&series=FH34SRJ&documenttype=Catalog&lang=en&documentid=en_FH34_CAT (pages 3, 4, 5, 6, 8, 9, 16-19 read; p.6 and p.8 rendered and inspected visually).

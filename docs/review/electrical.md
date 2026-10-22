@@ -5,7 +5,7 @@ Date 2026-09-25. Everything was read-only: no `.kicad_*`, lib or tools file was 
 
 ## Verdict
 
-**Do not order assembly yet.** The nets, the diode pinout, the J1 map and the voltage budget all check out.
+**Do not order assembly yet.** The nets, the diode pinout, the map of J1 (the contact tail) and the voltage budget all check out.
 The LED polarity does not. I re-derived it three independent ways (the tape cross-section, the manufacturer's
 reel note, and both EasyEDA/JLC library footprints). All three put the **cathode on the RIGHT** in top view with
 the light going up (-y), which is the **opposite** of the footprint (`pad 1 = K at x = -1.85`, on the left).
@@ -22,7 +22,7 @@ assembly would therefore be dead flex. A $1 sample and a multimeter diode test s
 | E3 | NOTE | If E1 is real, the BAV70W clamp does not protect: each string sits at about -24 V (~4.7-5 V per LED, at the 5 V VR rating) until OVP latches |
 | E4 | NOTE | Colour-switch transient with worst-case Vf-bin mismatch: ~50 mA peak, still under IFP 80 mA |
 | E5 | NOTE | LCSC parametrics disagree with the datasheets on Vf (UWC "3.4 V"); the budget still holds at 3.6 V |
-| E6 | NOTE | The unselected string glows at ~1-3 uA through R49/R50. This is a main-board behaviour, slightly reduced by the BAV70W |
+| E6 | NOTE | The unselected string glows at ~1-3 uA through the main board's bleeders R49/R50. This is a main-board behaviour, slightly reduced by the BAV70W |
 
 ---
 
@@ -130,14 +130,14 @@ In the normal insertion with reversed LEDs:
 - The string therefore carries V_OVP - V_A1 ≈ 23.3-24.8 V reverse. That is about 4.7-5.0 V per LED on average,
   and uneven sharing can put one LED above the datasheet VR of 5 V (Ir ≤ 5 uA @ 5 V).
 - The exposure is short: 3 OVP trips, then the part latches. InGaN parts usually survive this.
-- It is no hazard to the main board: D3 SMAJ26A (VBR ≥ 28.9 V) stays off, and D8 sees only the returns near 0 V.
+- It is no hazard to the main board: its clamp D3 SMAJ26A (VBR ≥ 28.9 V) stays off, and the clamp D8 sees only the returns near 0 V.
 
 ## E4 (NOTE): Colour-switch pulse
 
 - JLC can't choose bins. The worst case is warm N12-1 (3.1-3.3 V) against cool N11-8 (2.7-2.9 V), which gives
   ΔV up to 0.6 V per LED, or 3.0 V per string.
-- When the colour switches to the lower-Vf string, C9 (~2 uF effective) discharges through it: 5 LEDs at about
-  12 ohm dynamic each, plus the BAV70W, R37 15 ohm and the BSS138, about 80 ohm in total.
+- When the colour switches to the lower-Vf string, the driver's output capacitor C9 (~2 uF effective) discharges through it: 5 LEDs at about
+  12 ohm dynamic each, plus the BAV70W, the current-set resistor R37 15 ohm and the BSS138, about 80 ohm in total.
 - Result: about +37 mA on top of 13.9 mA, so **~50 mA peak** with τ ≈ 0.16 ms, once per switch.
 - That is below the IFP of 80 mA (≤ 0.1 ms, 1/10 duty, datasheet p.3). It is acceptable, but it is worse than
   the 1 V estimate in `electrical-limits.md` §5.
@@ -172,14 +172,14 @@ In the normal insertion with reversed LEDs:
   - Both are correct.
 - **BAV70W part.** C28064 is "BAV70W,115, Nexperia, SOT-323, 1 pair common cathode, 100 V", with 21,660 in stock.
 - **J1 vs J3.** Read-only on `silkscreen-pcb/silkscreen_pcb.kicad_pcb`:
-  - J3 (B.Cu, rot 180) pads: 1 LED_SW @ x 52.987, 2 C- @ 53.487, 3/4 unconnected @ 53.987/54.487,
+  - J3 (the main board's frontlight connector; B.Cu, rot 180) pads: 1 LED_SW @ x 52.987, 2 C- @ 53.487, 3/4 unconnected @ 53.987/54.487,
     5 LED_SW @ 54.987, 6 W- @ 55.487.
   - J1 fingers carry the identical nets at the identical x. All folds are about lines parallel to x, so x is
     preserved.
   - J3 is dual-contact, so the contact face doesn't matter.
   - Pins 3/4 are isolated pads. The pin 1/5 tie matches the board.
 - **Test pads.** TP1 = LED_SW, TP2 = C-, TP3 = W-.
-- **Main-board context** (pcbnew):
+- **Main-board context** (pcbnew; U10 is the frontlight driver, J6 the expansion header, Q5/Q6 the warm/cool string switches, R39 the top of the monitor divider):
   - LED_SW connects to U10.5, C9, D3 SMAJ26A, R39 1M, J3.1/5, J6.5 and TP3.
   - W- connects to Q5.3, R50 1M, D8, J3.6 and J6.6. C- connects to Q6.3, R49 1M, D8, J3.2 and J6.11.
   - The Q5/Q6 sources go to U10.3 and R37 (15 ohm), so the FB current is 0.2 V / 15 ohm = 13.3 mA.

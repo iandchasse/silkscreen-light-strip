@@ -1,7 +1,7 @@
 # Notes for coding agents
 
 Ian (idc LLC) owns this project: the Silkscreen light strip, a 2-layer flex PCB (rev A, untested) that plugs into
-the main board's `J3`. The cases it goes in are a separate repo, silkscreen-enclosures. Machine-specific notes, if
+the main board's frontlight connector (`J3`). The cases it goes in are a separate repo, silkscreen-enclosures. Machine-specific notes, if
 any, are in `CLAUDE.local.md` (not in git).
 
 ## Ground rules

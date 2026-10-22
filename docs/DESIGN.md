@@ -16,22 +16,22 @@ The strip replaces a bonded frontlight, so the main board decides almost everyth
 
 | Item | Value | Source |
 |---|---|---|
-| Driver | U10 TPS923610, a synchronous boost with constant current. LED_SW feeds both anodes. Q5 (warm, `W−`) and Q6 (cool, `C−`) switch the returns into R37. | silkscreen-pcb HARDWARE.md §7 |
+| Driver | The frontlight driver U10, a TPS923610 synchronous boost with constant current. LED_SW feeds both anodes. The string switches Q5 (warm, `W−`) and Q6 (cool, `C−`) connect the returns to the current-set resistor R37. | silkscreen-pcb HARDWARE.md §7 |
 | Current | 200 mV / R37 15 Ω = **13.3 mA** nominal, 13.9 mA worst case (reference and resistor tolerance). One string at a time. | TI SNVSCN8A §6.5 |
 | OVP | TPS923610: 24.25 / 25 / 25.5 V (min / typ / max). After 3 trips it latches off, and it resets only through ADIM low for more than 2.5 ms or a VIN UVLO. | TI §6.5, §7.3.6 |
 | Off-state floor | A boost cannot go below VIN. The body diode leaves a DC path from VIN (up to 5.5 V on USB) into the string, so a string must hold off **more than about 5.2 V** at µA currents, or it conducts with no regulation, even when the light is off. | TI §7.3.3 |
 | Enable and dim | ADIM does both. A first HIGH of more than 40 µs enables the part, PWM at 10–200 kHz sets an analog (flicker-free) current, and LOW for more than 2.5 ms shuts it down. | TI §6.5, §7.3.8 |
-| Monitor | `LED_MONIT` = LED_SW × 120 k / 1.12 M (0.1071), 10.7 ms filter | R39 / R41 / C31 |
-| Protection | D3 SMAJ26A on LED_SW, and D8 PESD2IVN-UX on C−/W−, both beside J6, 140–170 mm of trace from J3. R49/R50 are 1 MΩ bleeders on C−/W−. | main-board PCB |
+| Monitor | `LED_MONIT` = LED_SW × 120 k / 1.12 M (0.1071), 10.7 ms filter | the monitor divider R39 / R41 and filter C31 |
+| Protection | The clamps D3 (SMAJ26A) on LED_SW and D8 (PESD2IVN-UX) on C−/W−, both beside the expansion header J6, 140–170 mm of trace from the frontlight connector J3. R49/R50 are 1 MΩ bleeders on C−/W−. | main-board PCB |
 | Connector | J3 Hirose FH34SRJ-6S-0.5SH(50): 0.5 mm pitch, top-and-bottom contact, back-flip, for a 0.3 ± 0.03 mm FPC | Hirose FH34 catalogue |
 | J3 nets | 1 LED_SW, 2 C−, 3 NC, 4 NC, 5 LED_SW, 6 W−. The fitting nails are GND, but the FPC never touches them. **The tail has no ground.** | main-board PCB |
 | Design target | Good Display's -FL01C frontlight: 5 dies per string, 15 V typ, IF ≤ 15 mA | FL01C spec |
 
 **The 3.68″ build uses a trimmed board** (cut at KiCad y 62, see the x3 case's `hardware/reference/board-trim.md`).
 
-- Every frontlight part survives the trim: U10, L2, C9, R37, Q5/Q6, U12, R39/R41, R49/R50 and J3. The FPC slot is unchanged.
+- Every frontlight part survives the trim: the driver U10, its inductor L2 and output capacitor C9, R37, Q5/Q6, the colour-select inverter U12, R39/R41, R49/R50 and J3. The FPC slot is unchanged.
 - **The trim removes D3 and D8.** On that build nothing clamps the strip's nets, so handle the strip ESD-safe and plug it in with the board unpowered.
-- **On a board made before silkscreen-pcb Rev 1.01, the trim also cuts 3V3 to Q2/R81 and splits the ground.** The charger's enable stays low, so the x3 board will not charge, and the power section's ground (U3, U2, Q1) reaches the rest of the board only through one shell tab of the microSD socket. This is a board issue, not a strip issue. Two wires fix a built board, including the 2026-09-21 order: R40 pad 2 to R81 pad 2 (or bridge the two cut 3V3 stubs at the edge), and C6 pad 2 to C21 pad 2. Rev 1.01 (2026-09-30) has a 3V3 link and GND stitching vias below the cut and needs neither (silkscreen-pcb README, "Cutting the board down for a smaller display").
+- **On a board made before silkscreen-pcb Rev 1.01, the trim also cuts 3V3 to the charger's enable switch (Q2/R81) and splits the ground.** The charger's enable stays low, so the x3 board will not charge, and the power section's ground (the regulator U3, the power mux U2 and the protection FET Q1) reaches the rest of the board only through one shell tab of the microSD socket. This is a board issue, not a strip issue. Two wires fix a built board, including the 2026-09-21 order: R40 pad 2 to R81 pad 2 (or bridge the two cut 3V3 stubs at the edge), and C6 pad 2 to C21 pad 2. Rev 1.01 (2026-09-30) has a 3V3 link and GND stitching vias below the cut and needs neither (silkscreen-pcb README, "Cutting the board down for a smaller display").
 
 ## 2. Electrical
 
@@ -163,7 +163,7 @@ The layout is chosen so one strip serves both panels:
 | **Bar** | x 43.00–45.30, y 57.90–135.50 | 2.3 | PI 0.225 + 3M 9077 |
 | **Foot** | y 135.50–139.00, x 43.00–58.00 | 3.5 | PI 0.225 + 3M 9077 (one piece with the bar) |
 | **Neck** | x 52.487–58.00, y 139.0 → 152.6 | 5.5 | No; bend zone y 140.7–152.3 has no vias, pads or B.Cu |
-| **Back run** | y 152.615–164.85 | 5.5, tapering to 3.5 over y 160.4–164.85 | PI 0.225 (the last 14 mm); carries D13/D14 and TP1–3 |
+| **Back run** | y 152.615–164.85 | 5.5, tapering to 3.5 over y 160.4–164.85 | PI 0.225 (the last 14 mm); carries the diodes D13/D14 and the test pads TP1–3 |
 | **Contact tab** | x 52.487–55.987, y 164.85–166.615 plus the tip | **3.50** | (same stiffener); fingers over the last 1.5 mm |
 
 - **LED faces** are at x 45.20. The flex stops 0.1 mm in front of them, at x 45.30.
@@ -188,7 +188,7 @@ The layout is chosen so one strip serves both panels:
 
 **Fold path.** The neck crosses the bare-glass ledge and wraps a U around the bottom glass edge. The inside radius is 0.7–0.9 mm: the tub has room to about 0.93, and 0.66 is the 6 × thickness minimum for single-layer copper. It then runs back under the glass, drops 90° through the board's FPC slot (y 141.2–142.5), and turns 90° onto the back to J3. The front shell's ribbon gap is widened to X 7.7, which leaves the neck 0.55 mm of clearance, and the U reaches about 1.7–2.1 mm past the glass edge.
 
-- **SW9's left lug lead** stands to Z 2.31, 0.10 mm (0.26 mm as placed) beside the U's lower leg. At the far-left extreme they overlap, so trim it flush and cover it with Kapton (ASSEMBLY §5 step 1).
+- **The Back button's (SW9's) left lug lead** stands to Z 2.31, 0.10 mm (0.26 mm as placed) beside the U's lower leg. At the far-left extreme they overlap, so trim it flush and cover it with Kapton (ASSEMBLY §5 step 1).
 - **The EPD FPC.** The neck's right edge is about 0.35 mm from the panel's own FPC at the 0.1 mm-inside placement. The U must not ride onto it.
 
 ### 4.3 On the 3.68″ (`enclosures/case-368`: light-strip front shell, midplate, its own bottom keys, one lid latch arm)
@@ -206,7 +206,7 @@ The layout is chosen so one strip serves both panels:
 - The left lip is gone (it was in the light path), so small hold-down pads between the pairs hold the panel's left border. Pads 1–4 each hang from a 2 mm rib under the channel ceiling, which keeps the border within about 0.03 mm of the other three. Pads and ribs shade about 4.8 % of the light, all of it steep rays.
 - **Bottom keys.** Since Rev L (2026-09-26) the keys are straight sliding keys on bell cranks (the case README's "Bottom keys"). Each stands 1.5 mm over its own tub's face, so the light-strip build has its own four keys (`key-x3ls`), 0.8 mm taller than the standard build's (1.2 until 2026-10-10, when the standard face went up 0.4 for its screen bevel); the cranks, the rod and the gate are shared. (Until Rev L the rocker caps were 0.155 mm taller and flush in wells.)
 
-**The fold-back.** The top piece folds 180° backward at the hinge and lies under the bar, its LEDs facing the back. The front shell's frame is removed there (Y 73.4–92.7), and the **midplate is notched through** under it, on into SW7's two front lead holes so no web narrower than a printed line is left. Nothing else in the midplate changes except one detent, moved from Y 86 to 58, clear of the fold.
+**The fold-back.** The top piece folds 180° backward at the hinge and lies under the bar, its LEDs facing the back. The front shell's frame is removed there (Y 73.4–92.7), and the **midplate is notched through** under it, on into the left-up page key's (SW7's) two front lead holes so no web narrower than a printed line is left. Nothing else in the midplate changes except one detent, moved from Y 86 to 58, clear of the fold.
 
 - **Lid latch arm.** The folded pair's D1 lies over the lid's left latch arm at Y 83. That arm gets a 0.5 × 0.5 mm chamfer on its inner top corner, so D1 clears it in every case: strip at the ribs or against the wall, 0.8 or 0.9 mm LED, nominal or thick stack, at rest and while the lid snaps on. The worst case clears it by 0.10 mm as modelled and 0.066 mm in the sliced G-code. The barb, catch and lead-in are untouched, so the latch holds as before. This is the lid's only change.
 

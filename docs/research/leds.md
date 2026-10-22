@@ -7,7 +7,7 @@ Status: DONE (research pass 1). Date: 2026-09-24. Author: LED sourcing research 
 - Side-view (right-angle) SMD white LED that emits parallel to the PCB.
 - A warm variant (about 2700-3500 K) and a cool variant (about 5000-6500 K) in the SAME package and footprint, ideally from the same series.
 - Low profile: the height above the PCB should ideally be 1.0 mm or less, and lower is better.
-- Rated for at least 20 mA continuous. We run about 13.3 mA nominal and 13.9 mA worst case (TPS923610, R37 = 15 ohm).
+- Rated for at least 20 mA continuous. We run about 13.3 mA nominal and 13.9 mA worst case (TPS923610, current-set resistor R37 = 15 ohm).
 
 ## Recommendation
 

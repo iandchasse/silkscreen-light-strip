@@ -54,7 +54,7 @@ Sources fetched today:
 ### DFM-5 MINOR (confidence high): the test-pad coverlay webs are 0.2 mm, and JLC removes webs under 0.5
 - TP1..TP3 (1.1 mm pads, 1.3 mm openings) are at 1.5 mm pitch (y 134.95 / 136.45 / 137.95), so the webs are 0.2 mm.
 - JLC removes webs under 0.5 mm. The result is one bare 1.3 x 4.3 mm window with 0.4 mm copper gaps between LED_SW, C- and W-, right where DIY wires get soldered.
-- The vias at (58.4, 136.45) and (58.4, 137.8) are untented inside TP2 and TP1.
+- The vias at (58.4, 136.45) and (58.4, 137.8) are untented inside the test pads TP2 and TP1.
 - Fix: use a 2.0 mm pitch, 0.9 mm pads, or stagger the pads.
 
 ### DFM-6 MINOR: the ordering package does not carry the order settings
@@ -110,7 +110,7 @@ Sources fetched today:
   | BAV70W,115 | C28064 | 21,660 | $0.0272 @20 |
 
   All three exist and match their BOM descriptions (BAV70W is common cathode). `leds.md` records all three as JLC Extended parts; I did not re-check that. Expect a feeder fee of about $3 each.
-- BOM and CPL format: the headers match JLC's templates (Comment/Designator/Footprint/JLCPCB Part #; Designator/Mid X/Mid Y/Layer/Rotation). J1 and TP1..TP3 are correctly left out. The CPL Y values are negative, matching the Gerber frame. The footprint origin is the pad midpoint in both KiCad and EasyEDA for all three parts, so there is no centroid offset.
+- BOM and CPL format: the headers match JLC's templates (Comment/Designator/Footprint/JLCPCB Part #; Designator/Mid X/Mid Y/Layer/Rotation). J1 (the contact tail) and TP1..TP3 (the test pads) are correctly left out. The CPL Y values are negative, matching the Gerber frame. The footprint origin is the pad midpoint in both KiCad and EasyEDA for all three parts, so there is no centroid offset.
 - Cost estimate (UNVERIFIED; no instant quote was run):
   - **5 bare boards**, 2L 0.11 mm, yellow coverlay, ENIG, PI 0.225 on two areas, 3M 9077 stacked: about $45-75, plus $15-25 shipping. The flex baseline is "$25 for 5 pcs", 2L is roughly 1.4-1.5x, then the PI stiffener, 3M tape and the $8.14 stacked-stiffener fee are added.
   - **2 of those assembled**: add about $65-95. That covers standard PCBA setup (about $25), stencil (about $8), FPC fixture ($23.57), 3 Extended feeder fees (about $9), parts (about $2), and the JLC panel/rails if they panelize it.

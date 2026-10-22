@@ -1,6 +1,6 @@
 # Assembly and fitting
 
-This guide takes a bare rev A flex through to a working light in a Silkscreen reader: either the **4.26″** reader with a plain `GDEY0426T82` panel, or the **3.68″** x3 reader. Each needs its light-strip case from the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo (the `print/` and `enclosures/` paths below are in that repo). You also need a main board with the frontlight driver populated (U10 and friends; the trimmed x3 board keeps all of it).
+This guide takes a bare rev A flex through to a working light in a Silkscreen reader: either the **4.26″** reader with a plain `GDEY0426T82` panel, or the **3.68″** x3 reader. Each needs its light-strip case from the [silkscreen-enclosures](https://github.com/iandchasse/silkscreen-enclosures) repo (the `print/` and `enclosures/` paths below are in that repo). You also need a main board with the frontlight driver populated (the driver chip, labelled U10, and the parts around it; the trimmed x3 board keeps all of it).
 
 **The light-strip cases are in development and not released:** the website does not offer them, and no case has been printed around a strip yet.
 
@@ -32,10 +32,10 @@ If it lights only the other way round, **stop and don't solder.** The footprint 
 
 Tape the flex flat, LED side (white silkscreen) up.
 
-- **Warm/cool placement.** In every pair, the **warm XL-4008WWC goes in the lower spot**: D1–D6, nearer the foot. The **cool XL-4008UWC goes in the upper spot**: D7–D12. The two parts look identical, so keep the reels apart.
+- **Warm/cool placement.** In every pair, the **warm XL-4008WWC goes in the lower spot**, nearer the foot (D1–D6 in the BOM). The **cool XL-4008UWC goes in the upper spot** (D7–D12). The two parts look identical, so keep the reels apart.
 - **LED orientation.** The window faces the bar's inner edge, toward the screen. The **cathode** is the lower pad of each footprint, marked by a short white bar on the outer edge beside it. The anode is the upper pad.
 - **LED position.** Seat each LED flat and square, its window just behind the flex's inner edge, not overhanging it.
-- **Diodes.** D13 and D14 (BAV70W) sit side by side on the tail. On each, the single pin (pin 3) points back toward the LEDs.
+- **Diodes.** The two BAV70W diodes (D13 and D14 in the BOM) sit side by side on the tail. On each, the single pin (pin 3) points back toward the LEDs.
 - **Solder.**
   - Keep each hand joint short: 2–3 s at the lowest temperature that wets.
   - Use very little solder. The LED sits only 0.8 mm tall, and a big fillet can wick up to the window.
@@ -51,7 +51,7 @@ Test before the strip goes anywhere near a panel. Three pads on the tail each ha
 - **W** = W−, the warm return.
 
 1. **Coin-cell every LED first.** A CR2032 across any single LED's two pads, "+" on the upper pad, lights just that LED. One that won't light is reversed, badly soldered or open. Fix it now: the supply test below can over-stress a reversed LED.
-2. **Check for shorts.** With a meter on the diode range, **S–C and S–W must read open (OL) in both directions.** A reading means a solder bridge, usually at D13/D14 or a test pad. Don't fit a strip that fails this: on the reader, that short puts the battery or USB across the main board's 15 Ω R37 with no regulation, about 0.3 A, even with the light off.
+2. **Check for shorts.** With a meter on the diode range, **S–C and S–W must read open (OL) in both directions.** A reading means a solder bridge, usually at D13/D14 or a test pad. Don't fit a strip that fails this: on the reader, that short puts the battery or USB across the main board's 15 Ω current-set resistor (R37) with no regulation, about 0.3 A, even with the light off.
 3. **Set the supply** to a **5–10 mA current limit** and 0 V.
 4. **Cool string.** Connect **+ to S** and **− to C**, and raise the voltage slowly. The six cool LEDs should light together at about 16–20 V, depending on bin and temperature.
 5. **Warm string.** Move **− to W**. The six warm LEDs should light.
@@ -74,7 +74,7 @@ Both case READMEs have a "Light-strip variant" section with the measured numbers
 
 ## 5. 4.26″: strip on the panel
 
-1. **Trim SW9's left mounting-lug lead.** It stands on the board's front just left of the slot, next to where the strip's neck passes (KiCad about x 52.2, y 143.9). As it comes, its tip is 0.71 mm proud of the board and 0.10 mm from the neck. Cut it flush (at most 0.1 mm proud) and cover it with Kapton.
+1. **Trim the Back button's left mounting-lug lead.** The Back button is the leftmost of the four bottom-row buttons, labelled SW9 on the board. Its lead stands on the board's front just left of the slot, next to where the strip's neck passes (KiCad about x 52.2, y 143.9). As it comes, its tip is 0.71 mm proud of the board and 0.10 mm from the neck. Cut it flush (at most 0.1 mm proud) and cover it with Kapton.
 2. **Kapton on the slot edges.** Put Kapton on both edges of the board's FPC slot where the neck passes (the left end of the slot).
 3. **Prepare the panel.** Peel its thin shipping film (0.065 mm) at least where the case's stops and the strip land, and its pull tape. Clean the left and bottom borders with isopropyl alcohol, not the active area. Leave the panel's own protective sheet on.
 4. **Lay the strip.**
@@ -88,7 +88,7 @@ Both case READMEs have a "Light-strip variant" section with the measured numbers
 5. **Wrap the U.** Wrap the neck 180° around the bottom glass edge, inside radius about 0.7–0.9 mm (a 1.5–1.8 mm drill shank is a good former). **Never crease it**: the glass edge is bare and sharp.
    - Keep the wrap square to the glass edge. The neck's right edge is only 0.2–0.8 mm from the panel's own FPC; the U must not ride onto, press on or pull that FPC's bond or bend area.
    - The spare 0.5–2.2 mm of tail stays in the U; don't let the loop balloon toward the board.
-6. **Board.** Take the tail through the board's slot and into J3 ([§7](#7-plug-into-j3)).
+6. **Board.** Take the tail through the board's slot and into the frontlight connector ([§7](#7-plug-into-the-frontlight-connector-j3)).
 7. **Into the case.** Stack the panel and strip, then the midplate, then the board, as in the case README (section 6). **Push the stack into the tub with the glass kept toward the right-hand wall** (held there, not pressed hard), so the bar stays clear of the left wall on the way in. The case's hold-down pads land between the LED pairs, off their solder joints.
 
 ## 6. 3.68″: fold back and fit beside the panel
@@ -107,23 +107,23 @@ On this reader the strip goes into the tub **before** the panel.
    4. Let the neck and tail hang out past the pocket's bottom edge.
 4. **Peel the foot's liner.** Then fit the panel as in the x3 README: glass to the lip, its own FPC at the bottom, its left edge against the two corner stops. The midplate springs press the panel's film onto the foot's tape.
 5. **Midplate, then the board.**
-   - Kapton on the slot's edges where the neck passes, and on SW9's pin just below the slot.
+   - Kapton on the slot's edges where the neck passes, and on the Back button's (SW9's) pin just below the slot.
    - Fold the neck over the glass edge and through the board's slot, 6.5 mm left of the panel's FPC.
-   - Plug the tail into J3 ([§7](#7-plug-into-j3)).
+   - Plug the tail into the frontlight connector ([§7](#7-plug-into-the-frontlight-connector-j3)).
    - This reader leaves **4–5.6 mm of spare tail**. Leave it as a loop between the slot and the stiffened end on the board's back (it stands about 2–3 mm off the board; the lid clears it). Part of it can sit in the chin instead, where the case's neck gap takes a small loop.
 
-## 7. Plug into J3
+## 7. Plug into the frontlight connector (J3)
 
-J3 is on the back of the main board. It is a back-flip ZIF: the lever is on the side away from the opening.
+The frontlight connector is on the back of the main board, labelled J3. It is a back-flip ZIF: the lever is on the side away from the opening.
 
 1. Flip the lever open.
 2. Insert the contact tab. **Its gold contacts face away from the board**, which also means the diodes and the S/C/W labels face you.
 3. Push the tab in **fully**, about 2.9 mm. The full 3.5 mm width runs only about 3.8 mm from the tip before the tail starts to widen, so about 1 mm of it stays visible outside the mouth.
-4. The white **triangle** marks contact 1. The fold keeps the pin order, so it lands on J3 pin 1 by itself.
+4. The white **triangle** marks contact 1. The fold keeps the pin order, so it lands on the connector's pin 1 by itself.
 5. Close the lever.
-6. **Strap the stiffened end** to the board's back with Kapton, between the test pads and the J3 mouth. J3 holds with only about 3 N, so the tape should take any pull.
+6. **Strap the stiffened end** to the board's back with Kapton, between the test pads and the connector's mouth. The connector holds with only about 3 N, so the tape should take any pull.
    - The strap goes over the **stiffened** part only; the loop of spare tail (3.68″) stays free.
-   - The back run passes over the main board's TP5 (W−). Leave TP5 unpopulated and flush.
+   - The back run passes over the main board's W− test point (TP5 in the schematic; it has no label on the board). Leave it unpopulated and flush.
 
 A tail inserted upside down is harmless: the strip stays dark and the driver latches off. Turn it over and re-seat it.
 
@@ -146,7 +146,7 @@ The light-strip cases are in development and not released; this section records 
 
 The strip is electrically a stock frontlight ([silkscreen-pcb HARDWARE.md §7](https://github.com/iandchasse/silkscreen-pcb/blob/master/docs/HARDWARE.md#7-frontlight-driver)).
 
-1. **Choose a colour.** With the light off, set `COLOR_SEL` (IO40): LOW selects cool, HIGH selects warm. R75 holds it LOW at boot.
+1. **Choose a colour.** With the light off, set `COLOR_SEL` (IO40): LOW selects cool, HIGH selects warm. A pull-down on the main board (R75) holds it LOW at boot.
 2. **Enable.** Drive `PWM_LED` (IO42, ADIM) **HIGH for at least 100 µs**. A bare PWM carrier may never enable the driver.
 3. **Dim.** Start PWM at 10–200 kHz from a low duty and ramp up. Dimming is analog inside the driver, so it doesn't flicker.
 4. **Check `LED_MONIT`** (IO2, ADC1_CH1) over the first second after enabling, keeping the peak:
@@ -171,10 +171,10 @@ A faint glow from the unselected string in a dark room is normal: a few µA leak
 | Symptom | Likely cause |
 |---|---|
 | Nothing lights; `LED_MONIT` 2.5–2.7 V within the first second, then falling to the off band | Tail flipped or not fully seated, or an LED reversed or open. Bench-test on S/C/W. |
-| Nothing lights; `LED_MONIT` in the off band with PWM running | The driver never enabled (check the ≥ 100 µs HIGH pulse), or it latched open earlier and C9 has drained since. Hold `PWM_LED` LOW for ≥ 3 ms, re-enable, and read again. |
-| `LED_MONIT` about 0.45 V at boot and the board warm near R37 | S shorted to C or W on the strip. Unplug it and do the meter check in §3. |
+| Nothing lights; `LED_MONIT` in the off band with PWM running | The driver never enabled (check the ≥ 100 µs HIGH pulse), or it latched open earlier and the driver's output capacitor (C9) has drained since. Hold `PWM_LED` LOW for ≥ 3 ms, re-enable, and read again. |
+| `LED_MONIT` about 0.45 V at boot and the board warm near the current-set resistor (R37) | S shorted to C or W on the strip. Unplug it and do the meter check in §3. |
 | One colour works, the other doesn't | Open joint or reversed LED in that string, or a BAV70W joint. Coin-cell each LED. |
 | Only the 3.68″'s top pair seems dark | Normal: it is folded under the bar and faces the back. |
-| Light flickers when the reader is tapped | J3 not latched, or the tail pulling on J3. Re-seat it and strap the back run. |
+| Light flickers when the reader is tapped | The frontlight connector's lever not closed, or the tail pulling on the connector. Re-seat it and strap the back run. |
 | `LED_MONIT` below 1.30 V at full duty, with the LEDs lit | Shorted LEDs or a solder bridge across part of a string. Power off: a string shorted out entirely draws current with no regulation. |
 | Bright band right at the left edge, dim right side | Expected with grazing light. See [DESIGN.md §6](DESIGN.md#6-optics). |

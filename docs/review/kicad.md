@@ -10,7 +10,7 @@ present during the review.
 **Verdict:** the project opens, checks clean and regenerates exactly (geometry and schematic), and the production
 gerbers match the board. Nothing here stops the board working or being built. What's left is tooling and hygiene:
 44 ERC exclusions copied over from the main board, a generator that only worked inside the parent folder (fixed
-in the working tree during the review), a hard-to-read schematic around J1, D11/D12 and TP1-3, no silkscreen
+in the working tree during the review), a hard-to-read schematic around J1 (the contact tail), D11/D12 (the diodes) and TP1-3 (the test pads), no silkscreen
 polarity marks on the LEDs, and a repo with no commits and no .gitignore, README or LICENSE.
 
 ---

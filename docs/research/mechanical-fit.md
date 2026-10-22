@@ -100,7 +100,7 @@ Main-board placement (enclosure and PCB) of the plain panel. The rear plane is a
 
 ---
 
-## 2. J3 insertion direction and contact face
+## 2. Frontlight connector (J3): insertion direction and contact face
 
 Facts [PCB]:
 
@@ -124,7 +124,7 @@ Facts [PCB]:
 - It is a trapezoid with corners (51.26, 142.5), (51.86, 141.2), (97.76, 141.2), (98.30, 142.5). So it is 1.3 mm wide,
   spans y 141.2..142.5 and x ~51.3..98.3.
 - It lies 0.47..1.77 mm INSIDE the panel's bottom edge (y 142.965).
-- J2 (EPD), J3 (FL) and J4 (CTP) all sit 13-17 mm above the slot on the back, with their fitting-nail side facing
+- J2 (the display connector), J3 (the frontlight connector) and J4 (the touch connector) all sit 13-17 mm above the slot on the back, with their fitting-nail side facing
   the slot.
 
 **FH34SRJ** [H25]:
@@ -180,7 +180,7 @@ Facts [PCB]:
 |---|---|---|---|---|
 | (a) Left long | 2.645 mm (panel edge x 43.055 to aperture edge x 45.70). The PS surface is flat from ~1.0 mm in | 55.68 mm (short axis) | The bar's lower end jogs in-plane under the bottom bezel to x 52.6..57.0, then follows the STOCK FL-tail path: over the glass edge, through the existing slot, ~13 mm to J3. No new enclosure path | **Chosen** |
 | (b) Top short | 2.74 - 0.7 = 2.04 mm | 92.8 mm | ~100 mm tail. The board has no top edge at x 44..86 (battery notch, battery cavity), so the tail would cross the battery | Rejected |
-| (c) Right long | 2.645 mm | 55.68 mm | Would need either a wrap at the right edge or a bottom-right slot exit, then ~45 mm across the back over J4 (x 90.3..96.2) and J2 (x 66.2..80.8) and their tails. USB J1 and SW11 are also near the right edge | Rejected as the primary. Possible as an ADD-ON bar joined by a bridge under the bottom bezel (y 134.3..137.3, on the flat PS, clear of the ledge and IC) |
+| (c) Right long | 2.645 mm | 55.68 mm | Would need either a wrap at the right edge or a bottom-right slot exit, then ~45 mm across the back over J4 (x 90.3..96.2) and J2 (x 66.2..80.8) and their tails. The USB-C socket J1 and the reset button SW11 are also near the right edge | Rejected as the primary. Possible as an ADD-ON bar joined by a bridge under the bottom bezel (y 134.3..137.3, on the flat PS, clear of the ledge and IC) |
 | (d) Bottom | 9.09 mm under the bezel, but the outer 4.0 mm is the bare-glass ledge with the COG IC, silicone and EPD FPC bond (GD: keep the bond/FPC area unloaded [AUDIT]). The flat PS zone is 5.1 mm | 92.8 mm (long axis) | Short | Rejected: long throw, and it shares the sensitive bond/bend zone with the EPD FPC |
 
 Why the left edge:
@@ -193,7 +193,7 @@ Why the left edge:
     - an open carrier shelf at X 0.10..59.9, Y 3.5..9.0.
 - The left side buttons SW5/SW7 (KiCad y 67..92) and the right ones are all on B.Cu at the board plane. The bar sits on
   the panel front, so they don't interfere.
-- The battery notch, H2 and H3 are not touched.
+- The battery notch and the mounting holes H2 and H3 are not touched.
 
 ---
 
@@ -257,6 +257,8 @@ Z
 y:  125.0   127.9           141.145 142.0 142.5 142.965  143.2   144.11
 ```
 
+SW9 in the diagram is the Back button, the leftmost bottom-row button.
+
 ### 4c. Segments (centerline lengths, t = 0.11 mm, mid-plane radius = R_in + 0.055)
 
 Front side, on the panel:
@@ -291,8 +293,8 @@ Tail, from the fold line at the glass edge (y 142.965) to the contact tip:
 
 Widths:
 - **Tail/neck: 4.4 mm (x 52.6..57.0) from the panel edge to ~1 mm behind the J3 mouth.** The width is bounded by:
-  - R60/R50 on the left at x <= 52.4 (back);
-  - the TP5 pad on the right at x >= 57.15, y 134.6..136.3 (TP5 is an F.Cu pin-header footprint whose attributes
+  - the resistors R60 (the Right button's ladder resistor) and R50 (the W- bleeder) on the left at x <= 52.4 (back);
+  - the TP5 pad (the W- test point) on the right at x >= 57.15, y 134.6..136.3 (TP5 is an F.Cu pin-header footprint whose attributes
     = 257 = through-hole + DNP in [PCB], so it is a bare pad);
   - the EPD FPC at x >= 58.5 +/-0.3 at the panel edge;
   - the slot's left end at x 51.86.

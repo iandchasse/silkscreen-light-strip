@@ -35,18 +35,18 @@ Source key:
 
 ## 1. Main-board driver context (local, verified)
 
-- U10 TPS923610DRLR, synchronous boost, constant current; LED_SW feeds both anodes; Q5 (warm, W-) / Q6 (cool, C-)
-  return to the shared sense resistor R37 [HW §7].
-- **J3 pad nets [PCB]:** 1 = `LED_SW`, 2 = `C-`, 3 = unconnected, 4 = unconnected, 5 = `LED_SW`, 6 = `W-`,
+- The frontlight driver U10, a TPS923610DRLR synchronous boost, constant current; LED_SW feeds both anodes; the string
+  switches Q5 (warm, W-) / Q6 (cool, C-) return to the shared sense resistor R37 [HW §7].
+- **J3 (the frontlight connector) pad nets [PCB]:** 1 = `LED_SW`, 2 = `C-`, 3 = unconnected, 4 = unconnected, 5 = `LED_SW`, 6 = `W-`,
   S1/S2 (fitting nails) = `GND`. **So the FPC tail has no ground contact.** S1/S2 are soldered to the board, not
   touched by the FPC.
-- Q5 gate = `COLOR_SEL`; Q6 gate = `/COLOR_SEL_INV` from U12 74LVC1G04 powered from `3V3`; R75 (100 k) holds
+- Q5 gate = `COLOR_SEL`; Q6 gate = `/COLOR_SEL_INV` from the inverter U12 (74LVC1G04) powered from `3V3`; the pull-down R75 (100 k) holds
   `COLOR_SEL` low at boot [PCB], [HW §7]. **So whenever 3V3 is up and COLOR_SEL is low, Q6 is on and the cool
   string's return is closed, even with the light off.** One string always has a closed return path.
-- R49 (C-) / R50 (W-) = 1 Mohm to GND; R39/R41 = 1 M / 120 k from LED_SW to `LED_MONIT`; D3 SMAJ26A on LED_SW;
-  D8 PESD2IVN-UX on C-/W- [PCB].
-- C9 = 4.7 uF / 50 V nameplate, ~1-2.5 uF effective at 15-24 V (estimate) [HW §7], [DR §8].
-- L2 = 10 uH TDK VLS252012HBX-100M-1 [DR §8].
+- The bleeders R49 (C-) / R50 (W-) = 1 Mohm to GND; the monitor divider R39/R41 = 1 M / 120 k from LED_SW to
+  `LED_MONIT`; the clamps D3 SMAJ26A on LED_SW and D8 PESD2IVN-UX on C-/W- [PCB].
+- C9 (the driver's output capacitor) = 4.7 uF / 50 V nameplate, ~1-2.5 uF effective at 15-24 V (estimate) [HW §7], [DR §8].
+- L2 (the driver's inductor) = 10 uH TDK VLS252012HBX-100M-1 [DR §8].
 - LDO_IN comes from the TPS2116 mux (USB or battery) [HW line 134]. **A USB-C source may legally sit at 5.5 V**
   [HW line 214]. Hot-plug ringing may reach 6-7.4 V for tens of microseconds (model) [HW lines 217-220].
 

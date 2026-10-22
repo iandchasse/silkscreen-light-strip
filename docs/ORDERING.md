@@ -18,8 +18,8 @@ JLC does not read the stiffener or tape layers automatically. You have to choose
 
 You can also make the order files with the Fabrication Toolkit plugin in KiCad's PCB editor instead of `make_outputs.py`:
 
-- **BOM.** Every placed part has an `LCSC` field, which the toolkit puts in its BOM. J1 (the contact tail) and TP1–TP3 are left out of the BOM and placement.
-- **Placement.** D13 and D14 carry `FT Rotation Offset` = 180 (the LEDs 0), so the toolkit's placement file matches `jlc_cpl.csv`.
+- **BOM.** Every placed part has an `LCSC` field, which the toolkit puts in its BOM. J1 (the contact tail) and the test pads TP1–TP3 are left out of the BOM and placement.
+- **Placement.** The diodes D13 and D14 carry `FT Rotation Offset` = 180 (the LEDs 0), so the toolkit's placement file matches `jlc_cpl.csv`.
 - **Layers.** `fabrication-toolkit-options.json`, next to the board, preselects the extra layers `User.1,User.2` (stiffener and adhesive). The bend-zone layer (User.3) stays out. It also names the outputs `silkscreen-light-strip_rev-A_fab-toolkit…` (the revision comes from the title block), so they don't overwrite `production/bom.csv`.
 - **Leave two boxes unticked:** "Set User.1 as V-Cut layer" and "Set User.2 as alternative Edge-Cut layer". On this board those layers are the stiffener and the tape.
 - **Coverlay.** Each footprint pins its coverlay opening at 0.1 mm, so no plugin setting can change it.
@@ -38,7 +38,7 @@ Checked with toolkit 5.2.0 on KiCad 9.0.6: every layer both tools make, and the 
 | Copper | 1/3 oz (12 µm), the standard for 2-layer 0.11 mm |
 | Coverlay colour | **Black**. It hides under the bezel and doesn't reflect amber. Yellow works if you prefer the cheaper default. |
 | Silkscreen | **White** |
-| Surface finish | **ENIG**, 1 U″. 2 U″ is worth it if you expect to re-insert the tail often; J3 is rated for 20 cycles. |
+| Surface finish | **ENIG**, 1 U″. 2 U″ is worth it if you expect to re-insert the tail often; the main board's frontlight connector (J3) is rated for 20 cycles. |
 | Coverlay thickness | PI 12.5 µm / adhesive 15 µm (the only choice at 1/3 oz) |
 | EDA software | **Other.** JLC's form warns that stiffeners from other software "require manual review". That is what this board wants anyway; the EasyEDA discount ($7.37) isn't worth porting the design. |
 | Stiffener | **Polyimide, 0.225 mm** and **3M Tape, 3M9077**, selected together in one row. The PI goes on the bottom side, in the three areas in `…-Stiffener_PI0_225.gbr`. The tape goes on the bottom side of the two front stiffener pieces, stacked on the PI, in `…-Adhesive_3M9077.gbr`. Take 3M9077 (0.05 mm, heat-resistant) even though JLC recommends tesa8854 (0.1 mm): the LED tops clear the case skin by only 0.215 mm, and the design counts 0.05 of tape. 3M468 (0.13 mm) isn't heat-resistant. |
@@ -112,6 +112,6 @@ This is unverified: no instant quote has been run with these files. Upload the z
 
 - [ ] One LED diode-tested ([ASSEMBLY.md step 1](ASSEMBLY.md#1-check-led-polarity-before-anything-else))
 - [ ] Your panel is a plain **GDEY0426T82** (no bonded frontlight) or the **3.68in 528 × 792** panel of the x3 build
-- [ ] The main board has the frontlight driver populated (U10, Q5, Q6, R37, J3). The trimmed x3 board keeps all of it.
+- [ ] The main board has the frontlight driver and the frontlight connector populated (U10, Q5, Q6, R37 and J3 on the board). The trimmed x3 board keeps all of it.
 - [ ] You know the light-strip case for your reader is still in development, and what it needs ([ASSEMBLY.md §8](ASSEMBLY.md#8-the-case))
 - [ ] FPC thickness 0.11, black coverlay, ENIG, PI 0.225 stiffener (not 0.25) in three areas, 3M 9077 stacked, and the remark pasted
