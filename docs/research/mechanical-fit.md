@@ -257,7 +257,7 @@ Z
 y:  125.0   127.9           141.145 142.0 142.5 142.965  143.2   144.11
 ```
 
-SW9 in the diagram is the Back button, the leftmost bottom-row button.
+SW9 in the diagram is the Back button, the leftmost bottom-row button seen from the front.
 
 ### 4c. Segments (centerline lengths, t = 0.11 mm, mid-plane radius = R_in + 0.055)
 

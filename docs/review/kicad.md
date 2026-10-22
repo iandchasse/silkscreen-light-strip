@@ -49,7 +49,7 @@ polarity marks on the LEDs, and a repo with no commits and no .gitignore, README
 ### K3 (MINOR) Schematic readability: text overlaps at J1, TP1-TP3 and D11/D12
 Evidence: `docs/silkscreen-light-strip_schematic.pdf` rendered to PNG with pymupdf at 300 dpi.
 - **J1** is placed mirrored (`mirror="y"`), so its pin names `LED_SW(C+)`, `C-`, `NC`, `LED_SW(W+)`, `W-` sit
-  outside the body on the left. They overprint the reference "J1" and the value "FPC tail to J3", which can't be
+  outside the body on the left. They overprint the reference "J1" and the value "FPC tail to J3" (J3 being the main board's frontlight connector), which can't be
   read.
 - **TP1-TP3**: each value ("LED_SW pad", "C- pad", "W- pad") is drawn on top of the net label below it, and the
   wire runs through both. The render reads "LED_SWED_SW" and "C- Cad".

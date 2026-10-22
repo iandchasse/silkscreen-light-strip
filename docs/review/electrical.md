@@ -180,7 +180,7 @@ In the normal insertion with reversed LEDs:
   - Pins 3/4 are isolated pads. The pin 1/5 tie matches the board.
 - **Test pads.** TP1 = LED_SW, TP2 = C-, TP3 = W-.
 - **Main-board context** (pcbnew; U10 is the frontlight driver, J6 the expansion header, Q5/Q6 the warm/cool string switches, R39 the top of the monitor divider):
-  - LED_SW connects to U10.5, C9, D3 SMAJ26A, R39 1M, J3.1/5, J6.5 and TP3.
+  - LED_SW connects to U10.5, C9, D3 SMAJ26A, R39 1M, J3.1/5, J6.5 and the main board's own test point TP3 (not the strip's W- pad).
   - W- connects to Q5.3, R50 1M, D8, J3.6 and J6.6. C- connects to Q6.3, R49 1M, D8, J3.2 and J6.11.
   - The Q5/Q6 sources go to U10.3 and R37 (15 ohm), so the FB current is 0.2 V / 15 ohm = 13.3 mA.
 - **Voltage budget at 13.9 mA** (LED datasheet p.3/p.5; Nexperia BAV70_SER characteristics table: VF ≤ 855 mV @ 10 mA, ≤ 1 V @ 50 mA; BSS138 drop assumes R_on ≤ 7 ohm at VGS 3.3 V (not verified); LED Vf at 13.9 mA taken conservatively as the 20 mA bin limit, cold +3 mV/K, hot -3 mV/K):

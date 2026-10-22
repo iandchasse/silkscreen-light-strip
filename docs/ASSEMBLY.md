@@ -74,7 +74,7 @@ Both case READMEs have a "Light-strip variant" section with the measured numbers
 
 ## 5. 4.26″: strip on the panel
 
-1. **Trim the Back button's left mounting-lug lead.** The Back button is the leftmost of the four bottom-row buttons, labelled SW9 on the board. Its lead stands on the board's front just left of the slot, next to where the strip's neck passes (KiCad about x 52.2, y 143.9). As it comes, its tip is 0.71 mm proud of the board and 0.10 mm from the neck. Cut it flush (at most 0.1 mm proud) and cover it with Kapton.
+1. **Trim the Back button's left mounting-lug lead.** The Back button is the leftmost of the four bottom-row buttons (seen from the front), labelled SW9 on the board. Its lead stands on the board's front just left of the slot, next to where the strip's neck passes (KiCad about x 52.2, y 143.9). As it comes, its tip is 0.71 mm proud of the board and 0.10 mm from the neck. Cut it flush (at most 0.1 mm proud) and cover it with Kapton.
 2. **Kapton on the slot edges.** Put Kapton on both edges of the board's FPC slot where the neck passes (the left end of the slot).
 3. **Prepare the panel.** Peel its thin shipping film (0.065 mm) at least where the case's stops and the strip land, and its pull tape. Clean the left and bottom borders with isopropyl alcohol, not the active area. Leave the panel's own protective sheet on.
 4. **Lay the strip.**
