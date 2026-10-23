@@ -191,16 +191,17 @@ def section(inp, g, mesh, H):
     geom = mesh_rings(mesh, [0, ycut - CY, 0], [0, 1, 0], 1)     # x, z (print frame)
     geom = translate(geom, CX, 0)
     ZX = 10.0
-    fig, ax = plt.subplots(figsize=(10.5, 6.2))
-    # card: print z -> use z = H - z
+    liner = P['liner']                              # 3M 9077 data sheet: 0.09 mm
+    meas = P['stack_nominal'] + liner               # a nominal bar with the liner on: 0.475
+    lift = meas - D                                 # the strip stands this far above the pocket ceiling: the card rides on it
+    fig, ax = plt.subplots(figsize=(10.5, 6.6))
+    # card: print z -> use z = H - z, drawn lifted by `lift` (the real card bends down to the FR4 a few mm away; not modelled)
     def flip(poly):
-        return Polygon([(x, (H - zz) * ZX) for x, zz in poly.exterior.coords], [[(x, (H - zz) * ZX) for x, zz in r.coords] for r in poly.interiors])
+        return Polygon([(x, (H - zz + lift) * ZX) for x, zz in poly.exterior.coords], [[(x, (H - zz + lift) * ZX) for x, zz in r.coords] for r in poly.interiors])
     for q in (geom.geoms if hasattr(geom, 'geoms') else [geom]):
         add(ax, flip(q), fc=PLA, ec=PLA_DARK, lw=0.8, zorder=3)
     # FR4 and the strip stack
-    meas = D + 0.02                                 # the strip as measured with the liner on, 0.02 over the pocket depth
-    liner = meas - 0.385
-    layers = [('release liner (measure it\nall: liner on)', 0, liner, '#dddddd', True), ('3M 9077 adhesive 0.05', liner, liner + 0.05, '#c9b27a', False),
+    layers = [('release liner', 0, liner, '#dddddd', True), ('3M 9077 adhesive 0.05', liner, liner + 0.05, '#c9b27a', False),
               ('PI stiffener 0.225', liner + 0.05, liner + 0.275, '#e6a23c', False), ('flex 0.11 (copper, coverlay)', liner + 0.275, meas, '#2f7d4f', False)]
     rects(ax, [(35, -0.25 * ZX, 52, 0)], fc='#8c7a5b', ec='none', zorder=1)
     ax.text(51.8, -0.2 * ZX, 'FR4 carrier', fontsize=8, ha='right', va='center', color='white')
@@ -209,27 +210,29 @@ def section(inp, g, mesh, H):
     ax.add_patch(Rectangle((43.75, (meas - 0.04) * ZX), 1.0, 0.04 * ZX, fc=GOLD, ec='#7a5a00', lw=0.6, zorder=4))
     ax.text(44.25, (meas + 0.012) * ZX, 'pad', fontsize=7.5, ha='center', va='bottom', color='#7a5a00', zorder=6)
     ax.set_xlim(40.2, 48.3)
-    ax.set_ylim(-0.27 * ZX, (H + 0.30) * ZX)
+    ax.set_ylim(-0.27 * ZX, (H + lift + 0.30) * ZX)
     ax.set_aspect('equal')
     ticks = [0, 0.2, 0.4, 0.6]
-    ax.set_yticks([t * ZX for t in ticks if t <= H + 1e-9])
-    ax.set_yticklabels([f'{t:.1f}' for t in ticks if t <= H + 1e-9])
+    ax.set_yticks([t * ZX for t in ticks])
+    ax.set_yticklabels([f'{t:.1f}' for t in ticks])
     ax.set_ylabel('height above the FR4 (mm), drawn 10 x taller')
     ax.set_xlabel('x (mm), across the bar')
-    ax.set_title(f'Section across the bar through D2\'s cathode pad (y 69.30), D{D} file', fontsize=10)
+    ax.set_title(f"Section across the bar through D2's cathode pad (y 69.30), D{D} file, nominal bar {meas:.3f} mm with the liner", fontsize=10)
     def lab(x, zz, txt, **kw):
         ax.text(x, zz * ZX, txt, fontsize=7.5, va='center', **kw)
-    lab(45.7, liner / 2 - 0.02, 'release liner, stays on (' + f'{liner:.2f}' + f' if the bar measures {meas:.2f})')
-    lab(45.7, liner + 0.04, '3M 9077 adhesive 0.05')
+    lab(45.7, liner / 2, f'release liner {liner:.2f} (3M data sheet), stays on')
+    lab(45.7, liner + 0.025, '3M 9077 adhesive 0.05')
     lab(45.7, liner + 0.16, 'PI stiffener 0.225')
     lab(45.7, liner + 0.33, 'flex 0.11')
-    lab(46.2, D + 0.1, 'membrane 0.20 = 2 layers\n(layer 1 = squeegee face, layer 2 = pad side)', color=INK)
-    lab(40.4, H + 0.04, f'squeegee face, z {H:.1f}', color=INK)
-    lab(40.4, D - 0.06, f'z {D:.1f} = pocket depth D:\nthe membrane rests on the strip', color=INK)
+    lab(46.2, D + lift + 0.1, 'membrane 0.20 = 2 layers\n(layer 1 = squeegee face, layer 2 = pad side)', color=INK)
+    lab(40.4, H + lift + 0.04, 'squeegee face', color=INK)
+    lab(40.35, D + lift + 0.10, f'pocket ceiling = bar top\n({meas:.3f}): the membrane\nrests on the strip', color=INK)
     ax.annotate('', xy=(42.88, 0.22 * ZX), xytext=(43.0, 0.22 * ZX), arrowprops=dict(arrowstyle='<->', lw=0.7))
-    ax.text(42.8, 0.22 * ZX, '0.12 clearance; the push\ncloses it on this side', fontsize=7, va='center', ha='right')
-    ax.text(44.25, (H + 0.1) * ZX, 'aperture: 0.80 across on the squeegee side, 0.90 on the pad side.\nCut 0.12 toward -x of the pad centre; the push centres it on the pad', fontsize=7.5, ha='center', va='bottom', color=BLUE)
+    ax.text(42.8, 0.30 * ZX, '0.12 clearance; the push\ncloses it on this side', fontsize=7, va='center', ha='right', bbox=dict(fc=PLA, ec='none', pad=0.5))
+    ax.text(44.25, (H + lift + 0.1) * ZX, 'aperture: 0.80 across on the squeegee side, 0.90 on the pad side.\nCut 0.12 toward -x of the pad centre; the push centres it on the pad', fontsize=7.5, ha='center', va='bottom', color=BLUE)
     ax.text(43.05, -0.12 * ZX, 'x datum: strip edge 43.00', fontsize=7, ha='left', va='center', color='white')
+    fig.text(0.5, -0.02, f'The card is drawn lifted {lift:.3f} mm, not bent: a nominal bar stands {lift:.3f} above the D{D} pocket ceiling, '
+             'so the card rides on the strip\nand bends down to the FR4 a few mm away (the bend is not modelled).', fontsize=8, ha='center', va='top', color=INK)
     fig.savefig(IMG / 'stencil_section.png', dpi=130, bbox_inches='tight', facecolor='white')
     plt.close(fig)
 

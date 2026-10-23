@@ -8,6 +8,8 @@
    0.5
   ],
   "default_depth": 0.4,
+  "liner": 0.09,
+  "stack_nominal": 0.385,
   "clear": 0.12,
   "tip_extra": 0.3,
   "led_ap": [
@@ -33,6 +35,8 @@
   "datum_y": 135.5,
   "steel_thickness": 0.12
  },
+ "liner_mm": 0.09,
+ "bar_nominal_with_liner_mm": 0.475,
  "files": {
   "D0.3": {
    "file": "light-strip-stencil_D0.3_print.stl",

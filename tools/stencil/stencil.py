@@ -22,6 +22,7 @@ Self-checks (exit 1 on any failure) are at the end of build(); the numbers go to
 """
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -38,6 +39,8 @@ PARAMS = dict(
     membrane=0.20,              # stencil thickness at the apertures
     depths=(0.3, 0.4, 0.5),     # pocket depth D: pick from the strip height measured with the liner on
     default_depth=0.4,
+    liner=0.09,                 # 3M 9077 release liner, from 3M's data sheet (3.6 mil; 260 C short term); it stays on
+    stack_nominal=0.385,        # flex 0.11 + PI stiffener 0.225 + 9077 adhesive 0.05, without the liner (JLC holds the stiffener to +-0.1)
     clear=0.12,                 # pocket clearance round the strip outline
     tip_extra=0.30,             # extra pocket length past the strip's tip
     led_ap=(0.80, 1.10),        # squeegee-side aperture: (across the bar, along the bar)
@@ -51,6 +54,34 @@ PARAMS = dict(
     datum_y=135.5,              # the foot's top edge (card pushes toward +y onto it)
     steel_thickness=0.12,       # a normal steel stencil, for the paste-volume comparison only
 )
+
+
+def pick_depth(reading, P=PARAMS):
+    """The pocket depth for a bar reading (liner on): the largest multiple of 0.1 mm at least 0.02 mm below the reading."""
+    return round(math.floor((reading - 0.02) / 0.1 + 1e-9) * 0.1, 1)
+
+
+def check_pick_depth(P=PARAMS):
+    """Self-checks of the depth rule (docs/ASSEMBLY.md and production/stencil/README.md quote these bands). Exit 1 on failure."""
+    bad = []
+    nominal = round(P['stack_nominal'] + P['liner'], 3)
+    if pick_depth(nominal) != P['default_depth']:
+        bad.append(f"a nominal bar ({nominal}) picks D{pick_depth(nominal)}, not the default D{P['default_depth']}")
+    for reading, want in ((0.32, 0.3), (0.41, 0.3), (0.42, 0.4), (0.51, 0.4), (0.52, 0.5), (0.61, 0.5)):
+        if pick_depth(reading) != want:
+            bad.append(f'reading {reading} picks D{pick_depth(reading)}, expected D{want}')
+    # JLC's +-0.1 on the stiffener: every plausible reading must land on one of the three files
+    for reading in (nominal - 0.1, nominal, nominal + 0.1):
+        if pick_depth(reading) not in P['depths']:
+            bad.append(f'a plausible reading {reading:.3f} picks D{pick_depth(reading)}, which is not one of {P["depths"]}')
+    if bad:
+        print('pick_depth: FAIL')
+        for b in bad:
+            print('  -', b)
+        sys.exit(1)
+    print(f'pick_depth: ok (nominal bar with the liner {nominal} -> D{pick_depth(nominal)}; plausible {nominal - 0.1:.3f}-{nominal + 0.1:.3f} -> '
+          f'D{pick_depth(nominal - 0.1)}-D{pick_depth(nominal + 0.1)})')
+    return nominal
 
 
 def load_input():
@@ -317,12 +348,14 @@ def main():
     ap.add_argument('--depth', type=float, help='build only this pocket depth (0.3, 0.4 or 0.5)')
     ap.add_argument('--no-coupon', action='store_true')
     args = ap.parse_args()
+    nominal = check_pick_depth()
     depths = (args.depth,) if args.depth else PARAMS['depths']
     results = {}
     g = None
     for D in depths:
         results[f'D{D}'], g = build(D)
-    params = dict(parameters={k: (list(v) if isinstance(v, tuple) else v) for k, v in PARAMS.items()}, files=results,
+    params = dict(parameters={k: (list(v) if isinstance(v, tuple) else v) for k, v in PARAMS.items()},
+                  liner_mm=PARAMS['liner'], bar_nominal_with_liner_mm=nominal, files=results,
                   source=dict(board=load_input()['board'], board_blob=load_input()['board_blob'], head=load_input()['head']))
     if not args.no_coupon:
         params['coupon'] = build_coupon()

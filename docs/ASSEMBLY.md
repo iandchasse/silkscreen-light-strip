@@ -58,10 +58,10 @@ The idea: tape the flex flat to a scrap of bare FR4, lay a thin printed card ove
   | Bar with liner on | File |
   |---|---|
   | 0.32-0.41 mm | `light-strip-stencil_D0.3_print.stl` |
-  | 0.42-0.51 mm | `light-strip-stencil_D0.4_print.stl` (the likely one: nominal stack 0.385 mm plus the liner) |
+  | 0.42-0.51 mm | `light-strip-stencil_D0.4_print.stl` (the likely one: nominal stack 0.385 mm plus the 0.09 mm liner = 0.475 mm) |
   | 0.52-0.61 mm | `light-strip-stencil_D0.5_print.stl` |
 
-  A reading under 0.32 mm means the liner is off or the measurement is wrong. JLC holds the stiffener only to ±0.1 mm, so don't pick from the nominal.
+  3M's data sheet gives the liner as 0.09 mm, so a nominal bar reads about 0.475 mm. A reading under about 0.37 mm (the stiffener at its -0.1 mm limit plus the liner) means the liner is off or the reading is wrong. JLC holds the stiffener only to ±0.1 mm, so measure; don't pick from the nominal.
 - **Openings.** On the squeegee face each LED pad gets a 0.80 × 1.10 mm opening, widening to 0.90 × 1.20 mm on the pad side, so the paste lets go of the card. The pad is 1.00 × 1.60 mm. The model puts down about 0.20 mm³ per pad before the real print's shrinkage, against about 0.19 mm³ from a standard 0.12 mm steel stencil at 100 %; PLA walls release incompletely, so expect a lean joint, which suits a 0.8 mm tall LED. The openings are cut 0.12 mm toward -x and 0.12 mm toward -y of the pad centres (KiCad x and y), the same 0.12 mm as the pocket clearance, so that pushing the card onto the two edges (step 5) moves each one onto its pad.
 - **The diodes D13 and D14 have no openings.** Their 0.45 × 0.70 mm pads are 0.75-0.85 mm apart: an opening a 0.4 mm nozzle can print would put down about 2.5 times too much paste next to those gaps, which is exactly the bridge the bench test looks for. They sit on the tail, which has its own thickness and its own tape, outside the card. Dot them by hand, or solder them with the iron after reflow.
 - **Test pads and the gold fingers have no paste on the board**, so the stencil has no openings for them either.
@@ -90,7 +90,7 @@ The idea: tape the flex flat to a scrap of bare FR4, lay a thin printed card ove
 - **Paste: low-temperature Sn42Bi58** (melts at 138 °C), for example Chip Quik's SMDLTLFP series (Sn42/Bi57.6/Ag0.4), type 4 or 5. It peaks at about 165-180 °C, against about 215-225 °C for leaded and 240-250 °C for lead-free paste, which is easier on the LEDs' silicone lens, the 3M 9077 tape and the black coverlay (which soaks up infrared and runs hotter than the FR4). The price is brittler joints, acceptable here because every joint sits on a stiffened piece. **Never touch a Bi58 joint up with leaded solder**: tin-lead-bismuth melts near 96 °C. Rework with Bi58 paste or lead-free wire. Keep the paste cold and let it reach room temperature before opening the jar.
 - **Tape: Kapton (polyimide film, silicone adhesive).** It is rated far above these temperatures and peels cleanly. No masking or painter's tape.
 - **Carrier: a bare FR4 scrap**, flat, with no parts or solder on it (they would reflow too), at least about 40 × 140 mm and small enough for the oven drawer.
-- **Keep the release liner on the strip's 9077 tape** through stencilling and reflow. It keeps the adhesive off the FR4, and it is the same liner ASSEMBLY §5 peels later.
+- **Keep the release liner on the strip's 9077 tape** through stencilling and reflow. It keeps the adhesive off the FR4, and it is the same liner §5 peels later. It is 0.09 mm thick and rated to 260 °C for short periods (3M's 9077 data sheet), well above the 165-180 °C peak.
 
 **Steps.**
 
@@ -98,7 +98,7 @@ The idea: tape the flex flat to a scrap of bare FR4, lay a thin printed card ove
 2. **Practise once** on one of the spoiled strips with a few spare LEDs. It shows how the paste, the card and the oven behave before a good strip goes in.
 3. **Measure the bar and pick the file** (above).
 4. **Tape the strip.** Clean the FR4 and the strip's top side with IPA. Lay the strip LED side up, liner down, flat and straight. Tape it in three places only:
-   - across the hinge, with a sliver 3 mm wide (the card has a groove for it), reaching about 8 mm onto the FR4 each side;
+   - across the hinge, with a sliver 3 mm wide (the card has a groove for it), reaching about 8 mm onto the FR4 each side. Keep it between the white hinge ticks, off the stiffened ends of the bar: there is only about 0.3 mm of room each side before it reaches the next LED pair's openings. Trim it to 2.5 mm wide if unsure;
    - across the neck;
    - across the tail end, over the gold fingers.
 
@@ -167,7 +167,7 @@ Both case READMEs have a "Light-strip variant" section with the measured numbers
 2. **Kapton on the slot edges.** Put Kapton on both edges of the board's FPC slot where the neck passes (the left end of the slot).
 3. **Prepare the panel.** Peel its thin shipping film (0.065 mm) at least where the case's stops and the strip land, and its pull tape. Clean the left and bottom borders with isopropyl alcohol, not the active area. Leave the panel's own protective sheet on.
 4. **Lay the strip.**
-   1. **Measure it first.** With a micrometer, measure the bar (flex + stiffener + tape) at 2–3 points between LED pairs, with the liner on, and subtract the liner. It should be **0.37–0.40 mm**: the case's hold-down pads sit only 0.015 mm over a nominal strip, and JLC holds the stiffener to ±0.1. If it is thinner, stick 0.05 mm Kapton on each hold-down pad face in the tub (two layers below 0.32). If it is more than 0.03 mm thicker, scrape the pad faces back.
+   1. **Measure it first.** With a micrometer, measure the bar (flex + stiffener + tape) at 2–3 points between LED pairs, with the liner on, and subtract the liner (0.09 mm, per 3M's data sheet). It should be **0.37–0.40 mm**: the case's hold-down pads sit only 0.015 mm over a nominal strip, and JLC holds the stiffener to ±0.1. If it is thinner, stick 0.05 mm Kapton on each hold-down pad face in the tub (two layers below 0.32). If it is more than 0.03 mm thicker, scrape the pad faces back.
    2. Peel the liners off the two taped pieces: the short top-pair piece and the long bar + foot.
    3. Lay the bar with its straight outer edge **0.1 mm inside the panel's left glass edge** (0 to 0.2 mm). It must never overhang the glass, or it scrapes the case wall when the stack goes in. Much further in, the neck moves onto the panel's own FPC.
    4. The rounded top sits about 1.3 mm below the top glass edge. The foot lies along the bottom border on the flat protective sheet.

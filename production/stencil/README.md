@@ -5,14 +5,14 @@ A 3D-printable stencil for the 24 LED pads of the light strip, for use with past
 | File | What |
 |---|---|
 | `light-strip-stencil_D0.3_print.stl` | The card with a 0.3 mm deep pocket (0.5 mm thick). For a bar that measures 0.32-0.41 mm with the liner on. |
-| `light-strip-stencil_D0.4_print.stl` | Pocket 0.4 mm (0.6 mm thick). For 0.42-0.51 mm. The likely one: nominal stack 0.385 mm plus the liner. |
+| `light-strip-stencil_D0.4_print.stl` | Pocket 0.4 mm (0.6 mm thick). For 0.42-0.51 mm. The likely one: nominal stack 0.385 mm plus the 0.09 mm liner = 0.475 mm. |
 | `light-strip-stencil_D0.5_print.stl` | Pocket 0.5 mm (0.7 mm thick). For 0.52-0.61 mm. |
 | `light-strip-stencil_D0.4_use.step` | The 0.4 file in the use frame (KiCad x, y; z up from the FR4), for CAD. |
 | `aperture-coupon_print.stl` | Optional 1 g test coupon: holes from 0.4 to 1.0 mm in the same 0.2 mm membrane, to find where your printer stops opening them. |
 | `stencil_params.json` | Every parameter, the derived numbers (aperture sizes, paste per pad, area ratio) and the slice-check time and filament per file. |
 | `stencil_input.json` | The pads, outline and stiffener polygons read from the board by `tools/stencil/extract_paste.py`. |
 
-**Pick the file** by measuring the bar (flex + stiffener + tape + liner, liner on) at 2-3 points: the largest multiple of 0.1 mm at least 0.02 mm below your reading is the depth. The files are already in print orientation (squeegee face on the bed, pocket facing up): load them as they are.
+**Pick the file** by measuring the bar (flex + stiffener + tape + liner, liner on) at 2-3 points: the largest multiple of 0.1 mm at least 0.02 mm below your reading is the depth. The liner is about 0.09 mm (3M's data sheet), so a nominal bar reads about 0.475 mm; a reading under about 0.37 mm means the liner is off or the reading is wrong. The files are already in print orientation (squeegee face on the bed, pocket facing up): load them as they are.
 
 **Registration.** The pocket is 0.12 mm bigger than the strip all round. Pushing the card onto the strip's straight outer edge and the foot's top edge moves it 0.12 mm toward +x and 0.12 mm toward +y, so the 24 openings are cut 0.12 mm toward -x and -y of the pad centres (the stencil script checks every one) and land on the pad centres once the card is pushed home. If the card is not pushed onto both edges, every opening sits up to 0.12 mm off its pad.
 
