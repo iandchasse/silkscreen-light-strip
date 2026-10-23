@@ -49,6 +49,9 @@ SQ = dict(
     tongue=1.60,           # tongue thickness (o 1.25 .. 2.85)
     back_slit=0.80,        # between the tongue and the back block
     side_slit=0.80,        # either side of the tongue
+    tab_layers=1,          # the side slits start this many layers above the mouth plane, so the tongue's first layer is tied to the slot's side
+                           # walls by two thin tabs and prints as part of the anchored bridge, not as an island in air (0 = the old, island, design)
+    layer=0.20,            # the layer height the tab count assumes (the stock 0.20 Standard process); a thinner layer makes the tabs thinner
     back_block=5.40,       # o 3.65 .. 9.05
     hole_d=2.6,            # M3 thread-forming
     hole_lam=18.0,         # the screw's position up the blade
@@ -121,7 +124,16 @@ def profiles(SQ=SQ):
     # the side slits start 0.25 below the slot's back wall, so the tongue and the slot's side walls do not touch along a bare edge
     side_slit = band(O_T0 - 0.25, O_S1, -BIG, SQ['stop'])
     back_slit = band(O_T1, O_S1, -BIG, SQ['stop'])
-    return dict(hm=hm, C=C, D=D, G=G, side=side, mid=mid, slot=slot, side_slit=side_slit, back_slit=back_slit)
+    # Without a tab the tongue is cut free on three sides and its first layer (at the mouth plane) prints in mid air. So the side slits start
+    # above the first layer that holds the tongue: that layer joins the slot's side walls (themselves part of the anchored bridge between the
+    # runner walls) through two tabs, one at each side of the tongue. The first firm tightening snaps them (or cut them with a knife).
+    tab_top = hm
+    if SQ['tab_layers'] > 0:
+        lh = SQ['layer']
+        first = math.ceil(hm / lh - 0.5)                 # index of the first layer whose middle is above the mouth plane
+        tab_top = (first + SQ['tab_layers']) * lh        # a layer boundary: the slits cut every layer from here up
+        side_slit = side_slit.intersection(box(-BIG, tab_top, BIG, BIG))
+    return dict(hm=hm, C=C, D=D, G=G, side=side, mid=mid, slot=slot, side_slit=side_slit, back_slit=back_slit, tab_top=tab_top)
 
 
 def arrow_poly(SQ=SQ):
@@ -151,7 +163,7 @@ def build_handle(P, SQ=SQ):
     r0, r1 = SQ['runner_w']
     s = prism_sh(P['side'], r0, r1).union(prism_sh(P['side'], -r1, -r0))
     s = s.union(prism_sh(P['mid'], -r0, r0))
-    # the slot, the tongue's slits (the tongue stays attached at the end cap), the screw hole, the arrows
+    # the slot, the tongue's slits (the tongue stays attached at the end cap, and by two one-layer tabs at its first layer), the screw hole, the arrows
     s = s.cut(prism_sh(P['slot'], -SQ['slot_w'] / 2, SQ['slot_w'] / 2))
     sw = SQ['slot_w'] / 2
     for sign in (1, -1):
@@ -207,6 +219,22 @@ def bent_blade(delta_tip, t, lam_tip, L):
         front.append(Q(lam, y))
         back.append(Q(lam, y + t))
     return Polygon(front + back[::-1]).buffer(0)
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Floating islands: a piece of a layer that touches nothing in the layer below prints in mid air
+# ---------------------------------------------------------------------------------------------------------------
+def layer_islands(layers, min_area=0.3, min_touch=0.02):
+    """layers: [(z, shapely geometry)] bottom to top. Returns [(z, area, bounds)] for every connected piece of a layer (above the first)
+    of at least `min_area` mm2 that overlaps the layer below by less than `min_touch` mm2. A bridge is not an island: the layer's piece
+    is connected sideways to the walls that rest on the layer below, so it is one piece with them."""
+    out = []
+    for (z0, below), (z, here) in zip(layers, layers[1:]):
+        parts = list(here.geoms) if hasattr(here, 'geoms') else [here]
+        for c in parts:
+            if c.area >= min_area and c.intersection(below).area < min_touch:
+                out.append((round(z, 3), round(c.area, 2), tuple(round(v, 2) for v in c.bounds)))
+    return out
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -322,11 +350,23 @@ def build(write=True):
         for lam in np.arange(10.0, SQ['stop'] - 0.4, 1.0):
             for o in (3.0, 3.3, 3.55):
                 empty_pts += solid_at(sec_w[w], Q(lam, o))
-    for w in (5.7, -5.7):                                              # side slits empty (o 1.25 .. 3.65), lam up to just under the stop
+    tab_top = P['tab_top']
+    for w in (5.7, -5.7):                                              # side slits empty (o 1.25 .. 3.65), lam up to just under the stop, above the tabs
         for lam in np.arange(10.0, SQ['stop'] - 0.4, 1.0):
             for o in (1.5, 2.0, 2.5, 3.0, 3.5):
-                empty_pts += solid_at(sec_w[w], Q(lam, o))
+                if Q(lam, o)[1] > tab_top + 0.05:
+                    empty_pts += solid_at(sec_w[w], Q(lam, o))
     check(empty_pts == 0, f'{empty_pts} sample points inside the slits')
+    # the tabs: the side slits start at the first layer boundary above the tongue's first layer. Below it the slit region is a thin tab at each
+    # side (solid at w = +-5.7, o 1.5 .. 2.5, just above the mouth plane); above it the slit is open. Without tabs the tongue's first layer is an island.
+    if SQ['tab_layers'] > 0:
+        tab_h = tab_top - hm
+        check(0.05 < tab_h < SQ['tab_layers'] * SQ['layer'] + 0.01, f'tab thickness {tab_h:.3f}')
+        tab_ok = all(solid_at(sec_w[w], ((Q(0, o)[0] + ((hm + 0.1) - Q(0, o)[1]) / U[1] * U[0]), hm + 0.1)) for w in (5.7, -5.7) for o in (1.5, 2.0, 2.5))
+        check(tab_ok, 'a side-slit tab is missing just above the mouth plane')
+        check(not any(solid_at(sec_w[w], ((Q(0, o)[0] + ((tab_top + 0.1) - Q(0, o)[1]) / U[1] * U[0]), tab_top + 0.1)) for w in (5.7, -5.7) for o in (1.5, 2.0, 2.5)),
+              'a side slit is still closed above the tabs')
+        notes.append(f'side-slit tabs: {tab_h:.2f} mm thick (the first layer of the tongue, {SQ["tab_layers"]} layer at {SQ["layer"]}), {SQ["side_slit"]} wide, at w +-{SQ["slot_w"] / 2:.1f} .. {SQ["slot_w"] / 2 + SQ["side_slit"]:.1f}; the slits are open from h {tab_top:.2f} up')
     check(solid_at(sec_w[0.0], Q(SQ['stop'] + 1.0, 2.0)) and solid_at(sec_w[0.0], Q(SQ['stop'] + 1.0, 3.2)), 'tongue root / end cap is not solid above the stop')
     # tongue free length: from the root (lam stop) down to the mouth plane at o = 1.25 .. 2.85
     tongue_tip = (hm - P0[1] - O_T0 * NB[1]) / U[1]                    # lam where o = 1.25 meets the mouth plane
@@ -417,6 +457,13 @@ def build(write=True):
         blade_box.export(OUT / 'squeegee-blade-pla_print.stl')
     m = trimesh.load(OUT / 'squeegee_print.stl') if write else plate_mesh
     check(m.is_watertight and len(m.split(only_watertight=False)) == 3, 'plate: expected 3 watertight shells (handle and two blades)')
+    # ---- no floating island in the handle or the blades, layer by layer (sections at each layer's middle) ----
+    lh_ = SQ['layer']
+    n_layers = int(round(plate_mesh.bounds[1][2] / lh_))
+    sections = [((k + 1) * lh_, section_poly(plate_mesh, 2, (k + 0.5) * lh_)) for k in range(n_layers)]
+    islands = layer_islands(sections)
+    check(not islands, f'floating islands in the model (layer top z, area mm2, bounds in the plate frame): {islands}')
+    notes.append(f'no floating island: {n_layers} layer sections of the plate checked, each piece of a layer touches the layer below (a piece of 0.3 mm2 or more with less than 0.02 mm2 on the layer below would be one)')
     notes.append(f'plate: handle (centred on x 0, shifted {shift_s:+.2f} in s) and two PLA blades {SQ["pla_gap"]} mm beyond its +w side at x {SQ["pla_x"]}; plate {m.extents[0]:.1f} x {m.extents[1]:.1f} x {m.extents[2]:.1f} mm')
 
     # ---- 9. use overlay against the stencil card ----
@@ -657,6 +704,12 @@ def slice_read_back(derived, hm_mesh, plate_mesh, P):
     chk(abs(top_blade - plen) < 1e-3, f'the PLA blades end at z {top_blade}, expected {plen}')
     notes.append(f'PLA blades: every layer above layer 1 covers >= {worst_blade:.1%} of 10.0 x 1.0, top layer at z {top_blade}')
 
+    # no floating island in the sliced layers: every piece of a layer (swept beads, unioned) touches the layer below
+    isl = layer_islands([(z, Ul[z]) for z in zs], min_area=0.5)
+    chk(not isl, f'sliced layers with a piece that touches nothing in the layer below (z top, area mm2, bounds): {isl}')
+    notes.append(f'no floating island in the sliced layers: {len(zs) - 1} layers above layer 1, every connected piece of 0.5 mm2 or more overlaps the layer below'
+                 if not isl else f'FLOATING ISLANDS in the sliced layers: {isl}')
+
     # ---- features read from the layers ----
     shift_s = -(hm_mesh.bounds[0][0] + hm_mesh.bounds[1][0]) / 2
 
@@ -740,11 +793,11 @@ def slice_read_back(derived, hm_mesh, plate_mesh, P):
     over_len = sum(seg_len(q) for z_ in zs for q in layers[z_] if q[5] == 'Overhang wall')
     wall_len = sum(seg_len(q) for z_ in zs for q in layers[z_] if q[5] in ('Outer wall', 'Inner wall', 'Overhang wall'))
     over_layers = len([z_ for z_ in zs if any(q[5] == 'Overhang wall' for q in layers[z_])])
-    notes.append(f'"Bridge" lines (mm of extrusion) by layer height z: {bridge_z} (z 3.2: the ceiling at h 3.0 and z 10.8: the underside of the slot mouth, both spanning the 14.26 mm between the runner walls; z 20.8 and 22.2: the roofs at the 1 mm wide ends of the slot and the slits); '
+    notes.append(f'"Bridge" lines (mm of extrusion) by layer height z: {bridge_z} (z 3.2: the ceiling at h 3.0 and z 10.8: the underside of the slot mouth and the first layer of the tongue, tied to the slot walls by two tabs, all spanning the 14.26 mm between the runner walls; z 20.8 and 22.2: the roofs at the 1 mm wide ends of the slot and the slits); '
                  f'"Internal Bridge" (solid skin over sparse infill, not over air): {internal_z}; "Overhang wall" lines: {over_len:.0f} mm of {wall_len:.0f} mm of wall, on {over_layers} layers '
                  '(the 40-50 degree faces); no Support type, so nothing is added under them')
     res = dict(time=cfg['time'], grams=cfg['grams'], layers=len(zs), line_types=sorted(types), skirt_or_brim=skirt_brim, settings=cfg,
-               worst_extrusion_outside_design_mm2=round(worst_out, 3), layer1=dict(footprints=len(parts), rails_area=round(r_got, 1), rails_designed=round(rails.area, 1), blade_edges_area=[round(v, 1) for v in b_got]),
+               worst_extrusion_outside_design_mm2=round(worst_out, 3), floating_islands=isl, layer1=dict(footprints=len(parts), rails_area=round(r_got, 1), rails_designed=round(rails.area, 1), blade_edges_area=[round(v, 1) for v in b_got]),
                pla_blade_layer_cover_min=round(worst_blade, 3), slot_open_min=round(slot_min, 3), back_slit_open_min=round(bs_min, 3),
                side_slit_open_min=round(ss_min, 3), hole_open_min=round(hole_min, 3), bridges=dict(bridge_mm_by_layer_z=bridge_z, internal_bridge_mm_by_layer_z=internal_z, overhang_wall_mm=round(over_len), wall_mm=round(wall_len), overhang_layers=over_layers),
                pass_=not fails, notes=notes)
@@ -768,6 +821,7 @@ def write_report(res, fails, derived):
          f"| Filament (g) | {res['grams']} |",
          f"| Extrusion outside the design section (paste wedge, blade envelope, slot, slits, hole), worst layer | {res['worst_extrusion_outside_design_mm2']} mm2 |",
          f"| Layer 1 | {res['layer1']['footprints']} footprints (two runner rails, two blade edges); the rails {res['layer1']['rails_area']} mm2 against {res['layer1']['rails_designed']} designed after the elephant-foot shrink, the blade edges {res['layer1']['blade_edges_area']} mm2 of 10.0 |",
+         f"| Floating islands (a piece of a layer, 0.5 mm2 or more, with nothing under it in the layer below) | {len(res['floating_islands'])} |",
          f"| PLA blade layers, coverage of 10.0 x 1.0 | at least {res['pla_blade_layer_cover_min']:.1%} |",
          f"| Slot, narrowest open gap per layer, perpendicular | {res['slot_open_min']:.2f} mm (design 1.25, planned clearance for a 0.84 card or the 1.0 PLA blade) |",
          f"| Back slit / side slits, narrowest open | {res['back_slit_open_min']:.2f} / {res['side_slit_open_min']:.2f} mm (design 0.80) |",
