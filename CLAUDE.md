@@ -16,5 +16,6 @@ any, are in `CLAUDE.local.md` (not in git).
   silkscreen-enclosures' `enclosures/case-426/hardware/reference/light-strip/strip-geometry.json` and
   `enclosures/case-368/...` (the same file), and say that the cases need a rebuild. If the optics heatmap changes,
   copy `docs/images/optics_heatmaps.png` there too.
+- **The paste stencil (`tools/stencil/`) is built from the pads and the outline.** After a footprint, paste or outline change, rerun `tools/stencil/extract_paste.py` (KiCad Python), then `stencil.py`, `slice_check.py` and `render.py` (a Python with CadQuery, shapely and trimesh), and commit `production/stencil/`, `docs/reports/stencil_slice_check.md` and `docs/images/stencil_*.png`. `make_outputs.py` does not touch `production/stencil/`. The stencil is untested: say what the slicer read-back shows, never that it works.
 - **Rev A is untested.** Don't describe anything as proven on hardware. `docs/review/` and `docs/research/` are
   dated records; `docs/DESIGN.md` is current where they differ.

@@ -8,7 +8,7 @@ The reasons behind each step are in [DESIGN.md](DESIGN.md). The showcase source 
 
 **You need:**
 
-- **Soldering:** a fine-tip iron, or hot air with paste. Flux, tweezers and isopropyl alcohol.
+- **Soldering:** a fine-tip iron, or hot air with paste. Flux, tweezers and isopropyl alcohol. Or, for the stencil option, a small reflow oven, Sn42Bi58 paste and the printed stencil ([§2, option](#option-3d-printed-paste-stencil-and-oven-reflow-experimental-untested)).
 - **Testing:** a CR2032 coin cell, a multimeter, and a bench supply that can current-limit at 5–10 mA and reach 22 V.
 - **Fitting:** Kapton tape, a craft knife, flush cutters.
 - **Parts:** 6 × XL-4008WWC (warm), 6 × XL-4008UWC (cool), 2 × BAV70W,115. Buy a few spares. The LEDs are 4 mm long and easy to lose.
@@ -41,6 +41,95 @@ Tape the flex flat, LED side (white silkscreen) up.
   - Use very little solder. The LED sits only 0.8 mm tall, and a big fillet can wick up to the window.
   - Nothing is soldered on the **hinge**, the bare 3.6 mm gap between the top pair and the next (white ticks mark its ends). Keep it clean and don't let flux or solder stiffen it.
 - **Clean** off the flux with isopropyl alcohol.
+
+### Option: 3D-printed paste stencil and oven reflow (experimental, untested)
+
+**Neither this stencil nor this process has been tried on a strip.** It is here for anyone whose hand soldering keeps going wrong on the loose flex. The checks behind the stencil read the sliced G-code back ([`docs/reports/stencil_slice_check.md`](reports/stencil_slice_check.md)): they show the slicer leaves every opening clear, not that the printed holes stay open or that the joints come out well. Everything below that is not a measured number is an estimate.
+
+The idea: tape the flex flat to a scrap of bare FR4, lay a thin printed card over the LED bar so each pad shows through an opening, wipe paste across it, place the LEDs, and reflow the whole carrier. Nothing sits on a loose strip, and nothing is soldered by hand except the two diodes (or those with paste dots).
+
+![The stencil over the strip, and a zoom on one LED pair](images/stencil_overview.png)
+
+**The files** are in [`production/stencil/`](../production/stencil/) ([its README](../production/stencil/README.md) has the short version).
+
+- **The card** is 31 × 107 mm, 0.5-0.7 mm thick, printed in PLA squeegee face down, so it needs no supports. Its underside has a pocket shaped like the strip, 0.12 mm bigger all round. The pocket's ceiling is a 0.20 mm membrane (two 0.10 mm layers) that rests on the strip, and the 24 LED openings go through it.
+- **Pick the pocket depth first.** The pocket must be no deeper than the bar, or paste smears under the membrane. Measure the bar with the liner **on**, at 2-3 points between LED pairs (the same measurement as [§5, step 4.1](#5-426-strip-on-the-panel), but here keep the liner in the number: do not subtract it). Take the largest multiple of 0.1 mm that is at least 0.02 mm below your reading:
+
+  | Bar with liner on | File |
+  |---|---|
+  | 0.32-0.41 mm | `light-strip-stencil_D0.3_print.stl` |
+  | 0.42-0.51 mm | `light-strip-stencil_D0.4_print.stl` (the likely one: nominal stack 0.385 mm plus the liner) |
+  | 0.52-0.61 mm | `light-strip-stencil_D0.5_print.stl` |
+
+  A reading under 0.32 mm means the liner is off or the measurement is wrong. JLC holds the stiffener only to ±0.1 mm, so don't pick from the nominal.
+- **Openings.** On the squeegee face each LED pad gets a 0.80 × 1.10 mm opening, widening to 0.90 × 1.20 mm on the pad side, so the paste lets go of the card. The pad is 1.00 × 1.60 mm. The model puts down about 0.20 mm³ per pad before the real print's shrinkage, against about 0.19 mm³ from a standard 0.12 mm steel stencil at 100 %; PLA walls release incompletely, so expect a lean joint, which suits a 0.8 mm tall LED.
+- **The diodes D13 and D14 have no openings.** Their 0.45 × 0.70 mm pads are 0.75-0.85 mm apart: an opening a 0.4 mm nozzle can print would put down about 2.5 times too much paste next to those gaps, which is exactly the bridge the bench test looks for. They sit on the tail, which has its own thickness and its own tape, outside the card. Dot them by hand, or solder them with the iron after reflow.
+- **Test pads and the gold fingers have no paste on the board**, so the stencil has no openings for them either.
+
+**Print it** with OrcaSlicer (or any slicer) on the Centauri Carbon 2, PLA. Start from the stock "0.12mm Fine @Elegoo CC2 0.4 nozzle" process with "Elegoo PLA" and change:
+
+| Setting | Value | Why |
+|---|---|---|
+| Layer height, first layer height | 0.10 mm | the membrane is exactly two layers |
+| Elephant foot compensation | **0** | the stock 0.1 opens every squeegee-side opening by 0.10 mm per side: wrong taper, more paste |
+| Brim | none | a brim leaves a lip on the squeegee face |
+| Supports, ironing, arc fitting | off | nothing needs support, ironing would drag across the openings |
+| Slow layers | 2 | prints both membrane layers at first-layer speed |
+| First layer speed | 30 mm/s | cleaner small holes |
+
+- Load the file as it is: it is already squeegee face down, with the strip-shaped pocket facing up. Don't rotate it or turn on auto-orient.
+- Clean the plate with IPA and run the auto-levelling. If the first layer looks translucent and the openings look like slits, the nozzle is too close: raise the Z offset about 0.02 mm and print again.
+- Let the plate cool, then flex the plate, not the card. Don't pull on the membrane.
+- **Hold the card up to a light.** All 24 openings must be open and clean. Clear any string with a needle from the squeegee side. Don't sand the pad side.
+- **Check the scale.** The first and last LED openings (D7's anode and D6's cathode) should be **89.50 mm** apart, centre to centre. If yours is off by more than 0.15 mm, set the slicer's Y scale to 100 × 89.50 / measured, in percent, and print again.
+- Print two cards; PLA wears and costs almost nothing. The sliced estimates are 9-11 minutes and 2-3 g each (D0.3 to D0.5).
+- **Optional test coupon** (`aperture-coupon_print.stl`, 5 minutes, 1 g): three rows of holes from 0.4 to 1.0 mm in the same 0.2 mm membrane, so you can see where your own printer stops opening them. In the slicer's view, with the chamfered corner at the top left, each row grows from left to right: the middle row is 0.5 × 1.1 up to 1.0 × 1.6, the top row 0.45 × 0.70 up to 0.70 × 1.00, the bottom row squares from 0.4 up to 1.0 mm. The slicer keeps even 0.4 mm holes open; the real print may not. About 0.60 mm on the short side is the smallest opening to count on, 0.45-0.55 mm opens only sometimes, and below that assume it closes. These limits are estimates.
+
+**Paste, tape and carrier.**
+
+- **Paste: low-temperature Sn42Bi58** (melts at 138 °C), for example Chip Quik's SMDLTLFP series (Sn42/Bi57.6/Ag0.4), type 4 or 5. It peaks at about 165-180 °C, against about 215-225 °C for leaded and 240-250 °C for lead-free paste, which is easier on the LEDs' silicone lens, the 3M 9077 tape and the black coverlay (which soaks up infrared and runs hotter than the FR4). The price is brittler joints, acceptable here because every joint sits on a stiffened piece. **Never touch a Bi58 joint up with leaded solder**: tin-lead-bismuth melts near 96 °C. Rework with Bi58 paste or lead-free wire. Keep the paste cold and let it reach room temperature before opening the jar.
+- **Tape: Kapton (polyimide film, silicone adhesive).** It is rated far above these temperatures and peels cleanly. No masking or painter's tape.
+- **Carrier: a bare FR4 scrap**, flat, with no parts or solder on it (they would reflow too), at least about 40 × 140 mm and small enough for the oven drawer.
+- **Keep the release liner on the strip's 9077 tape** through stencilling and reflow. It keeps the adhesive off the FR4, and it is the same liner ASSEMBLY §5 peels later.
+
+**Steps.**
+
+1. **Test one LED** with a coin cell ([§1](#1-check-led-polarity-before-anything-else)).
+2. **Practise once** on one of the spoiled strips with a few spare LEDs. It shows how the paste, the card and the oven behave before a good strip goes in.
+3. **Measure the bar and pick the file** (above).
+4. **Tape the strip.** Clean the FR4 and the strip's top side with IPA. Lay the strip LED side up, liner down, flat and straight. Tape it in three places only:
+   - across the hinge, with a sliver 3 mm wide (the card has a groove for it), reaching about 8 mm onto the FR4 each side;
+   - across the neck;
+   - across the tail end, over the gold fingers.
+
+   No tape on the bar, the top piece or the foot: the card bears there.
+5. **Lay the card over the strip**, pocket side down, so the strip drops into the pocket. Push it toward the LED-window side (+x) until the pocket wall meets the strip's straight outer edge, and toward the foot (+y) until the wall above the foot meets the foot's top edge. Look through the openings: gold pad should show all round each one. Hold the card down near the bar, or tape its two far corners to the FR4 with Kapton.
+6. **Print the paste.** Put a line of paste along the card above the top LED. With an old plastic card cut about 15 mm wide, or a flat metal spatula at about 45°, pull it along the bar in one firm stroke, then a second clean scraping stroke. Lift the card straight up, starting at the top end. Don't let it slide.
+7. **Inspect.** Each pad should have a neat brick. Wipe a smeared pad with a cotton bud and IPA, let it dry, and re-print or dot it. Wash the card with IPA straight away.
+8. **Diodes.** Dot paste by hand on the six pads of D13 and D14, about 0.3 mm dots (a fine needle or a toothpick). Or leave them dry and iron them on after reflow: with the strip taped flat, that is much easier than on a loose one.
+9. **Place the parts** with tweezers, pressing each lightly into the paste. Do all six of one colour from one reel, then the other.
+   - **Warm XL-4008WWC in the lower spot** of every pair (D1-D6, nearer the foot), **cool XL-4008UWC in the upper spot** (D7-D12).
+   - Window toward the bar's inner edge, **cathode on the lower pad**, seated flat and square with the window just behind the flex edge.
+   - BAV70W: pin 3 toward the LEDs.
+10. **Reflow** (below). Leave the oven shut until it reads below about 60 °C, then let the carrier reach room temperature. The flex and its tape are soft while hot. Peel the Kapton slowly, folded back on itself and away from the LEDs.
+11. **Clean and test.** Wash off the flux with IPA, check with a loupe for bridges (D13/D14 above all) and for solder near the windows, then do the bench test in §3.
+
+**Puhui T-962 notes** (general advice; the exact profiles and hot spots of your unit are not known):
+
+- **Profile.** Use one that matches the paste's datasheet: preheat to about 90-120 °C, soak, peak about 165-180 °C, 30-60 s above 138 °C, then cool. If the oven offers only leaded and lead-free presets, the leaded one (lowest peak) is the closest. Watch through the window: the paste turns from dull grey to shiny when it melts.
+- **The readout is not the board's temperature.** The thermocouple reads air near the lamps, and the stock unit heats unevenly. Put the carrier in the middle of the drawer with the strip along the drawer's long side. The practice run shows where it reflows first and last; turn the carrier round between runs if the far end lags.
+- **First runs smoke.** The stock oven has paper masking tape inside that smokes and smells at first. Run it once empty, ventilated.
+- **Don't open the drawer at peak** to cool faster: the thermal shock and the jolt can move parts while the solder is liquid.
+
+**What can go wrong, and what is not known:**
+
+- **A gap under the membrane** (a pocket deeper than the bar) lets paste smear under it. Measure first.
+- **Printed holes shrink** with first-layer squish and ooze; the slicer check cannot see that. Look at the card against a light.
+- **The top piece is placed only by the hinge tape**, so check by eye that its two openings show gold.
+- **Print scale** drifts along the 94 mm from the foot; hence the 89.50 mm check.
+- **The oven's uneven heat** is why the practice run comes first.
+
+*Rebuilding the files:* after any footprint or outline change, rerun `tools/stencil/extract_paste.py` with KiCad's Python and `stencil.py`, `slice_check.py` and `render.py` in a Python with CadQuery, shapely and trimesh, and commit `production/stencil/`.
 
 ## 3. Bench test on the pads
 
