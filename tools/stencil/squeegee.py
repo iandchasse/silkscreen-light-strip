@@ -619,6 +619,16 @@ def slice_read_back(derived, hm_mesh, plate_mesh, P):
     stl = OUT / 'squeegee_print.stl'
     gcode = C.slice_stl(stl, work, SLICE_OVERRIDES, presets=SLICE_PRESETS)
     layers, types, arcs = C.parse(gcode)
+    return read_back(gcode, layers, types, arcs, derived, hm_mesh, plate_mesh, P)
+
+
+def read_back(gcode, layers, types, arcs, derived, hm_mesh, plate_mesh, P, origin=None, want_efc='0.1', global_walls=True):
+    """Read a sliced G-code back against the model. layers/types/arcs come from slice_check.parse(); for a plate that holds other parts too
+    (make_plate.py) they are already cut down to this part, `origin` is where the squeegee_print.stl frame's origin sits on the bed (read from
+    the 3MF), `want_efc` is the elephant-foot compensation the project is meant to carry and `global_walls=False` skips the check that the
+    3 walls / Arachne are the process's own settings (on the plate they are per-object settings, which the header does not show).
+    The G-code header (settings) is read from `gcode`."""
+    import slice_check as C
     zs = sorted(layers)
     fails, notes = [], []
     head = Path(gcode).read_text(errors='ignore')
@@ -637,8 +647,8 @@ def slice_read_back(derived, hm_mesh, plate_mesh, P):
         if not cond:
             fails.append(msg)
 
-    chk(cfg['efc'] == '0.1', f"elephant-foot compensation {cfg['efc']} (the stock 0.1 is wanted here)")
-    chk(cfg['wall_loops'] == '3' and cfg['wall_generator'] == 'arachne' and cfg['brim_type'] == 'no_brim', f'overrides did not take: {cfg}')
+    chk(cfg['efc'] == want_efc, f"elephant-foot compensation {cfg['efc']} (wanted {want_efc})")
+    chk(cfg['brim_type'] == 'no_brim' and (not global_walls or (cfg['wall_loops'] == '3' and cfg['wall_generator'] == 'arachne')), f'overrides did not take: {cfg}')
     bad = sorted(set(types) & {'Support', 'Support interface', 'Support transition', 'Ironing'})
     chk(not bad, f'forbidden line types in the G-code: {bad}')
     chk(not arcs, f'{len(arcs)} G2/G3 arc moves')
@@ -649,13 +659,16 @@ def slice_read_back(derived, hm_mesh, plate_mesh, P):
     first_eroded = first_sec.buffer(-efc)
     # where the slicer put the plate: read from the two runner rails (the 1.0 mm blades keep less of the elephant-foot shrink than the
     # rails do, so they would bias a box centre); the rails are the segments on the handle's side of the plate
-    rail_segs = [q for q in layers[zs[0]] if (q[1] + q[3]) / 2 < C.BED_CENTRE[1] + 15]
-    rxs = [c for q in rail_segs for c in (q[0], q[2])]
-    rys = [c for q in rail_segs for c in (q[1], q[3])]
     rails_design = first_eroded.intersection(box(-100, -100, 100, 15))
-    ox = (min(rxs) + max(rxs)) / 2 - (rails_design.bounds[0] + rails_design.bounds[2]) / 2
-    oy = (min(rys) + max(rys)) / 2 - (rails_design.bounds[1] + rails_design.bounds[3]) / 2
-    chk(abs(ox - C.BED_CENTRE[0]) < 8 and abs(oy - C.BED_CENTRE[1]) < 8, f'the plate was placed {ox - C.BED_CENTRE[0]:+.1f}, {oy - C.BED_CENTRE[1]:+.1f} from where it was put')
+    if origin is None:
+        rail_segs = [q for q in layers[zs[0]] if (q[1] + q[3]) / 2 < C.BED_CENTRE[1] + 15]
+        rxs = [c for q in rail_segs for c in (q[0], q[2])]
+        rys = [c for q in rail_segs for c in (q[1], q[3])]
+        ox = (min(rxs) + max(rxs)) / 2 - (rails_design.bounds[0] + rails_design.bounds[2]) / 2
+        oy = (min(rys) + max(rys)) / 2 - (rails_design.bounds[1] + rails_design.bounds[3]) / 2
+        chk(abs(ox - C.BED_CENTRE[0]) < 8 and abs(oy - C.BED_CENTRE[1]) < 8, f'the plate was placed {ox - C.BED_CENTRE[0]:+.1f}, {oy - C.BED_CENTRE[1]:+.1f} from where it was put')
+    else:
+        ox, oy = origin
     Ul = {z: C.layer_union(layers[z], ox, oy) for z in zs}
     top = plate_mesh.bounds[1][2]
     chk(len(zs) == int(top / lh + 1e-6) and zs[-1] > top - lh - 1e-3, f'{len(zs)} layers up to z {zs[-1]}, expected {int(top / lh + 1e-6)} (the model is {top:.3f} tall)')
@@ -705,10 +718,21 @@ def slice_read_back(derived, hm_mesh, plate_mesh, P):
     notes.append(f'PLA blades: every layer above layer 1 covers >= {worst_blade:.1%} of 10.0 x 1.0, top layer at z {top_blade}')
 
     # no floating island in the sliced layers: every piece of a layer (swept beads, unioned) touches the layer below
-    isl = layer_islands([(z, Ul[z]) for z in zs], min_area=0.5)
+    # Sparse infill is left out of the pieces tested (but not of the layer they are tested against): inside the walls the slicer may drop a short
+    # infill line (about 1 mm2) onto the sparse void of the layer below, which is how sparse infill is made and not a surface that prints in air.
+    # They are counted and listed separately. Walls, solid infill, skins and bridges (the clamp tongue's first layer is one) are all tested.
+    isl, stubs = [], []
+    for z0, z1 in zip(zs, zs[1:]):
+        solid = [q for q in layers[z1] if q[5] != 'Sparse infill']
+        if solid:
+            isl += layer_islands([(z0, Ul[z0]), (z1, C.layer_union(solid, ox, oy))], min_area=0.5)
+        stubs += layer_islands([(z0, Ul[z0]), (z1, Ul[z1])], min_area=0.5)
+    stubs = [t for t in stubs if t not in isl]
     chk(not isl, f'sliced layers with a piece that touches nothing in the layer below (z top, area mm2, bounds): {isl}')
-    notes.append(f'no floating island in the sliced layers: {len(zs) - 1} layers above layer 1, every connected piece of 0.5 mm2 or more overlaps the layer below'
+    notes.append(f'no floating island in the sliced layers: {len(zs) - 1} layers above layer 1, every connected piece of 0.5 mm2 or more (sparse infill aside) overlaps the layer below'
                  if not isl else f'FLOATING ISLANDS in the sliced layers: {isl}')
+    if stubs:
+        notes.append(f'sparse-infill stubs inside the walls that touch nothing in the layer below (z top, area mm2, bounds): {stubs}; interior infill lines over the sparse void, not a surface')
 
     # ---- features read from the layers ----
     shift_s = -(hm_mesh.bounds[0][0] + hm_mesh.bounds[1][0]) / 2
@@ -793,11 +817,13 @@ def slice_read_back(derived, hm_mesh, plate_mesh, P):
     over_len = sum(seg_len(q) for z_ in zs for q in layers[z_] if q[5] == 'Overhang wall')
     wall_len = sum(seg_len(q) for z_ in zs for q in layers[z_] if q[5] in ('Outer wall', 'Inner wall', 'Overhang wall'))
     over_layers = len([z_ for z_ in zs if any(q[5] == 'Overhang wall' for q in layers[z_])])
-    notes.append(f'"Bridge" lines (mm of extrusion) by layer height z: {bridge_z} (z 3.2: the ceiling at h 3.0 and z 10.8: the underside of the slot mouth and the first layer of the tongue, tied to the slot walls by two tabs, all spanning the 14.26 mm between the runner walls; z 20.8 and 22.2: the roofs at the 1 mm wide ends of the slot and the slits); '
+    why = (' (z 3.2: the ceiling at h 3.0 and z 10.8: the underside of the slot mouth and the first layer of the tongue, tied to the slot walls by two tabs, all spanning the 14.26 mm between the runner walls; z 20.8 and 22.2: the roofs at the 1 mm wide ends of the slot and the slits)'
+           if abs(lh - 0.2) < 1e-9 else ' (the ceiling at h 3.0, the underside of the slot mouth and the first layers of the tongue, tied to the slot walls by two tabs, and the roofs at the 1 mm wide ends of the slot and the slits)')
+    notes.append(f'"Bridge" lines (mm of extrusion) by layer height z: {bridge_z}{why}; '
                  f'"Internal Bridge" (solid skin over sparse infill, not over air): {internal_z}; "Overhang wall" lines: {over_len:.0f} mm of {wall_len:.0f} mm of wall, on {over_layers} layers '
                  '(the 40-50 degree faces); no Support type, so nothing is added under them')
     res = dict(time=cfg['time'], grams=cfg['grams'], layers=len(zs), line_types=sorted(types), skirt_or_brim=skirt_brim, settings=cfg,
-               worst_extrusion_outside_design_mm2=round(worst_out, 3), floating_islands=isl, layer1=dict(footprints=len(parts), rails_area=round(r_got, 1), rails_designed=round(rails.area, 1), blade_edges_area=[round(v, 1) for v in b_got]),
+               worst_extrusion_outside_design_mm2=round(worst_out, 3), floating_islands=isl, sparse_infill_stubs=stubs, layer1=dict(footprints=len(parts), rails_area=round(r_got, 1), rails_designed=round(rails.area, 1), blade_edges_area=[round(v, 1) for v in b_got]),
                pla_blade_layer_cover_min=round(worst_blade, 3), slot_open_min=round(slot_min, 3), back_slit_open_min=round(bs_min, 3),
                side_slit_open_min=round(ss_min, 3), hole_open_min=round(hole_min, 3), bridges=dict(bridge_mm_by_layer_z=bridge_z, internal_bridge_mm_by_layer_z=internal_z, overhang_wall_mm=round(over_len), wall_mm=round(wall_len), overhang_layers=over_layers),
                pass_=not fails, notes=notes)

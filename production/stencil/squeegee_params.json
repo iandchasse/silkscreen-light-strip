@@ -288,6 +288,7 @@
   },
   "worst_extrusion_outside_design_mm2": 0.002,
   "floating_islands": [],
+  "sparse_infill_stubs": [],
   "layer1": {
    "footprints": 4,
    "rails_area": 111.9,
@@ -320,7 +321,7 @@
   "notes": [
    "layer 1: 4 footprints; the two rails 111.9 mm2 against 112.0 designed after the 0.1 mm elephant-foot shrink (99.9%); the two blade edges 9.9 and 9.9 mm2 of the 10.0 x 1.0 footprint (the slicer did not shrink them)",
    "PLA blades: every layer above layer 1 covers >= 99.4% of 10.0 x 1.0, top layer at z 26.2",
-   "no floating island in the sliced layers: 138 layers above layer 1, every connected piece of 0.5 mm2 or more overlaps the layer below",
+   "no floating island in the sliced layers: 138 layers above layer 1, every connected piece of 0.5 mm2 or more (sparse infill aside) overlaps the layer below",
    "paste wedge, blade space and the space under the ceiling (|w| <= 6.5): 53 layer stretches checked, most extrusion inside any of them 0.0000 mm2",
    "slot: narrowest bead-to-bead gap, perpendicular to the blade, over 129 layer samples (w 0 and +-4.8): 1.25 mm (design 1.25, want >= 1.15)",
    "fit as sliced: a 0.84 card leaves 0.41 mm in the slot and the 1.0 PLA blade 0.25 mm; the tongue closes that gap",

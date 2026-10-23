@@ -52,16 +52,18 @@ FLOAT_REACH = 0.25        # mm: extrusion further than this from the layer below
 TOL_OFFSET = 0.03         # mm: the free interval's centre against the design centre
 
 
-def index():
+def index(folders=None):
+    """{(kind, name): file} over the given profile folders (default: the Elegoo folder); the first folder that has a name wins."""
     idx = {}
-    for kind in ('machine', 'process', 'filament'):
-        for f in PROFILES.rglob(f'{kind}/**/*.json'):
-            try:
-                d = json.loads(f.read_text(encoding='utf-8'))
-            except Exception:
-                continue
-            if 'name' in d:
-                idx.setdefault((kind, d['name']), f)
+    for folder in (folders or [PROFILES]):
+        for kind in ('machine', 'process', 'filament'):
+            for f in Path(folder).rglob(f'{kind}/**/*.json'):
+                try:
+                    d = json.loads(f.read_text(encoding='utf-8'))
+                except Exception:
+                    continue
+                if 'name' in d:
+                    idx.setdefault((kind, d['name']), f)
     return idx
 
 
@@ -73,16 +75,17 @@ def flatten(kind, name, idx):
     return base
 
 
-def write_presets(dest, overrides, presets=None):
-    """presets: {'machine': name, 'process': name, 'filament': name}; the default is the stencil's 0.12 Fine (the squeegee passes its own)."""
-    idx = index()
+def write_presets(dest, overrides, presets=None, folders=None, relative_e_hack=True):
+    """presets: {'machine': name, 'process': name, 'filament': name}; the default is the stencil's 0.12 Fine (the squeegee passes its own).
+    folders: the profile folders to search (default Elegoo only); relative_e_hack: append G92 E0 to the machine's layer gcode (read-back only)."""
+    idx = index(folders)
     dest.mkdir(parents=True, exist_ok=True)
     files = {}
     for kind, name in (presets or PRESETS).items():
         d = flatten(kind, name, idx)
         d['name'] = name                                   # keep the stock name: the CLI refuses a renamed machine
         d.pop('instantiation', None)
-        if kind == 'machine' and 'G92 E0' not in (d.get('layer_gcode') or ''):
+        if relative_e_hack and kind == 'machine' and 'G92 E0' not in (d.get('layer_gcode') or ''):
             d['layer_gcode'] = ((d.get('layer_gcode') or '') + '\nG92 E0').strip()      # relative-E read-back
         if kind == 'process':
             d.update(overrides)
@@ -173,11 +176,14 @@ def free_interval(U, cx, cy, axis, reach=2.0):
     return best.length, (c.x - cx if axis == 'x' else c.y - cy)
 
 
-def analyse(gcode, D, g, label):
-    """Read one G-code back against the design. Returns (result dict, list of failure strings)."""
+def analyse(gcode, D, g, label, parsed=None, centre=None, float_tol=0.01):
+    """Read one G-code back against the design. Returns (result dict, list of failure strings).
+    parsed: (layers, types, arcs) already cut down to this one card (make_plate.py reads three cards off one plate); the header of
+    `gcode` still supplies the settings; centre: where the card was put on the bed (default BED_CENTRE); float_tol: the mm2 of
+    extrusion with nothing under it that fails a layer (0.01 for the single card, which reads 0.000-0.01)."""
     P = S.PARAMS
     H = g['H']
-    layers, types, arcs = parse(gcode)
+    layers, types, arcs = parsed if parsed else parse(gcode)
     fails = []
     zs = sorted(layers)
     want = [round(0.1 * (i + 1), 3) for i in range(int(round(H / 0.1)))]
@@ -186,12 +192,13 @@ def analyse(gcode, D, g, label):
     x0, x1, y0, y1 = P['card']
     xs = [c for s in layers[zs[0]] for c in (s[0], s[2])]
     ys = [c for s in layers[zs[0]] for c in (s[1], s[3])]
-    # the part's centre on the bed: the centre of the first layer's extrusion box (a symmetric card, no brim). Orca moves
-    # the part a little from where we put it (1.5 mm in y was seen), so it is read, not assumed; it must stay near
+    # the part's centre on the bed: the centre of the first layer's extrusion box (a symmetric card, no brim). The G-code
+    # frame is the model frame minus the machine's extruder_offset (0 x 1.5 on the Centauri Carbon 2), so the part reads 1.5 mm off in y; it is read, not assumed; it must stay near
     ox, oy = (min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2
     ext = (max(xs) - min(xs), max(ys) - min(ys))
-    if abs(ox - BED_CENTRE[0]) > 5 or abs(oy - BED_CENTRE[1]) > 5:
-        fails.append(f'first layer centred at ({ox:.3f}, {oy:.3f}), the part was placed at {BED_CENTRE}')
+    centre = centre or BED_CENTRE
+    if abs(ox - centre[0]) > 5 or abs(oy - centre[1]) > 5:
+        fails.append(f'first layer centred at ({ox:.3f}, {oy:.3f}), the part was placed at {centre}')
     if abs(ext[0] - (x1 - x0)) > 0.6 or abs(ext[1] - (y1 - y0)) > 0.6:
         fails.append(f'first-layer extent {ext[0]:.2f} x {ext[1]:.2f}, model {x1 - x0} x {y1 - y0}')
     U = {z: layer_union(layers[z], ox, oy) for z in zs}
@@ -278,7 +285,7 @@ def analyse(gcode, D, g, label):
         under = U[zs[i - 1]].buffer(FLOAT_REACH)
         fa = U[zs[i]].difference(under).area
         float_area = max(float_area, fa)
-        if fa > 0.01:
+        if fa > float_tol:
             fails.append(f'z={zs[i]}: {fa:.3f} mm2 of extrusion has nothing under it')
 
     # --- forbidden roles and arcs ---
@@ -385,7 +392,7 @@ def write_report(res, gx, gy, fails):
           f'{gx:+.3f} mm (across) and {gy:+.3f} mm (along) per side. That is the wrong taper for paste release and puts down more paste, so the process '
           'must have it at 0.', '',
           'Method: apertures are tested by sweeping every extrusion segment by its `;WIDTH` and intersecting with the aperture rectangle (squeegee size on layer 1, pad size on layer 2); '
-          'the part is placed at the bed centre by this script (with Orca\'s own arrange it turned the card by 90 degrees) and its position is then read from the centre of the first layer\'s extrusion bounding box (Orca moved it 1.5 mm in y from where it was put), so the read-back does not depend on where Orca puts it. The pocket is tested against its outline shrunk by 0.05 mm. '
+          'the part is placed at the bed centre by this script (with Orca\'s own arrange it turned the card by 90 degrees) and its position is then read from the centre of the first layer\'s extrusion bounding box (the G-code frame is the model frame minus the Centauri Carbon 2 profile\'s 1.5 mm extruder offset in y, so the part reads 1.5 mm off where it was put), so the read-back does not depend on where Orca puts it. The pocket is tested against its outline shrunk by 0.05 mm. '
           '"Floating" is extrusion further than 0.25 mm from any bead of the layer below (bead ends and corners overhang by up to about 0.2 mm without being a problem). Failing lines are `Support`, `Bridge`, `Ironing`, `Overhang wall` and any G2/G3 arc outside the end G-code.']
     if fails:
         L += ['', '## Failures', ''] + [f'- {f}' for f in fails]
