@@ -7,6 +7,8 @@ Run in the CadQuery venv (it has cadquery, shapely, trimesh), after extract_past
 What it makes: a flat PLA card (31 x 107 mm, 0.6 mm thick by default) with a pocket on its underside shaped like
 the strip. The pocket's ceiling is a 0.20 mm membrane that rests on the strip's top face; the 24 LED apertures go
 through the membrane. The card prints squeegee face down, so there are no overhangs and no supports.
+Aperture placement. Pushing the card onto the two datums moves it +clear (0.12) in x and in y, so every aperture is cut at
+the pad centre minus (clear, clear) in KiCad x/y; it sits on the pad centre once the card is home.
 The design is in docs/ASSEMBLY.md ("Option: 3D-printed paste stencil") and production/stencil/README.md.
 
 Frames. Everything is first built in the USE frame: KiCad x, y (component side up, seen from above), z up from the
@@ -86,10 +88,14 @@ def geometry(D, inp=None, P=PARAMS):
         cx, cy = (bx0 + bx1) / 2, (by0 + by1) / 2
         sq = (P['led_ap'][0], P['led_ap'][1])
         pd = (sq[0] + 2 * P['release_step'], sq[1] + 2 * P['release_step'])
-        aps.append(dict(ref=p['ref'], pad=p['pad'], cx=cx, cy=cy, pad_poly=pad, pad_size=(bx1 - bx0, by1 - by0),
+        # (cx, cy) is the PAD centre; (ax, ay) is where the aperture is cut in the card. The card is pushed onto the
+        # datums, which moves it +clear in x and +clear in y (KiCad frame), so the aperture is cut that much the other
+        # way and lands on the pad centre once the card is home.
+        ax_, ay_ = cx - P['clear'], cy - P['clear']
+        aps.append(dict(ref=p['ref'], pad=p['pad'], cx=cx, cy=cy, ax=ax_, ay=ay_, pad_poly=pad, pad_size=(bx1 - bx0, by1 - by0),
                         sq=sq, pd=pd,
-                        sq_rect=box(cx - sq[0] / 2, cy - sq[1] / 2, cx + sq[0] / 2, cy + sq[1] / 2),
-                        pd_rect=box(cx - pd[0] / 2, cy - pd[1] / 2, cx + pd[0] / 2, cy + pd[1] / 2)))
+                        sq_rect=box(ax_ - sq[0] / 2, ay_ - sq[1] / 2, ax_ + sq[0] / 2, ay_ + sq[1] / 2),
+                        pd_rect=box(ax_ - pd[0] / 2, ay_ - pd[1] / 2, ax_ + pd[0] / 2, ay_ + pd[1] / 2)))
     aps.sort(key=lambda a: (a['cy'], a['ref']))
     return dict(card=card, pocket=pocket, groove=groove, outline=outline, aps=aps, D=D,
                 H=round(D + P['membrane'], 3))
@@ -137,8 +143,8 @@ def build_solid(g, P=PARAMS):
     solid = solid.cut(prism(g['pocket'], 0, D))
     solid = solid.cut(prism(g['groove'].intersection(g['card'].buffer(0.5)), 0, P['groove'][2]))
     for a in g['aps']:
-        solid = solid.cut(rect_prism(a['cx'], a['cy'], a['pd'][0], a['pd'][1], D - 0.01, D + P['layer']))   # pad half
-        solid = solid.cut(rect_prism(a['cx'], a['cy'], a['sq'][0], a['sq'][1], D + P['layer'] - 0.01, H + 0.01))   # squeegee half
+        solid = solid.cut(rect_prism(a['ax'], a['ay'], a['pd'][0], a['pd'][1], D - 0.01, D + P['layer']))   # pad half
+        solid = solid.cut(rect_prism(a['ax'], a['ay'], a['sq'][0], a['sq'][1], D + P['layer'] - 0.01, H + 0.01))   # squeegee half
     labels = []
     for txt, t in label_solids(D, P):
         bb = t.val().BoundingBox()
@@ -153,6 +159,7 @@ def build(D, P=PARAMS, write=True):
     import numpy as np
     import trimesh
     from shapely.geometry import box
+    from shapely.affinity import translate
     inp = load_input()
     g = geometry(D, inp, P)
     H = g['H']
@@ -169,9 +176,14 @@ def build(D, P=PARAMS, write=True):
     x0, x1, y0, y1 = P['card']
     for a in g['aps']:
         for nm in ('sq_rect', 'pd_rect'):
-            check(a['pad_poly'].contains(a[nm]), f"{a['ref']}.{a['pad']} {nm} is not inside the pad")
+            # with the card pushed home (+clear in x and y) the opening must lie inside the pad
+            check(a['pad_poly'].contains(translate(a[nm], P['clear'], P['clear'])), f"{a['ref']}.{a['pad']} {nm} is not inside the pad once the card is pushed home")
         c = a['pad_poly'].centroid
-        check(abs(c.x - a['cx']) < 0.005 and abs(c.y - a['cy']) < 0.005, f"{a['ref']}.{a['pad']} aperture is off-centre")
+        check(abs(c.x - (a['ax'] + P['clear'])) < 0.005 and abs(c.y - (a['ay'] + P['clear'])) < 0.005,
+              f"{a['ref']}.{a['pad']} aperture centre is not the pad centre minus (clear, clear)")
+        check(abs(a['sq_rect'].centroid.x - (c.x - P['clear'])) < 1e-6 and abs(a['sq_rect'].centroid.y - (c.y - P['clear'])) < 1e-6
+              and abs(a['pd_rect'].centroid.x - (c.x - P['clear'])) < 1e-6 and abs(a['pd_rect'].centroid.y - (c.y - P['clear'])) < 1e-6,
+              f"{a['ref']}.{a['pad']} cut rectangles are not centred on pad - (clear, clear)")
         check(a['cx'] - x0 >= 6 and x1 - a['cx'] >= 6 and a['cy'] - y0 >= 6 and y1 - a['cy'] >= 6,
               f"{a['ref']}.{a['pad']} is less than 6 mm inside the card edges")
         check(g['pocket'].contains(a['pd_rect']), f"{a['ref']}.{a['pad']} aperture is outside the pocket")
@@ -233,7 +245,7 @@ def build(D, P=PARAMS, write=True):
 
     inside, around = [], []
     for a in g['aps']:
-        px, py = to_print(a['cx'], a['cy'])
+        px, py = to_print(a['ax'], a['ay'])
         hx, hy = a['sq'][0] / 2 - 0.05, a['sq'][1] / 2 - 0.05
         inside += [(px, py), (px + hx, py + hy), (px - hx, py - hy), (px + hx, py - hy), (px - hx, py + hy)]
         # in the membrane just outside the pad-side opening, in x and y

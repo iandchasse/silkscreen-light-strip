@@ -32,6 +32,14 @@ IMG = ROOT / 'docs' / 'images'
 P = S.PARAMS
 CX, CY = (P['card'][0] + P['card'][1]) / 2, (P['card'][2] + P['card'][3]) / 2
 D = P['default_depth']
+CL = P['clear']
+
+
+def home(geom):
+    """A card-frame shape as it sits once the card is pushed onto the datums: +clear in x and in y (KiCad frame)."""
+    return translate(geom, CL, CL)
+
+
 INK = '#222222'
 PLA, PLA_DARK = '#9fb3c8', '#6f86a0'
 PI, GOLD, TAPE, BLUE = '#f1deb0', '#d9a520', '#f08c1a', '#1f5fbf'
@@ -75,26 +83,26 @@ def overview(inp, g):
         rects(ax, [b], fc=TAPE, ec='none', alpha=0.55, zorder=3)
         ax.text(b[2] + 0.8, (b[1] + b[3]) / 2, 'Kapton: ' + t, va='center', fontsize=7.5, color='#a85c00')
     x0, x1, y0, y1 = P['card']
-    add(ax, g['card'], fc=PLA, ec=PLA_DARK, lw=1.0, alpha=0.55, zorder=4)
-    add(ax, g['pocket'].intersection(g['card']), fc='none', ec=PLA_DARK, lw=0.7, ls=(0, (4, 2)), zorder=5)
+    add(ax, home(g['card']), fc=PLA, ec=PLA_DARK, lw=1.0, alpha=0.55, zorder=4)
+    add(ax, home(g['pocket'].intersection(g['card'])), fc='none', ec=PLA_DARK, lw=0.7, ls=(0, (4, 2)), zorder=5)
     gy, gw, _ = P['groove']
-    rects(ax, [(x0, gy - gw / 2, x1, gy + gw / 2)], fc='none', ec=PLA_DARK, hatch='////', lw=0, alpha=0.7, zorder=5)
+    rects(ax, [(x0 + CL, gy - gw / 2 + CL, x1 + CL, gy + gw / 2 + CL)], fc='none', ec=PLA_DARK, hatch='////', lw=0, alpha=0.7, zorder=5)
     for p in inp['paste_pads']:
         b = p['paste_bbox']
         rects(ax, [(b[0], b[1], b[2], b[3])], fc=GOLD, ec='#7a5a00', lw=0.3, zorder=6)
     for a in g['aps']:
-        add(ax, a['pd_rect'], fc='none', ec=BLUE, lw=0.5, ls=(0, (2, 1.5)), zorder=7)
-        add(ax, a['sq_rect'], fc='white', ec=BLUE, lw=0.7, zorder=7)
+        add(ax, home(a['pd_rect']), fc='none', ec=BLUE, lw=0.5, ls=(0, (2, 1.5)), zorder=7)
+        add(ax, home(a['sq_rect']), fc='white', ec=BLUE, lw=0.7, zorder=7)
     ax.set_xlim(26, 72)
     ax.set_ylim(170, 28)
     ax.set_aspect('equal')
     ax.set_xlabel('x (mm, KiCad frame)')
     ax.set_ylabel('y (mm, KiCad frame, down)')
-    ax.set_title('Squeegee face, card over the strip', fontsize=10)
+    ax.set_title('Squeegee face, card pushed home on the strip', fontsize=10)
     ax.annotate('', xy=(P['datum_x'] + 0.2, 100), xytext=(P['datum_x'] - 8, 100), arrowprops=dict(arrowstyle='-|>', color='#b00020', lw=1.2), zorder=9)
-    ax.text(31.6, 97.5, 'push the card\ntoward +x onto\nthe strip edge', color='#b00020', fontsize=7.5, va='bottom')
+    ax.text(31.6, 97.5, 'card shown pushed\ntoward +x onto\nthe strip edge', color='#b00020', fontsize=7.5, va='bottom')
     ax.annotate('', xy=(50, P['datum_y'] + 0.3), xytext=(50, P['datum_y'] - 5), arrowprops=dict(arrowstyle='-|>', color='#b00020', lw=1.2), zorder=9)
-    ax.text(51.2, 131.2, 'push toward +y onto\nthe foot\'s top edge', color='#b00020', fontsize=7.5, va='center')
+    ax.text(51.2, 131.2, 'and toward +y onto\nthe foot\'s top edge', color='#b00020', fontsize=7.5, va='center')
     ax.text(x1 - 0.5, y1 - 1.0, 'card ends at y 140', fontsize=7, ha='right', va='bottom', color=PLA_DARK)
     ax.text(x0 + 3.5, y0 + 1.2, 'chamfer =\ntop left', fontsize=7, color=PLA_DARK, va='top', ha='left')
     ax.text(60.5, 156, 'D13, D14:\nhand-dotted,\nno stencil', fontsize=7.5, va='center')
@@ -104,18 +112,18 @@ def overview(inp, g):
     az = fig.add_subplot(gs[1])
     zx0, zx1, zy0, zy1 = 40.2, 48.6, 57.4, 71.0
     add(az, strip, fc=PI, ec=INK, lw=1.0, zorder=2)
-    add(az, g['card'], fc=PLA, ec='none', alpha=0.45, zorder=3)
-    add(az, g['pocket'], fc='none', ec=PLA_DARK, lw=1.0, ls=(0, (4, 2)), zorder=4)
+    add(az, home(g['card']), fc=PLA, ec='none', alpha=0.45, zorder=3)
+    add(az, home(g['pocket']), fc='none', ec=PLA_DARK, lw=1.0, ls=(0, (4, 2)), zorder=4)
     for p in inp['paste_pads']:
         b = p['paste_bbox']
         rects(az, [(b[0], b[1], b[2], b[3])], fc=GOLD, ec='#7a5a00', lw=0.5, zorder=5)
     for a in g['aps']:
-        add(az, a['pd_rect'], fc='none', ec=BLUE, lw=0.9, ls=(0, (2, 1.5)), zorder=7)
-        add(az, a['sq_rect'], fc='white', ec=BLUE, lw=1.3, zorder=7)
+        add(az, home(a['pd_rect']), fc='none', ec=BLUE, lw=0.9, ls=(0, (2, 1.5)), zorder=7)
+        add(az, home(a['sq_rect']), fc='white', ec=BLUE, lw=1.3, zorder=7)
     az.set_xlim(zx0, zx1)
     az.set_ylim(zy1, zy0)
     az.set_aspect('equal')
-    az.set_title('D8 above, D2 below (pads 1.00 x 1.60, 3.70 apart)', fontsize=10)
+    az.set_title('D8 above, D2 below (pads 1.00 x 1.60, 3.70 apart); openings centred on the pads', fontsize=10)
     az.set_xlabel('x (mm)')
     d2 = [a for a in g['aps'] if a['ref'] == 'D2' and a['pad'] == '2'][0]     # anode, y 65.6
     d8 = [a for a in g['aps'] if a['ref'] == 'D8' and a['pad'] == '2'][0]
@@ -125,11 +133,10 @@ def overview(inp, g):
     dim(46.15, d8['cy'], 'squeegee side 0.80 x 1.10\n(solid blue)', ha='left')
     dim(46.15, d8['cy'] + 1.1, 'pad side 0.90 x 1.20\n(dashed)', ha='left')
     dim(46.15, 62.7 + 0.0, 'pad (gold) 1.00 x 1.60 = paste pad;\nestimate: the paste is about 60-80 %\nof a steel stencil\'s', ha='left')
-    az.annotate('', xy=(P['datum_x'], 71.6 - 0.3), xytext=(P['datum_x'] - 0.12, 71.6 - 0.3))
     az.text(42.9, 70.9, 'strip edge x 43.00', fontsize=7.5, ha='right', va='bottom', color=INK, rotation=90)
-    az.text(42.88, 57.55, '0.12 clearance', fontsize=7, ha='right', va='top', color=PLA_DARK)
-    az.text(45.42, 57.55, '0.12', fontsize=7, ha='left', va='top', color=PLA_DARK)
-    fig.suptitle('Light-strip paste stencil, D0.4 file (use view; nothing here has been printed or tried)', fontsize=11, y=0.93)
+    az.text(43.0, 57.55, 'wall on the\nstrip edge', fontsize=7, ha='right', va='top', color=PLA_DARK)
+    az.text(45.54, 57.55, '0.24 gap', fontsize=7, ha='left', va='top', color=PLA_DARK)
+    fig.suptitle('Light-strip paste stencil, D0.4 file, card pushed home (use view; nothing here has been printed or tried)', fontsize=11, y=0.93)
     fig.savefig(IMG / 'stencil_overview.png', dpi=130, bbox_inches='tight', facecolor='white')
     plt.close(fig)
 
@@ -173,8 +180,8 @@ def underside(inp, g, mesh, H):
     ax.annotate('pocket,\ndashed = strip', xy=(43.9, 80), xytext=(33.5, 92), fontsize=7.5, arrowprops=dict(arrowstyle='-', lw=0.6))
     ax.annotate('pocket tip\n(strip tip + 0.30)', xy=(44.2, 38.9), xytext=(50.5, 36), fontsize=7.5, arrowprops=dict(arrowstyle='-', lw=0.6))
     ax.annotate('pocket runs out of the card edge\n(the neck leaves here)', xy=(55, 139.9), xytext=(47, 146), fontsize=7.5, arrowprops=dict(arrowstyle='-', lw=0.6))
-    ax.annotate('x datum: pocket wall\ntouches strip edge x 43.0', xy=(42.88, 118), xytext=(26, 124), fontsize=7.5, color='#b00020', arrowprops=dict(arrowstyle='-', lw=0.6, color='#b00020'))
-    ax.annotate('y datum: wall above the\nfoot touches y 135.5', xy=(50, 135.38), xytext=(56.5, 126), fontsize=7.5, color='#b00020', arrowprops=dict(arrowstyle='-', lw=0.6, color='#b00020'))
+    ax.annotate('x datum: pocket wall (x 42.88)\nmeets strip edge x 43.0 after the push', xy=(42.88, 118), xytext=(26, 124), fontsize=7.5, color='#b00020', arrowprops=dict(arrowstyle='-', lw=0.6, color='#b00020'))
+    ax.annotate('y datum: wall above the foot (y 135.38)\nmeets y 135.5 after the push', xy=(50, 135.38), xytext=(56.5, 126), fontsize=7.5, color='#b00020', arrowprops=dict(arrowstyle='-', lw=0.6, color='#b00020'))
     fig.savefig(IMG / 'stencil_underside.png', dpi=130, bbox_inches='tight', facecolor='white')
     plt.close(fig)
 
@@ -220,8 +227,8 @@ def section(inp, g, mesh, H):
     lab(40.4, H + 0.04, f'squeegee face, z {H:.1f}', color=INK)
     lab(40.4, D - 0.06, f'z {D:.1f} = pocket depth D:\nthe membrane rests on the strip', color=INK)
     ax.annotate('', xy=(42.88, 0.22 * ZX), xytext=(43.0, 0.22 * ZX), arrowprops=dict(arrowstyle='<->', lw=0.7))
-    ax.text(42.8, 0.22 * ZX, '0.12 clearance\neach side', fontsize=7, va='center', ha='right')
-    ax.text(44.25, (H + 0.1) * ZX, 'aperture: 0.80 across on the squeegee side,\n0.90 on the pad side', fontsize=7.5, ha='center', va='bottom', color=BLUE)
+    ax.text(42.8, 0.22 * ZX, '0.12 clearance; the push\ncloses it on this side', fontsize=7, va='center', ha='right')
+    ax.text(44.25, (H + 0.1) * ZX, 'aperture: 0.80 across on the squeegee side, 0.90 on the pad side.\nCut 0.12 toward -x of the pad centre; the push centres it on the pad', fontsize=7.5, ha='center', va='bottom', color=BLUE)
     ax.text(43.05, -0.12 * ZX, 'x datum: strip edge 43.00', fontsize=7, ha='left', va='center', color='white')
     fig.savefig(IMG / 'stencil_section.png', dpi=130, bbox_inches='tight', facecolor='white')
     plt.close(fig)
@@ -235,7 +242,7 @@ def toolpaths(g):
         xs = [c for s in layers[zs[0]] for c in (s[0], s[2])]
         ys = [c for s in layers[zs[0]] for c in (s[1], s[3])]
         ox, oy = (min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2
-        return {z: translate(C.layer_union(layers[z], ox, oy), CX, CY) for z in zs[:2]}
+        return {z: translate(C.layer_union(layers[z], ox, oy), CX + CL, CY + CL) for z in zs[:2]}      # card pushed home
     base = C.WORK / 'D0.4'
     g0 = next(base.glob('plate_1.gcode'))
     g1 = next((C.WORK / 'D0.4_efc01').glob('plate_1.gcode'))
@@ -250,15 +257,15 @@ def toolpaths(g):
         for a in g['aps']:
             if win.intersects(a['pad_poly']):
                 add(ax, a['pad_poly'], fc='none', ec=GOLD, lw=1.2, zorder=4)
-                add(ax, a['sq_rect'], fc='none', ec=BLUE, lw=1.2, zorder=5)
-                add(ax, a['pd_rect'], fc='none', ec=BLUE, lw=0.9, ls=(0, (2, 1.5)), zorder=5)
+                add(ax, home(a['sq_rect']), fc='none', ec=BLUE, lw=1.2, zorder=5)
+                add(ax, home(a['pd_rect']), fc='none', ec=BLUE, lw=0.9, ls=(0, (2, 1.5)), zorder=5)
         ax.set_xlim(41.0, 47.2)
         ax.set_ylim(71.2, 57.0)
         ax.set_aspect('equal')
         ax.set_title(title, fontsize=9)
         ax.set_xlabel('x (mm)')
     axs[0].set_ylabel('y (mm)')
-    fig.suptitle('Sliced toolpath around D8 / D2 (grey = plastic, white = open). Gold = pad, blue = designed aperture.', fontsize=10)
+    fig.suptitle('Sliced toolpath around D8 / D2 (grey = plastic, white = open). Card pushed home. Gold = pad, blue = designed aperture.', fontsize=10)
     fig.savefig(IMG / 'stencil_toolpaths.png', dpi=130, bbox_inches='tight', facecolor='white')
     plt.close(fig)
 

@@ -209,6 +209,10 @@ def analyse(gcode, D, g, label):
             if covered > TOL_AREA:
                 fails.append(f"{row['ref']} layer {li + 1}: {covered:.4f} mm2 of the aperture is covered by a bead")
             cx, cy = rect.centroid.x, rect.centroid.y
+            # expected centre: the pad centre minus (clear, clear), in the print frame (pushing the card home adds it back)
+            wx_, wy_ = shift(a['pad_poly']).centroid.x - S.PARAMS['clear'], shift(a['pad_poly']).centroid.y - S.PARAMS['clear']
+            if abs(cx - wx_) > 0.005 or abs(cy - wy_) > 0.005:
+                fails.append(f"{row['ref']} layer {li + 1}: aperture centre ({cx:.3f}, {cy:.3f}) is not pad - (clear, clear) = ({wx_:.3f}, {wy_:.3f})")
             for ax, want_w in (('x', size[0]), ('y', size[1])):
                 wd, off = free_interval(U[z], cx, cy, ax)
                 minw = min(minw, wd)

@@ -67,7 +67,7 @@
    "mesh_triangles": 12700,
    "mesh_volume_mm3": 1522.47,
    "slice": {
-    "time": "8m 52s",
+    "time": "8m 54s",
     "grams": "1.91",
     "layers": 5,
     "min_open_width_mm": 0.8,
@@ -109,7 +109,7 @@
    "mesh_volume_mm3": 1822.96,
    "step": "light-strip-stencil_D0.4_use.step",
    "slice": {
-    "time": "9m 43s",
+    "time": "9m 45s",
     "grams": "2.27",
     "layers": 6,
     "min_open_width_mm": 0.8,
@@ -150,7 +150,7 @@
    "mesh_triangles": 11202,
    "mesh_volume_mm3": 2123.42,
    "slice": {
-    "time": "10m 31s",
+    "time": "10m 32s",
     "grams": "2.63",
     "layers": 7,
     "min_open_width_mm": 0.8,

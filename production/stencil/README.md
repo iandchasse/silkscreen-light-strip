@@ -14,6 +14,8 @@ A 3D-printable stencil for the 24 LED pads of the light strip, for use with past
 
 **Pick the file** by measuring the bar (flex + stiffener + tape + liner, liner on) at 2-3 points: the largest multiple of 0.1 mm at least 0.02 mm below your reading is the depth. The files are already in print orientation (squeegee face on the bed, pocket facing up): load them as they are.
 
+**Registration.** The pocket is 0.12 mm bigger than the strip all round. Pushing the card onto the strip's straight outer edge and the foot's top edge moves it 0.12 mm toward +x and 0.12 mm toward +y, so the 24 openings are cut 0.12 mm toward -x and -y of the pad centres (the stencil script checks every one) and land on the pad centres once the card is pushed home. If the card is not pushed onto both edges, every opening sits up to 0.12 mm off its pad.
+
 **Print settings** (OrcaSlicer, Elegoo Centauri Carbon 2, PLA; start from "0.12mm Fine @Elegoo CC2 0.4 nozzle"):
 
 | Setting | Value |
