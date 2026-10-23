@@ -7,6 +7,8 @@ Writes to docs/images/:
     stencil_section.png     a cross-section across the bar through D2's cathode pad, z exaggerated 10 x (from the real mesh)
     stencil_toolpaths.png   the sliced G-code of layers 1 and 2 around D8/D2, with the design overlaid; the stock
                             elephant-foot compensation next to it (from build/stencil/slice/, so run slice_check.py first)
+    stencil_squeegee.png    the squeegee: side section, where the runners ride on the card, cutting a card into blades
+    stencil_squeegee_part.png  the handle in 3-D from the STL, and the print plate as sliced (run squeegee.py --slice first)
 Everything is drawn from the same data the checks use. Nothing here is a photograph of a printed part.
 """
 import json
@@ -22,10 +24,11 @@ import trimesh
 from matplotlib.patches import PathPatch, Polygon as MPoly, Rectangle
 from matplotlib.path import Path as MPath
 from shapely.affinity import translate
-from shapely.geometry import Polygon, box
+from shapely.geometry import Point, Polygon, box
 
 import stencil as S
 import slice_check as C
+import squeegee as SG
 
 ROOT = S.ROOT
 IMG = ROOT / 'docs' / 'images'
@@ -273,6 +276,268 @@ def toolpaths(g):
     plt.close(fig)
 
 
+# ---------------------------------------------------------------------------------------------------------------
+# The squeegee (see squeegee.py). Frame: s along the stroke, w across, h up from the stencil card's face.
+# ---------------------------------------------------------------------------------------------------------------
+def squeegee_meshes():
+    """(handle mesh in the squeegee frame, plate mesh as printed), from production/stencil/squeegee_print.stl."""
+    plate = trimesh.load(S.OUT / 'squeegee_print.stl')
+    bodies = sorted(plate.split(only_watertight=False), key=lambda m: -m.volume)
+    handle = bodies[0].copy()
+    prof = SG.profiles()
+    shift = -(SG.SQ['runner_s'][0] + prof['C'][0]) / 2
+    handle.apply_translation([-shift, 0, 0])
+    return handle, plate
+
+
+def squeegee_figure(inp, g):
+    handle, plate = squeegee_meshes()
+    sq = SG.SQ
+    Pf = SG.profiles()
+    Q = SG.Q
+    A = SG.A
+    d_tip = sq['interference'] / np.cos(A)
+    tip_s = -d_tip * np.sin(A)
+    fig = plt.figure(figsize=(15.5, 10.6))
+    gs = fig.add_gridspec(2, 2, width_ratios=[1.3, 1], height_ratios=[1.45, 1], wspace=0.10, hspace=0.24)
+    LBL = dict(arrowprops=dict(arrowstyle='-', lw=0.6, color='#444444'), bbox=dict(fc='white', ec='none', alpha=0.85, pad=1.0), zorder=12)
+
+    # ---- (a) side section at w = 0 ----
+    ax = fig.add_subplot(gs[0, 0])
+    sec = SG.section_poly(handle, 1, 0.0)
+    add(ax, sec, fc=PLA, ec=PLA_DARK, lw=0.8, zorder=3)
+    ax.add_patch(Rectangle((-14, -0.6), 41, 0.6, fc='#c5d2e0', ec=PLA_DARK, lw=0.6, zorder=2))
+    ax.add_patch(Rectangle((-14, -2.4), 41, 1.8, fc='#8c7a5b', ec='none', zorder=1))
+    ax.text(26.6, -1.5, 'strip on an FR4 scrap', fontsize=7.5, color='white', ha='right', va='center')
+    ax.plot([-14, 27], [0, 0], color=INK, lw=0.8, zorder=6)
+    ax.annotate('stencil card (0.6 thick), squeegee face up:\nits face is the runner plane, h 0', xy=(-9, -0.3), xytext=(-13.8, 5.2), fontsize=7.5, va='center', **LBL)
+    t = 0.76
+    straight = Polygon([Q(0, 0), Q(sq['stop'], 0), Q(sq['stop'], t), Q(0, t)])
+    add(ax, straight, fc='none', ec='#b36b00', lw=1.0, ls=(0, (4, 2)), zorder=7)
+    inslot = Polygon([Q(sq['mouth'], 0), Q(sq['stop'], 0), Q(sq['stop'], t), Q(sq['mouth'], t)])
+    loaded = SG.bent_blade(d_tip, t, 0.0, sq['mouth']).union(inslot)
+    add(ax, loaded, fc='#f5d98a', ec='#7a4a00', lw=1.1, zorder=8)
+    U_ = SG.U
+
+    def tube(o0, o1, r):
+        pt = lambda o, dr: (SG.Q(sq['hole_lam'], o)[0] + dr * U_[0], SG.Q(sq['hole_lam'], o)[1] + dr * U_[1])
+        return Polygon([pt(o0, -r), pt(o1, -r), pt(o1, r), pt(o0, r)])
+    add(ax, tube(SG.O_BACK - 8.0, SG.O_BACK, 1.5), fc='none', ec='#444444', lw=0.9, ls=(0, (3, 2)), zorder=9)
+    add(ax, tube(SG.O_BACK, SG.O_BACK + 2.0, 2.75), fc='none', ec='#444444', lw=0.9, ls=(0, (3, 2)), zorder=9)
+    ax.annotate('M3 thread-forming screw (8-12 mm), drawn dashed;\nit pushes the tongue, never tighten it with no blade in', xy=Q(sq['hole_lam'], SG.O_BACK + 1.0), xytext=(-13.8, 27.2), fontsize=7.5, va='center', **LBL)
+    ax.annotate('tongue, 1.6 thick: free at the mouth,\nclamps the blade across its whole width', xy=Q(21, (SG.O_T0 + SG.O_T1) / 2), xytext=(-13.8, 23.3), fontsize=7.5, va='center', **LBL)
+    ax.annotate('slot 1.25 wide (10.6 across);\nthe blade bottoms on the stop', xy=Q(sq['stop'] - 0.5, 0.6), xytext=(20.0, 26.2), fontsize=7.5, va='center', **LBL)
+    ax.annotate('flat finger pad, above the blade', xy=(-1.0, Pf['G'][1]), xytext=(-13.8, 19.4), fontsize=7.5, va='center', **LBL)
+    ax.annotate('runner (one each side, 3 x 22)', xy=(-3, 0.0), xytext=(-13.8, 9.2), fontsize=7.5, va='center', **LBL)
+    # the blade's numbers, in a block on the clear side
+    ax.text(10.6, 9.2, 'card blade, 0.76 thick, 10 wide, 27 long\n'
+            '- slot holds it at 50 deg (dashed = unloaded, edge 0.9 below h 0)\n'
+            '- loaded flat on the card: tip bent back 1.4, angle about 42 deg\n'
+            '- free length 15.0 (front face, slot lip to the edge)\n'
+            '- edge force about 1.4 N (1.0-2.3 N): estimate, not measured', fontsize=7.4, va='top', ha='left', color='#5a3500',
+            bbox=dict(fc='white', ec='#b36b00', lw=0.6, alpha=0.92, pad=3))
+    lip = Q(sq['mouth'], 0)
+    ax.plot([lip[0]], [lip[1]], 'o', color='#7a4a00', ms=3.5, zorder=10)
+    ax.annotate('slot lip', xy=lip, xytext=(14.2, 11.7), fontsize=7, color='#7a4a00', va='center', **LBL)
+    ax.annotate('', xy=(-3.0, -sq['interference']), xytext=(-3.0, 0), arrowprops=dict(arrowstyle='<->', lw=0.7, color='#b36b00'))
+    ax.plot([-3.4, 0.2], [-sq['interference']] * 2, color='#b36b00', lw=0.7, ls=(0, (3, 2)), zorder=7)
+    ax.text(-3.4, -0.45, '0.9', fontsize=7, color='#b36b00', ha='right', va='center')
+    ax.annotate('loaded edge, s %.1f' % tip_s, xy=(tip_s, 0.0), xytext=(-13.5, 1.6), fontsize=7.5, color='#7a4a00', va='center', **LBL)
+    bead = Point(tip_s + 3.0, 0.95).buffer(0.95)
+    ax.add_patch(PathPatch(mpl_path(Polygon(bead.exterior.coords)), fc='#9aa0a6', ec='#555555', lw=0.6, zorder=8))
+    ax.annotate('paste ahead of the blade', xy=(tip_s + 3.5, 1.5), xytext=(5.6, 3.2), fontsize=7.5, color='#444444', va='center', **LBL)
+    ax.annotate('', xy=(12.5, -3.4), xytext=(-2.0, -3.4), arrowprops=dict(arrowstyle='-|>', color='#b00020', lw=1.2))
+    ax.text(5.2, -3.85, 'travel +s: toward the foot, tall end first', fontsize=8, color='#b00020', ha='center', va='top')
+    ax.set_xlim(-14.5, 27.5)
+    ax.set_ylim(-4.6, 29.0)
+    ax.set_aspect('equal')
+    ax.set_xlabel('s (mm), along the stroke')
+    ax.set_ylabel('h (mm), above the card face')
+    ax.set_title('(a) Side section through the middle of the handle (w = 0), loaded on the stencil card', fontsize=10, loc='left')
+
+    # ---- (b) top view of the stencil card, card frame ----
+    bx = fig.add_subplot(gs[:, 1])
+    x0, x1, y0, y1 = P['card']
+    add(bx, g['card'], fc=PLA, ec=PLA_DARK, lw=1.0, alpha=0.5, zorder=2)
+    gy, gw, _ = P['groove']
+    rects(bx, [(x0, gy - gw / 2, x1, gy + gw / 2)], fc='none', ec=PLA_DARK, hatch='////', lw=0, alpha=0.7, zorder=3)
+    for t_, b_ in tape_boxes(inp).items():
+        rects(bx, [b_], fc=TAPE, ec='none', alpha=0.55, zorder=3)
+    bx.text(55, 146, 'neck tape', fontsize=7, color='#a85c00', ha='center', va='center')
+    bx.text(55, 164, 'tail tape', fontsize=7, color='#a85c00', ha='center', va='center')
+    bx.annotate('hinge groove (hatched, card underside)\nand the 3 mm Kapton sliver in it;\nthe runners bridge it', xy=(x1, gy), xytext=(x1 + 1.5, gy - 0.5), fontsize=7, color='#555555', va='center', **LBL)
+    add(bx, g['pocket'].intersection(g['card']), fc='none', ec=PLA_DARK, lw=0.7, ls=(0, (4, 2)), zorder=4)
+    cx = sq['column_x']
+    r0, r1 = sq['runner_w']
+    for a in g['aps']:
+        add(bx, a['sq_rect'].buffer(0.25), fc=BLUE, ec='none', zorder=6)
+    ys0, ys1 = g['aps'][0]['sq_rect'].bounds[1], g['aps'][-1]['sq_rect'].bounds[3]
+    sy0, sy1 = sq['stroke']
+    sweep = (sy0 - tip_s + sq['runner_s'][0] + sq['runner_chamfer'], sy1 - tip_s + sq['runner_s'][1] - sq['runner_chamfer'])
+    for lo_, hi_ in ((cx - r1, cx - r0), (cx + r0, cx + r1)):
+        add(bx, box(lo_, sweep[0], hi_, sweep[1]).intersection(g['card']), fc='#2f9e44', ec='#1b6b2c', lw=0.8, alpha=0.35, zorder=5)
+        bx.text((lo_ + hi_) / 2, 112, 'runner track', fontsize=7, color='#1b6b2c', rotation=90, ha='center', va='center', zorder=7)
+    ym = 86.0
+    ys_ = ym - tip_s
+    for lo_, hi_ in ((cx - r1, cx - r0), (cx + r0, cx + r1)):
+        bx.add_patch(Rectangle((lo_, ys_ + sq['runner_s'][0] + sq['runner_chamfer']), hi_ - lo_, sq['runner_s'][1] - sq['runner_s'][0] - 2 * sq['runner_chamfer'], fc='#2f9e44', ec='#1b6b2c', lw=1.2, alpha=0.85, zorder=8))
+    bx.plot([cx - 5, cx + 5], [ym, ym], color='#b36b00', lw=3, solid_capstyle='butt', zorder=9)
+    bx.annotate('squeegee drawn mid-stroke: two runners\nand the 10 mm blade line', xy=(cx + 5, ym), xytext=(x1 + 1.5, ym + 2), fontsize=7.5, color='#7a4a00', va='center', **LBL)
+    for yy, nm in ((sy0, 'start: blade line at card y %.1f\n(%.1f before the first opening)' % (sy0, ys0 - sy0)),
+                   (sy1, 'end: blade line at card y %.1f\n(%.1f past the last opening)' % (sy1, sy1 - ys1))):
+        bx.plot([cx - 5, cx + 5], [yy, yy], color='#b00020', lw=2.2, zorder=9)
+        bx.annotate(nm, xy=(cx + 5, yy), xytext=(x1 + 1.5, yy), fontsize=7.5, color='#b00020', va='center', arrowprops=dict(arrowstyle='-', lw=0.6, color='#b00020'))
+    bx.annotate('', xy=(47.6, 128), xytext=(47.6, 45), arrowprops=dict(arrowstyle='-|>', color='#b00020', lw=1.6), zorder=10)
+    bx.text(47.1, 62, 'one pass, toward the foot (+y)', fontsize=7.5, color='#b00020', rotation=90, ha='right', va='center', zorder=10)
+    bx.text(cx - 0.4, 120, '24 openings', fontsize=7.5, color=BLUE, ha='right', va='center', rotation=90)
+    bx.annotate('', xy=(x0, 122), xytext=(cx - r1, 122), arrowprops=dict(arrowstyle='<->', lw=0.7))
+    bx.annotate('about 3 mm of card outside the\nleft runner (0-6 mm is fine)', xy=((x0 + cx - r1) / 2, 122), xytext=(x1 + 1.5, 122), fontsize=7.5, va='center', **LBL)
+    rects(bx, [(58.0, y0, x1, y0 + 5), (58.0, y1 - 5, x1, y1)], fc='none', ec='#a85c00', hatch='xx', lw=0.6, alpha=0.8, zorder=4)
+    bx.annotate('only place for corner tape (x >= 58)', xy=(60, y1 - 2.5), xytext=(x1 + 1.5, 150.5), fontsize=7, color='#a85c00', va='center', arrowprops=dict(arrowstyle='-', lw=0.6, color='#a85c00'))
+    bx.set_xlim(x0 - 3, x1 + 27)
+    bx.set_ylim(170, y0 - 6)
+    bx.set_aspect('equal')
+    bx.set_xlabel('x (mm, card frame, as built; the push to the datums then adds +0.12)')
+    bx.set_ylabel('y (mm, card frame, down)')
+    bx.set_title('(b) Squeegee face of the stencil card', fontsize=10, loc='left')
+
+    # ---- (c) cutting a card ----
+    cc = fig.add_subplot(gs[1, 0])
+    W, Hc = 85.6, 53.98
+    add(cc, box(0, 0, W, Hc).buffer(-3.18).buffer(3.18, quad_segs=12), fc='#e8e8e8', ec=INK, lw=1.0, zorder=2)
+    cc.plot([0, W], [Hc / 2, Hc / 2], color='#b00020', lw=1.2, ls=(0, (6, 3)), zorder=5)
+    for k in range(7):
+        xa = 7.8 + 10.0 * k
+        cc.add_patch(Rectangle((xa, Hc / 2), 10.0, 26.99, fc='#f5d98a', ec='#7a4a00', lw=0.7, zorder=3))
+        cc.add_patch(Rectangle((xa, 0), 10.0, 26.99, fc='#f5d98a', ec='#7a4a00', lw=0.7, zorder=3))
+    cc.plot([7.8, 77.8], [Hc, Hc], color='#1b6b2c', lw=3, zorder=6)
+    cc.plot([7.8, 77.8], [0, 0], color='#1b6b2c', lw=3, zorder=6)
+    cc.text(W / 2, Hc + 1.0, 'thick green = the card\'s factory edge = the blade\'s working edge', fontsize=7.5, color='#1b6b2c', ha='center', va='bottom')
+    cc.text(W / 2, -1.0, 'the same edge on the lower strip: 14 blades per card', fontsize=7.5, color='#1b6b2c', ha='center', va='top')
+    cc.text(W / 2, Hc / 2 + 1.0, 'cut along the middle (red): 26.99 from each long edge', fontsize=7.5, color='#b00020', ha='center', va='bottom', zorder=7,
+            bbox=dict(fc='white', ec='none', alpha=0.8, pad=1.0))
+    cc.text(W / 2, Hc * 0.80, 'each blade 10.0 wide x 27.0 long; the cut edge goes into the slot', fontsize=7.5, ha='center', va='center', color='#7a4a00', zorder=7,
+            bbox=dict(fc='white', ec='none', alpha=0.8, pad=1.0))
+    cc.text(W / 2, Hc * 0.22, 'avoid embossed digits, the chip and any hologram: use a plain area', fontsize=7.5, ha='center', va='center', color='#555555', zorder=7,
+            bbox=dict(fc='white', ec='none', alpha=0.8, pad=1.0))
+    cc.text(3.9, Hc * 0.93, '4 mm\nspare', fontsize=6.3, ha='center', va='top', color='#555555', zorder=7)
+    cc.text(W - 3.9, Hc * 0.93, '4 mm\nspare', fontsize=6.3, ha='center', va='top', color='#555555', zorder=7)
+    cc.set_xlim(-3, W + 3)
+    cc.set_ylim(-6.5, Hc + 7)
+    cc.set_aspect('equal')
+    cc.set_xlabel('mm (an ISO ID-1 card: 85.60 x 53.98 x 0.76)')
+    cc.set_yticks([])
+    cc.set_title('(c) Cutting a gift or loyalty card into blades', fontsize=10, loc='left')
+    fig.suptitle('Stencil squeegee (printed handle, card blade). Nothing here has been printed or tried; forces and angles are beam estimates.', fontsize=11.5, y=0.945)
+    fig.savefig(IMG / 'stencil_squeegee.png', dpi=120, bbox_inches='tight', facecolor='white')
+    plt.close(fig)
+
+
+def zbuffer_view(mesh, az, el, size=760, base=(0.60, 0.70, 0.82), pad=0.06):
+    """A flat-shaded orthographic picture of a mesh with a z-buffer (matplotlib's 3-D painter's sort mangles large triangles).
+    az, el in degrees: the camera sits in direction (cos el cos az, cos el sin az, sin el) from the object's centre."""
+    azr, elr = np.radians(az), np.radians(el)
+    d = np.array([np.cos(elr) * np.cos(azr), np.cos(elr) * np.sin(azr), np.sin(elr)])
+    f = -d
+    right = np.cross(f, [0, 0, 1.0])
+    right /= np.linalg.norm(right)
+    up = np.cross(right, f)
+    centre = (mesh.bounds[0] + mesh.bounds[1]) / 2
+    V = mesh.vertices - centre
+    px, py, pz = V @ right, V @ up, V @ d
+    tri = mesh.faces
+    span = max(px.max() - px.min(), py.max() - py.min())
+    scale = size * (1 - 2 * pad) / span
+    X = (px - (px.max() + px.min()) / 2) * scale + size / 2
+    Y = size / 2 - (py - (py.max() + py.min()) / 2) * scale
+    img = np.ones((size, size, 3))
+    zbuf = np.full((size, size), -1e9)
+    L1 = np.array([0.35, -0.55, 0.75])
+    L2 = np.array([-0.6, 0.3, 0.2])
+    L1 /= np.linalg.norm(L1)
+    L2 /= np.linalg.norm(L2)
+    n = mesh.face_normals
+    sh = 0.30 + 0.55 * np.clip(n @ L1, 0, 1) + 0.25 * np.clip(n @ L2, 0, 1)
+    facing = n @ d
+    for i, (a, b, c) in enumerate(tri):
+        xs, ys = X[[a, b, c]], Y[[a, b, c]]
+        x0_, x1_ = int(max(0, np.floor(xs.min()))), int(min(size - 1, np.ceil(xs.max())))
+        y0_, y1_ = int(max(0, np.floor(ys.min()))), int(min(size - 1, np.ceil(ys.max())))
+        if x1_ < x0_ or y1_ < y0_:
+            continue
+        gx, gy = np.meshgrid(np.arange(x0_, x1_ + 1) + 0.5, np.arange(y0_, y1_ + 1) + 0.5)
+        den = (ys[1] - ys[2]) * (xs[0] - xs[2]) + (xs[2] - xs[1]) * (ys[0] - ys[2])
+        if abs(den) < 1e-9:
+            continue
+        l1 = ((ys[1] - ys[2]) * (gx - xs[2]) + (xs[2] - xs[1]) * (gy - ys[2])) / den
+        l2 = ((ys[2] - ys[0]) * (gx - xs[2]) + (xs[0] - xs[2]) * (gy - ys[2])) / den
+        l3 = 1 - l1 - l2
+        inside = (l1 >= -1e-6) & (l2 >= -1e-6) & (l3 >= -1e-6)
+        z = l1 * pz[a] + l2 * pz[b] + l3 * pz[c]
+        sub = zbuf[y0_:y1_ + 1, x0_:x1_ + 1]
+        upd = inside & (z > sub)
+        sub[upd] = z[upd]
+        col = np.array(base) * sh[i]
+        if facing[i] < 0:
+            col = col * 0.7                                                   # a back face seen through a hole
+        img[y0_:y1_ + 1, x0_:x1_ + 1][upd] = np.clip(col, 0, 1)
+    # darken the silhouette and creases: pixels where the depth jumps
+    dz = np.maximum(np.abs(np.diff(zbuf, axis=0, prepend=zbuf[:1])), np.abs(np.diff(zbuf, axis=1, prepend=zbuf[:, :1])))
+    edge = (dz > 0.8) & (zbuf > -1e8)
+    img[edge] = img[edge] * 0.55
+    return img
+
+
+def squeegee_part_figure():
+    handle, plate = squeegee_meshes()
+    fig = plt.figure(figsize=(14, 11.2))
+    gs = fig.add_gridspec(2, 2, wspace=0.04, hspace=0.12)
+    views = [('(a) From the front, a little above: the tall end leads, travel is toward +s.\nThe arrow on each side points the way.', -28, 16),
+             ('(b) From the back right: the flat finger pad above the blade,\nthe M3 screw hole in the sloping back face.', 125, 28),
+             ('(c) From the front and below: the two runners, the slot mouth, the tongue\nand the open space for the paste and the blade.', -22, -38)]
+    for k, (title, az, el) in enumerate(views):
+        a = fig.add_subplot(gs[k // 2, k % 2])
+        a.imshow(zbuffer_view(handle, az, el))
+        a.set_axis_off()
+        a.set_title(title, fontsize=9.5, loc='left')
+    a3 = fig.add_subplot(gs[1, 1])
+    work = C.WORK.parent / 'squeegee'
+    gc = next(work.glob('plate_1.gcode'), None)
+    sec1 = SG.section_poly(plate, 2, 0.1)
+    add(a3, plate_outline(plate), fc='#e9eef4', ec='#9aa7b5', lw=0.8, zorder=1)
+    add(a3, sec1, fc='#3b4654', ec='none', zorder=3)
+    if gc is not None:
+        lay, _, _ = C.parse(gc)
+        zs = sorted(lay)
+        rail = [q for q in lay[zs[0]] if (q[1] + q[3]) / 2 < C.BED_CENTRE[1] + 15]
+        rails_design = sec1.buffer(-0.1).intersection(box(-100, -100, 100, 15))
+        ox = (min(c for q in rail for c in (q[0], q[2])) + max(c for q in rail for c in (q[0], q[2]))) / 2 - (rails_design.bounds[0] + rails_design.bounds[2]) / 2
+        oy = (min(c for q in rail for c in (q[1], q[3])) + max(c for q in rail for c in (q[1], q[3]))) / 2 - (rails_design.bounds[1] + rails_design.bounds[3]) / 2
+        add(a3, C.layer_union(lay[zs[0]], ox, oy), fc='#1f5fbf', ec='none', zorder=4)
+    a3.set_aspect('equal')
+    a3.set_xlabel('mm, print frame (the slicer puts the plate at the bed centre)')
+    a3.set_title('(d) The print plate from above. Blue = sliced layer 1: the two\nrunner rails and the two blade edges. Grey = the handle above them.', fontsize=9.5, loc='left')
+    a3.text(0, 24.6, 'two PLA blades, 10 x 1.0 x 26.2, standing on their working edges', fontsize=8, ha='center', va='bottom')
+    a3.text(0, 0, 'handle, runners down\n(31.6 x 20.3 x 27.9)', fontsize=8, ha='center', va='center', color='#445566')
+    a3.set_xlim(-20, 20)
+    a3.set_ylim(-13, 29)
+    fig.suptitle('Squeegee handle and print plate, from the STL and the OrcaSlicer read-back (a model view, not a photograph)', fontsize=11, y=0.96)
+    fig.savefig(IMG / 'stencil_squeegee_part.png', dpi=110, bbox_inches='tight', facecolor='white')
+    plt.close(fig)
+
+
+def plate_outline(plate):
+    """The plate's outline seen from above."""
+    polys = []
+    for body in plate.split(only_watertight=False):
+        pts = body.vertices[:, :2]
+        from shapely.geometry import MultiPoint
+        polys.append(MultiPoint(pts).convex_hull)
+    from shapely.ops import unary_union as uu
+    u = uu(polys)
+    return u
+
+
 def main():
     IMG.mkdir(parents=True, exist_ok=True)
     inp = S.load_input()
@@ -282,7 +547,9 @@ def main():
     underside(inp, g, mesh, g['H'])
     section(inp, g, mesh, g['H'])
     toolpaths(g)
-    for n in ('overview', 'underside', 'section', 'toolpaths'):
+    squeegee_figure(inp, g)
+    squeegee_part_figure()
+    for n in ('overview', 'underside', 'section', 'toolpaths', 'squeegee', 'squeegee_part'):
         print('wrote docs/images/stencil_%s.png' % n)
 
 

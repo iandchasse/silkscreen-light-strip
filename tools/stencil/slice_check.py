@@ -73,11 +73,12 @@ def flatten(kind, name, idx):
     return base
 
 
-def write_presets(dest, overrides):
+def write_presets(dest, overrides, presets=None):
+    """presets: {'machine': name, 'process': name, 'filament': name}; the default is the stencil's 0.12 Fine (the squeegee passes its own)."""
     idx = index()
     dest.mkdir(parents=True, exist_ok=True)
     files = {}
-    for kind, name in PRESETS.items():
+    for kind, name in (presets or PRESETS).items():
         d = flatten(kind, name, idx)
         d['name'] = name                                   # keep the stock name: the CLI refuses a renamed machine
         d.pop('instantiation', None)
@@ -91,8 +92,8 @@ def write_presets(dest, overrides):
     return files
 
 
-def slice_stl(stl, dest, overrides):
-    files = write_presets(dest, overrides)
+def slice_stl(stl, dest, overrides, presets=None):
+    files = write_presets(dest, overrides, presets)
     for old in dest.glob('*.gcode'):
         old.unlink()
     # Placed by us, not by Orca: with --arrange 1 Orca turned the 31 x 107 card by 90 degrees. The STL's XY origin is the

@@ -1,0 +1,326 @@
+{
+ "parameters": {
+  "alpha": 50.0,
+  "interference": 0.9,
+  "mouth": 15.0,
+  "stop": 27.0,
+  "cap": 30.0,
+  "slot": 1.25,
+  "slot_w": 10.6,
+  "front_jaw": 3.0,
+  "tongue": 1.6,
+  "back_slit": 0.8,
+  "side_slit": 0.8,
+  "back_block": 5.4,
+  "hole_d": 2.6,
+  "hole_lam": 18.0,
+  "runner_w": [
+   7.13,
+   10.13
+  ],
+  "runner_s": [
+   -10.0,
+   12.0
+  ],
+  "runner_chamfer": 1.0,
+  "ceiling": 3.0,
+  "finger_s0": -4.0,
+  "rear_h": 10.0,
+  "blade_w": 10.0,
+  "card_len": 27.0,
+  "card_t": [
+   0.68,
+   0.76,
+   0.84
+  ],
+  "pla": [
+   10.0,
+   1.0,
+   26.2
+  ],
+  "arrow_h": 13.0,
+  "arrow_depth": 0.4,
+  "E_pvc": 3000.0,
+  "E_pla": 3500.0,
+  "stroke": [
+   36.5,
+   135.0
+  ],
+  "column_x": 44.13,
+  "pla_x": [
+   -10.0,
+   10.0
+  ],
+  "pla_gap": 12.0
+ },
+ "derived": {
+  "frame": "s along the stroke (+s = card +y, toward the foot), w across (card x - 44.13), h up from the runner plane",
+  "mouth_plane_h": 10.591,
+  "front_lip": [
+   9.642,
+   10.591
+  ],
+  "stop_corner": [
+   17.355,
+   19.783
+  ],
+  "tongue_front_corner": [
+   8.01,
+   10.591
+  ],
+  "screw_entry": [
+   4.637,
+   18.706
+  ],
+  "profile_points": {
+   "C": [
+    21.582,
+    20.153
+   ],
+   "D": [
+    12.351,
+    27.899
+   ],
+   "G": [
+    2.709,
+    16.408
+   ]
+  },
+  "handle_mm": [
+   31.58,
+   20.26,
+   27.9
+  ],
+  "handle_volume_mm3": 7599.3,
+  "blade_tip_h": {
+   "card": -0.9,
+   "pla": -0.287
+  },
+  "loaded_tip_s": -1.073,
+  "loaded_blade_angle_deg_estimate": "42-45",
+  "pla_blade_mm": [
+   10.0,
+   1.0,
+   26.2
+  ],
+  "estimates_note": "beam formulas, PVC E 3.0 GPa and PLA E 3.5 GPa assumed, nothing measured",
+  "estimates": {
+   "card_t0.68_L14.0": {
+    "force_N": 1.2,
+    "tip_deflection_mm": 1.4,
+    "root_stress_MPa": 21.9
+   },
+   "card_t0.68_L15.0": {
+    "force_N": 0.98,
+    "tip_deflection_mm": 1.4,
+    "root_stress_MPa": 19.0
+   },
+   "card_t0.76_L14.0": {
+    "force_N": 1.68,
+    "tip_deflection_mm": 1.4,
+    "root_stress_MPa": 24.4
+   },
+   "card_t0.76_L15.0": {
+    "force_N": 1.37,
+    "tip_deflection_mm": 1.4,
+    "root_stress_MPa": 21.3
+   },
+   "card_t0.84_L14.0": {
+    "force_N": 2.27,
+    "tip_deflection_mm": 1.4,
+    "root_stress_MPa": 27.0
+   },
+   "card_t0.84_L15.0": {
+    "force_N": 1.84,
+    "tip_deflection_mm": 1.4,
+    "root_stress_MPa": 23.5
+   },
+   "card_t0.76_cut-0.3": {
+    "force_N": 1.08,
+    "free_length_mm": 14.7,
+    "tip_deflection_mm": 1.04
+   },
+   "card_t0.76_cut+0.0": {
+    "force_N": 1.37,
+    "free_length_mm": 15.0,
+    "tip_deflection_mm": 1.4
+   },
+   "card_t0.76_cut+0.3": {
+    "force_N": 1.62,
+    "free_length_mm": 15.3,
+    "tip_deflection_mm": 1.76
+   },
+   "pla_length26.0": {
+    "force_N": 0.66,
+    "free_length_mm": 14.0,
+    "edge_below_runner_mm": 0.134,
+    "inter_layer_stress_MPa": 5.6
+   },
+   "pla_length26.2": {
+    "force_N": 1.37,
+    "free_length_mm": 14.2,
+    "edge_below_runner_mm": 0.287,
+    "inter_layer_stress_MPa": 11.6
+   },
+   "pla_length26.4": {
+    "force_N": 2.01,
+    "free_length_mm": 14.4,
+    "edge_below_runner_mm": 0.44,
+    "inter_layer_stress_MPa": 17.3
+   }
+  },
+  "tongue_strain_percent": {
+   "thinnest_card": 0.8,
+   "no_blade": 1.76
+  },
+  "overlay": {
+   "tracks_x": {
+    "left": [
+     34.0,
+     37.0
+    ],
+    "right": [
+     51.26,
+     54.26
+    ]
+   },
+   "track_inset_from_card_edge_min": [
+    3.0,
+    7.74
+   ],
+   "track_to_opening_min": 6.73,
+   "tracks_over_pocket_y_and_area": [
+    [
+     135.38,
+     140.0,
+     13.33
+    ]
+   ],
+   "track_to_pocket_min_above_foot": 5.75,
+   "groove": {
+    "width": 6.0,
+    "runner_bottom_length": 20.0
+   },
+   "blade_spare_each_side": 4.6,
+   "openings_y": [
+    41.33,
+    131.93
+   ],
+   "openings_span_mm": 90.6,
+   "stroke": {
+    "start_line_y": 36.5,
+    "end_line_y": 135.0,
+    "length_mm": 98.5,
+    "start_before_first_opening": 4.83,
+    "start_inside_top_edge": 3.5,
+    "end_past_last_opening": 3.07,
+    "foot_top_edge_card_frame": 135.38,
+    "end_line_to_foot_edge": 0.38
+   },
+   "on_card_runner_s": {
+    "start": [
+     -4.57,
+     11.0
+    ],
+    "end": [
+     -9.0,
+     3.93
+    ],
+    "finger_pad": [
+     -4.0,
+     2.71
+    ]
+   },
+   "end_runner_front_y": 147.07,
+   "notes": "card frame (stencil.py geometry, D0.4): the card as built, before the push; once pushed home everything moves +0.12"
+  },
+  "notes": [
+   "handle 31.58 (s) x 20.26 (w) x 27.90 (h) mm, 7599 mm3 solid (9.4 g if solid), 1184 triangles",
+   "runner bottoms at the bed: two rectangles 3.0 x 20 mm at |w| 7.13-10.13 (lead-ins 1.0 x 45 degrees)",
+   "slot width, perpendicular, mouth to stop, w 0 and +-4.9: 1.250..1.250 mm (design 1.25)",
+   "tongue: o 1.25..2.85 (thick 1.6), free from lam 13.95 to its root at 27.0 (13.05 long); its front corner on the mouth plane is at s 8.01, h 10.59",
+   "middle zone is empty below the mouth plane (h 10.59) ahead of o 3.65, and below h 3.0 behind the blade (sectioned at w 0, 3, +-4.9, +-6.4)",
+   "blade envelope (card 0.84 thick bent 1.40 at the tip, and the PLA blade): nearest handle surface 1.00 mm (>= 0.5), measured below h 9.6",
+   "bent 0.84 card, back face at the tip: o 2.24; the back block starts at o 3.65: 1.41 clear",
+   "screw hole: 2.6 mm, 5.40 long from the back face (o 9.05) to the back slit (o 3.65); entry at s 4.64, h 18.71; M3 x 8 tip at o 1.05",
+   "card blade tip -0.90 below the runner plane, PLA blade tip -0.29; loaded tip moves to s -1.07",
+   "horizontal undersides above the bed at h [3.0, 10.59, 13.6] (area 220 mm2): the bridges",
+   "steepest sloping overhang: 50.0 degrees from vertical",
+   "72 faces past 45 degrees from vertical, 31.2 mm2",
+   "plate: handle (centred on x 0, shifted -5.79 in s) and two PLA blades 12.0 mm beyond its +w side at x (-10.0, 10.0); plate 31.6 x 33.3 x 27.9 mm",
+   "use overlay: tracks x [34.0, 37.0] and [51.26, 54.26] (inset 3.0 / 7.74 from the card edges); 6.73 from the nearest opening; blade band spare 4.60 each side",
+   "stroke: blade line from card y 36.5 (4.83 before the first opening, 3.5 inside the top edge) to 135.0 (3.07 past the last opening, 0.38 short of the foot's top edge at 135.38); pass 98.5 mm",
+   "runner tracks over the pocket: [(135.38, 140.0, 13.33)] (y0, y1, area); on-card runner part s -4.6..11.0 at the start, -9.0..3.9 at the end; finger pad s -4.0..2.71"
+  ]
+ },
+ "slice": {
+  "time": "17m 39s",
+  "grams": "6.77",
+  "layers": 139,
+  "line_types": [
+   "Bridge",
+   "Custom",
+   "Gap infill",
+   "Inner wall",
+   "Internal Bridge",
+   "Internal solid infill",
+   "Outer wall",
+   "Overhang wall",
+   "Sparse infill",
+   "Top surface"
+  ],
+  "skirt_or_brim": [],
+  "settings": {
+   "time": "17m 39s",
+   "grams": "6.77",
+   "efc": "0.1",
+   "layer_height": "0.2",
+   "first_layer_height": "0.2",
+   "wall_loops": "3",
+   "wall_generator": "arachne",
+   "brim_type": "no_brim",
+   "infill": "15%",
+   "enable_support": "0"
+  },
+  "worst_extrusion_outside_design_mm2": 0.002,
+  "layer1": {
+   "footprints": 4,
+   "rails_area": 111.9,
+   "rails_designed": 112.0,
+   "blade_edges_area": [
+    9.9,
+    9.9
+   ]
+  },
+  "pla_blade_layer_cover_min": 0.994,
+  "slot_open_min": 1.249,
+  "back_slit_open_min": 0.716,
+  "side_slit_open_min": 0.797,
+  "hole_open_min": 2.569,
+  "bridges": {
+   "bridge_mm_by_layer_z": {
+    "3.2": 285.1,
+    "10.8": 118.5,
+    "20.8": 61.1,
+    "22.2": 131.2
+   },
+   "internal_bridge_mm_by_layer_z": {
+    "15.6": 384.1
+   },
+   "overhang_wall_mm": 239,
+   "wall_mm": 48546,
+   "overhang_layers": 3
+  },
+  "pass_": true,
+  "notes": [
+   "layer 1: 4 footprints; the two rails 111.9 mm2 against 112.0 designed after the 0.1 mm elephant-foot shrink (99.9%); the two blade edges 9.9 and 9.9 mm2 of the 10.0 x 1.0 footprint (the slicer did not shrink them)",
+   "PLA blades: every layer above layer 1 covers >= 99.4% of 10.0 x 1.0, top layer at z 26.2",
+   "paste wedge, blade space and the space under the ceiling (|w| <= 6.5): 53 layer stretches checked, most extrusion inside any of them 0.0000 mm2",
+   "slot: narrowest bead-to-bead gap, perpendicular to the blade, over 129 layer samples (w 0 and +-4.8): 1.25 mm (design 1.25, want >= 1.15)",
+   "fit as sliced: a 0.84 card leaves 0.41 mm in the slot and the 1.0 PLA blade 0.25 mm; the tongue closes that gap",
+   "back slit open 0.72 (perpendicular, design 0.80), side slits open 0.80 (design 0.80)",
+   "screw hole: narrowest open width across (w) through its axis, 7 layers: 2.57 mm (design 2.6, want >= 2.2)",
+   "\"Bridge\" lines (mm of extrusion) by layer height z: {3.2: 285.1, 10.8: 118.5, 20.8: 61.1, 22.2: 131.2} (z 3.2: the ceiling at h 3.0 and z 10.8: the underside of the slot mouth, both spanning the 14.26 mm between the runner walls; z 20.8 and 22.2: the roofs at the 1 mm wide ends of the slot and the slits); \"Internal Bridge\" (solid skin over sparse infill, not over air): {15.6: 384.1}; \"Overhang wall\" lines: 239 mm of 48546 mm of wall, on 3 layers (the 40-50 degree faces); no Support type, so nothing is added under them"
+  ]
+ }
+}

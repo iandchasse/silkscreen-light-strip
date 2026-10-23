@@ -8,7 +8,7 @@ The reasons behind each step are in [DESIGN.md](DESIGN.md). The showcase source 
 
 **You need:**
 
-- **Soldering:** a fine-tip iron, or hot air with paste. Flux, tweezers and isopropyl alcohol. Or, for the stencil option, a small reflow oven, Sn42Bi58 paste and the printed stencil ([§2, option](#option-3d-printed-paste-stencil-and-oven-reflow-experimental-untested)).
+- **Soldering:** a fine-tip iron, or hot air with paste. Flux, tweezers and isopropyl alcohol. Or, for the stencil option, a small reflow oven, Sn42Bi58 paste, the printed stencil and, to wipe the paste on, the printed squeegee with an old plastic card ([§2, option](#option-3d-printed-paste-stencil-and-oven-reflow-experimental-untested)).
 - **Testing:** a CR2032 coin cell, a multimeter, and a bench supply that can current-limit at 5–10 mA and reach 22 V.
 - **Fitting:** Kapton tape, a craft knife, flush cutters.
 - **Parts:** 6 × XL-4008WWC (warm), 6 × XL-4008UWC (cool), 2 × BAV70W,115. Buy a few spares. The LEDs are 4 mm long and easy to lose.
@@ -85,6 +85,36 @@ The idea: tape the flex flat to a scrap of bare FR4, lay a thin printed card ove
 - Print two cards; PLA wears and costs almost nothing. The sliced estimates are 9-11 minutes and 2-3 g each (D0.3 to D0.5).
 - **Optional test coupon** (`aperture-coupon_print.stl`, 5 minutes, 1 g): three rows of holes from 0.4 to 1.0 mm in the same 0.2 mm membrane, so you can see where your own printer stops opening them. In the slicer's view, with the chamfered corner at the top left, each row grows from left to right: the middle row is 0.5 × 1.1 up to 1.0 × 1.6, the top row 0.45 × 0.70 up to 0.70 × 1.00, the bottom row squares from 0.4 up to 1.0 mm. The slicer keeps even 0.4 mm holes open; the real print may not. About 0.60 mm on the short side is the smallest opening to count on, 0.45-0.55 mm opens only sometimes, and below that assume it closes. These limits are estimates.
 
+**The squeegee (optional, printed, untested).** The paste is wiped on with a plastic card edge; this handle holds a piece of card at a set angle and pressure, so one pass along the bar fills all 24 openings. **It has not been printed or tried.** The slicer read-back ([`docs/reports/stencil_squeegee_check.md`](reports/stencil_squeegee_check.md)) shows the toolpath is clean and nothing more; every force and angle below is a beam estimate with an assumed card stiffness.
+
+![The squeegee: side section, the stroke on the stencil card, and cutting a card into blades](images/stencil_squeegee.png)
+
+![The handle from four views, and the print plate](images/stencil_squeegee_part.png)
+
+- **Files** (in [`production/stencil/`](../production/stencil/)): `squeegee_print.stl` is the handle and two spare PLA blades on one plate, already placed (load it as it is: runners on the bed, blades standing on their working edges; don't rotate it); `squeegee-blade-pla_print.stl` is one more blade; `squeegee_params.json` has every dimension and the estimates.
+- **You need** the printed handle, one **M3 screw, 8-12 mm long** (any head; it cuts its own thread in the PLA), and a plain plastic card (gift, loyalty or hotel key card, ISO size, 0.68-0.84 mm thick) for the blade. Or use the printed PLA blade.
+- **The card blade** is a piece 10.0 mm wide and 27.0 mm long with **one factory edge, which is the working edge**.
+  1. Rule a line along the middle of the card, 27 mm from a long edge, and cut along it with scissors (or score it twice with a craft knife and snap it). That gives two strips of 85.6 × 27 mm, each with one factory long edge.
+  2. From each strip cut 10.0 mm pieces square to the factory edge, starting at least 4 mm from the rounded ends: up to 7 per strip, 14 per card. A cut error of ±0.3 mm on the 27 mm length changes the pressure by about ±20 %; the width can be 9.5-10.5 mm.
+  3. Avoid embossed digits, the chip and any hologram: use a plain area. Hold the edge to a light: it should be straight with no nick or burr. Don't sand it.
+- **How it holds the blade.** The slot holds the card at 50° to the stencil, with its edge 0.9 mm lower than the runners' underside. Two runners, each 3 × 22 mm, ride on the **stencil card** (not on the FR4), 3 mm inside its left edge and more than 5.7 mm from the pocket, so with the runners flat the blade is bent back about 1.4 mm: the angle at the tip becomes about 42° and the edge presses with about **1.4 N** (1.0-2.3 N, depending on the card). These are estimates. The runners clear all three tapes and work with all three stencil depths.
+- **Clamping.** Push the blade in from the slot mouth, factory edge out, until its cut edge meets the stop. Turn the screw in: it pushes a printed tongue, and the tongue presses the blade across its whole width at the mouth. **Never tighten the screw without a blade in** (the tongue would be strained about 1.8 %; with a blade it is under 1 %). The first time, drive the screw in with no blade only until its tip shows in the back slit, then back it out: that cuts the thread.
+- **Print it** on the Centauri Carbon 2 in PLA, from the stock "0.20mm Standard @Elegoo CC2 0.4 nozzle" process with "Elegoo PLA", changing only:
+
+  | Setting | Value | Why |
+  |---|---|---|
+  | Wall loops | 3 | the screw threads into the walls |
+  | Wall generator | Arachne | fills the 1.0 mm PLA blades with two even beads |
+  | Brim | none | it would sit on the PLA blades' working corners and the runners' edges |
+  | Supports | off (the stock value) | nothing needs them: the slicer bridges the ceiling behind the blade, the underside of the slot mouth and the 1 mm wide ends of the slot and slits |
+  | Elephant foot compensation | **0.1 (the stock value: leave it)** | keeps a lip off the runners and the blade corners. This is the opposite of the stencil card, which needs 0 |
+  | Everything else | stock | 0.20 mm layers, 15 % infill |
+
+  The slicer's estimate for the whole plate (the handle and two blades) is 17 minutes 39 seconds and 6.8 g.
+- **Check it before use.** Stand the squeegee on a flat surface (the FR4 or a table) on its two runners. The blade should bend and touch along its whole edge, with no light under it. If it touches at one corner only, the card is cut crooked or the edge is nicked: try another piece.
+- **The PLA blade** (10.0 × 1.0 × 26.2 mm, printed standing on its working edge, no brim) is the fallback. Its end is square and both of its faces are alike, so it is reversible: two working corners. If a lip shows on the corner, hold the blade upright and rub it 3-4 times on 600-grit paper laid flat. If it cracks at the slot mouth (printed cold or under-extruded), use a card blade.
+- **Not known** (none of it can be checked by slicing): the real stiffness of your card, and so the real pressure; whether the PLA blade survives bending across its layer lines; how the paste actually rolls and fills with the blade leaning toward the direction of travel (the paste then sits in the acute wedge under it); how well a thread-forming screw holds in printed PLA. If the openings fill unevenly, change the card (thicker is firmer) before changing anything else.
+
 **Paste, tape and carrier.**
 
 - **Paste: low-temperature Sn42Bi58** (melts at 138 °C), for example Chip Quik's SMDLTLFP series (Sn42/Bi57.6/Ag0.4), type 4 or 5. It peaks at about 165-180 °C, against about 215-225 °C for leaded and 240-250 °C for lead-free paste, which is easier on the LEDs' silicone lens, the 3M 9077 tape and the black coverlay (which soaks up infrared and runs hotter than the FR4). The price is brittler joints, acceptable here because every joint sits on a stiffened piece. **Never touch a Bi58 joint up with leaded solder**: tin-lead-bismuth melts near 96 °C. Rework with Bi58 paste or lead-free wire. Keep the paste cold and let it reach room temperature before opening the jar.
@@ -103,8 +133,15 @@ The idea: tape the flex flat to a scrap of bare FR4, lay a thin printed card ove
    - across the tail end, over the gold fingers.
 
    No tape on the bar, the top piece or the foot: the card bears there.
-5. **Lay the card over the strip**, pocket side down, so the strip drops into the pocket. Push it toward the LED-window side (+x) until the pocket wall meets the strip's straight outer edge, and toward the foot (+y) until the wall above the foot meets the foot's top edge. Look through the openings: gold pad should show all round each one. Hold the card down near the bar, or tape its two far corners to the FR4 with Kapton.
-6. **Print the paste.** Put a line of paste along the card above the top LED. With an old plastic card cut about 15 mm wide, or a flat metal spatula at about 45°, pull it along the bar in one firm stroke, then a second clean scraping stroke. Lift the card straight up, starting at the top end. Don't let it slide.
+5. **Lay the card over the strip**, pocket side down, so the strip drops into the pocket. Push it toward the LED-window side (+x) until the pocket wall meets the strip's straight outer edge, and toward the foot (+y) until the wall above the foot meets the foot's top edge. Look through the openings: gold pad should show all round each one. Hold the card down beside the bar, or tape its two far corners to the FR4 with Kapton, on the card's right-hand 4 mm only (x 58-62) so the squeegee's runners clear the tape.
+6. **Print the paste** (with the squeegee above; the last bullet is for no squeegee).
+   - **Paste.** Put a bead about 8 mm long and 2-3 mm thick (about 0.1 g, a little more than a grain of rice) across the column of openings, centred on it, 3-4 mm above the top LED's openings (card y about 37-39). The 24 openings take only about 0.02 g; the rest rolls ahead of the blade and is wiped off at the end.
+   - **Place.** Set the squeegee down behind the bead, on the top-piece side, with the tall end toward the foot (the arrows point that way). Keep the column of openings centred between the two runners, with about 3 mm of card showing outside the left runner (0-6 mm is fine).
+   - **Press.** Put an index finger on the flat pad above the blade and press until both runners sit flat on the card. The runners set the angle and the pressure; pressing harder only presses the runners down, so just keep them flat.
+   - **One pass, toward the foot only.** Pull in one steady stroke, about 10-20 mm/s (5-10 s for the length), without stopping over an opening. **Never stroke back toward the top or sideways**: that drags the card off its two datums.
+   - **Lift off.** Stop with the blade 3-5 mm past the last opening (card y about 135-137), then lift the squeegee straight up, slowly. Wipe the leftover bead off the card and the blade with a tissue; don't put used paste back in the jar. If an opening is not full, make one more pass the same way with a fresh small bead. Then lift the card straight up, starting at the top end. Don't let it slide.
+   - **Clean the squeegee straight away,** before the flux dries: loosen the screw, take the blade out, and wipe the blade, the slot mouth and the runners with isopropyl alcohol on a lint-free tissue. PVC and PLA both take it; **no acetone** (it softens PVC). Replace a card blade when its edge shows a nick against the light; turn a PLA blade over to use its second corner.
+   - **No squeegee?** A 10-15 mm piece of old plastic card held by hand at about 45° still works, and so does a flat metal spatula; the angle and the pressure are then up to your hand.
 7. **Inspect.** Each pad should have a neat brick. Wipe a smeared pad with a cotton bud and IPA, let it dry, and re-print or dot it. Wash the card with IPA straight away.
 8. **Diodes.** Dot paste by hand on the six pads of D13 and D14, about 0.3 mm dots (a fine needle or a toothpick). Or leave them dry and iron them on after reflow: with the strip taped flat, that is much easier than on a loose one.
 9. **Place the parts** with tweezers, pressing each lightly into the paste. Do all six of one colour from one reel, then the other.
@@ -128,8 +165,9 @@ The idea: tape the flex flat to a scrap of bare FR4, lay a thin printed card ove
 - **The top piece is placed only by the hinge tape**, so check by eye that its two openings show gold.
 - **Print scale** drifts along the 94 mm from the foot; hence the 89.50 mm check.
 - **The oven's uneven heat** is why the practice run comes first.
+- **The squeegee is untested.** Its pressure and angle are estimates; a card that is too soft or too stiff, a crooked cut or a nicked edge leaves some openings short. Practise on a spoiled strip first.
 
-*Rebuilding the files:* after any footprint or outline change, rerun `tools/stencil/extract_paste.py` with KiCad's Python and `stencil.py`, `slice_check.py` and `render.py` in a Python with CadQuery, shapely and trimesh, and commit `production/stencil/`.
+*Rebuilding the files:* after any footprint or outline change, rerun `tools/stencil/extract_paste.py` with KiCad's Python and `stencil.py`, `slice_check.py`, `squeegee.py --slice` and `render.py` in a Python with CadQuery, shapely and trimesh, and commit `production/stencil/`.
 
 ## 3. Bench test on the pads
 
