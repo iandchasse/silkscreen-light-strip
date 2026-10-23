@@ -75,15 +75,17 @@ def flatten(kind, name, idx):
     return base
 
 
-def write_presets(dest, overrides, presets=None, folders=None, relative_e_hack=True):
+def write_presets(dest, overrides, presets=None, folders=None, relative_e_hack=True, rename=None):
     """presets: {'machine': name, 'process': name, 'filament': name}; the default is the stencil's 0.12 Fine (the squeegee passes its own).
-    folders: the profile folders to search (default Elegoo only); relative_e_hack: append G92 E0 to the machine's layer gcode (read-back only)."""
+    folders: the profile folders to search (default Elegoo only); relative_e_hack: append G92 E0 to the machine's layer gcode (read-back only).
+    rename: {kind: new name} for a PROCESS (only): the kit projects must not carry a stock process name, or the OrcaSlicer GUI finds the same-named
+    stock preset on opening and resets every value that is not in the (empty) changed-keys list to the stock value."""
     idx = index(folders)
     dest.mkdir(parents=True, exist_ok=True)
     files = {}
     for kind, name in (presets or PRESETS).items():
         d = flatten(kind, name, idx)
-        d['name'] = name                                   # keep the stock name: the CLI refuses a renamed machine
+        d['name'] = (rename or {}).get(kind, name)         # keep the stock name: the CLI refuses a renamed machine (a renamed process is fine)
         d.pop('instantiation', None)
         if relative_e_hack and kind == 'machine' and 'G92 E0' not in (d.get('layer_gcode') or ''):
             d['layer_gcode'] = ((d.get('layer_gcode') or '') + '\nG92 E0').strip()      # relative-E read-back

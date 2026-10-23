@@ -7,7 +7,7 @@ Run in the CadQuery venv (cadquery, shapely, trimesh), after stencil.py and sque
 
 Writes production/stencil/stencil-kit_generic.3mf (Generic Marlin Printer 0.4 nozzle, Generic PLA; the parts sit inside a 220 x 210 mm area)
 and production/stencil/stencil-kit_cc2.3mf (Elegoo Centauri Carbon 2 0.4 nozzle, Elegoo PLA), plus docs/reports/stencil_plate_check.md and
-docs/images/stencil_plate.png. Scratch files go to build/stencil/plate/ (git-ignored). OrcaSlicer's command line only, never its window.
+docs/images/stencil_plate_cc2.png and _generic.png. Scratch files go to build/stencil/plate/ (git-ignored). OrcaSlicer's command line only, never its window.
 
 Why the projects are written by OrcaSlicer. A 3MF written by hand without OrcaSlicer's full project settings (no filament_colour, for
 one) crashes OrcaSlicer 2.3.2 and later when it is opened. So this script never writes project settings: it places the STLs itself (the
@@ -72,12 +72,18 @@ VARIANTS = {
     'generic': dict(file='stencil-kit_generic.3mf', title='Generic Marlin Printer 0.4 nozzle, Generic PLA',
                     folders=['Custom', 'OrcaFilamentLibrary'],
                     presets={'machine': 'MyMarlin 0.4 nozzle', 'process': '0.12mm Fine @MyMarlin', 'filament': 'Generic PLA @System'},
-                    area=(220.0, 210.0)),
+                    area=(220.0, 210.0), process_name='Stencil kit 0.10mm @Generic Marlin 0.4 nozzle'),
     'cc2': dict(file='stencil-kit_cc2.3mf', title='Elegoo Centauri Carbon 2 0.4 nozzle, Elegoo PLA',
                 folders=['Elegoo', 'OrcaFilamentLibrary'],
                 presets={'machine': 'Elegoo Centauri Carbon 2 0.4 nozzle', 'process': '0.12mm Fine @Elegoo CC2 0.4 nozzle', 'filament': 'Elegoo PLA @ECC2'},
-                area=(256.0, 256.0)),
+                area=(256.0, 256.0), process_name='Stencil kit 0.10mm @Elegoo CC2 0.4 nozzle'),
 }
+# The process preset the kit carries is NOT called like a stock preset (V['process_name'] instead of V['presets']['process']). A project
+# written by OrcaSlicer's command line has empty `inherits_group` / `different_settings_to_system`; the GUI, on opening it, finds the stock
+# preset of the same name, takes its values for every key that is not in that (empty) list and so resets the plate settings (0.10 layers,
+# elephant-foot compensation 0, no brim ...) to the stock ones without a word. With a name that no stock preset has, nothing is found and the
+# file loads as a project preset with its own values. The printer and filament keep their stock names (the CLI refuses a renamed machine;
+# a reset of those to stock values changes nothing the kit needs).
 # a card's extrusion with nothing under it, per layer, that still passes: a few bead-end slivers of 0.03-0.07 mm2 (about 0.15 x 0.3 mm) sit on the
 # top layers of the card on the generic printer's toolpath; the single-card check keeps 0.01
 FLOAT_TOL = 0.1
@@ -204,7 +210,7 @@ def build_project(key, V, reuse=False):
         for old in list(d.glob('*.3mf')) + list(d.glob('*.gcode')):
             old.unlink()
     folders = [RES / f for f in V['folders']]
-    files = C.write_presets(d / 'presets', OVERRIDES, V['presets'], folders=folders, relative_e_hack=False)
+    files = C.write_presets(d / 'presets', OVERRIDES, V['presets'], folders=folders, relative_e_hack=False, rename={'process': V['process_name']})
     parts, extent = layout(V['area'])
     for p in parts:
         m = p['mesh'].copy()
@@ -275,8 +281,12 @@ def read_back_3mf(b, V, chk):
                      ironing_type='no ironing', enable_arc_fitting='0', slow_down_layers='2', initial_layer_speed='30', wall_generator='classic').items():
         chk(str(st.get(k)) == v, f'project setting {k} = {st.get(k)!r}, expected {v!r}')
     chk('filament_colour' in st and st['filament_colour'], 'project settings have no filament_colour')
-    chk(st.get('print_settings_id') == V['presets']['process'] and st.get('printer_settings_id') == V['presets']['machine'] and
-        st.get('filament_settings_id') == [V['presets']['filament']], f"preset names in the project: {st.get('print_settings_id')}, {st.get('printer_settings_id')}, {st.get('filament_settings_id')}")
+    # the process name must be none of the stock presets' (see VARIANTS): else the GUI resets the plate settings to the stock ones on opening
+    stock_proc = {n for (k, n) in C.index([RES / f for f in sorted({f for v in VARIANTS.values() for f in v['folders']})]) if k == 'process'}
+    chk(V['process_name'] not in stock_proc, f"process name {V['process_name']!r} is a stock preset's name")
+    chk(not any(st.get('inherits_group', [])), f"inherits_group {st.get('inherits_group')} names a preset")
+    chk(st.get('print_settings_id') == V['process_name'] and st.get('printer_settings_id') == V['presets']['machine'] and
+        st.get('filament_settings_id') == [V['presets']['filament']], f"preset names in the project: {st.get('print_settings_id')} (expected the kit's own process name {V['process_name']!r}, which no stock preset has), {st.get('printer_settings_id')}, {st.get('filament_settings_id')}")
     return dict(info=info, lo=lo, hi=hi, bed=bed, worst_pos=worst_pos, worst_vol=worst_vol)
 
 
@@ -295,7 +305,8 @@ def settings_round_trip(b, V, chk):
     for tag, ov in (('ref', OVERRIDES), ('stock', {})):
         ref_dir = d / tag
         ref_dir.mkdir(exist_ok=True)
-        files = C.write_presets(ref_dir, ov, V['presets'], folders=[RES / f for f in V['folders']], relative_e_hack=False)
+        files = C.write_presets(ref_dir, ov, V['presets'], folders=[RES / f for f in V['folders']], relative_e_hack=False,
+                                rename={'process': V['process_name']} if ov else None)
         cube = ref_dir / 'cube.stl'
         trimesh.creation.box(extents=[10, 10, 10]).export(cube)
         orca(['--orient', '0', '--arrange', '1', '--load-settings', f"{files['machine']};{files['process']}", '--load-filaments', files['filament'],
@@ -588,7 +599,7 @@ def write_report(allres, fails):
         V, b, res, rb = r['V'], r['b'], r['res'], r['rb3']
         L += [f"## {key}: {V['title']}", '',
               f"File `production/stencil/{V['file']}`, {r['size']} bytes, sha256 `{r['sha'][:16]}`. Presets (names as OrcaSlicer holds them): machine `{V['presets']['machine']}`, "
-              f"process `{V['presets']['process']}`, filament `{V['presets']['filament']}`. Bed {rb['bed'][0]:.0f} x {rb['bed'][1]:.0f} mm; the parts fill {rb['lo'][0]:.1f}..{rb['hi'][0]:.1f} x "
+              f"process `{V['process_name']}` (the flattened stock `{V['presets']['process']}` with the overrides below, under a name no stock preset has, so that the OrcaSlicer GUI does not replace its values with the stock preset's on opening), filament `{V['presets']['filament']}`. Bed {rb['bed'][0]:.0f} x {rb['bed'][1]:.0f} mm; the parts fill {rb['lo'][0]:.1f}..{rb['hi'][0]:.1f} x "
               f"{rb['lo'][1]:.1f}..{rb['hi'][1]:.1f} mm, inside {V['area'][0]:.0f} x {V['area'][1]:.0f}.", '',
               '| Check | Result |', '|---|---|',
               f"| Parts in the project | {', '.join(p['name'] for p in b['parts'])} |",
@@ -674,11 +685,14 @@ def main():
         for f in chk.fails:
             print('   -', f)
         allfails += [f'{key}: {f}' for f in chk.fails]
-    write_report(allres, allfails)
+    if args.only:
+        print('--only: the report (it holds both projects) is not rewritten')
+    else:
+        write_report(allres, allfails)
     if allfails:
         print('FAIL')
         sys.exit(1)
-    print('PASS; report in', REPORT.relative_to(ROOT))
+    print('PASS' + ('' if args.only else '; report in ' + str(REPORT.relative_to(ROOT))))
 
 
 if __name__ == '__main__':
